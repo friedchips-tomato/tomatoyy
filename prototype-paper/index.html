@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efe6d2">
+  <title>长堤风貌街</title>
+  <link rel="stylesheet" href="paper.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:,">
+  <script defer src="data/points.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="phone" id="app">
+    <div class="shell" id="shell">
+      <div class="paper-top">
+        <header class="topbar">
+          <div class="topline">
+            <h1 id="title"></h1>
+            <div class="languages" id="languages" role="group" aria-label="讲解语言">
+              <button type="button" data-action="language" data-id="zh" aria-label="普通话">普</button>
+              <i aria-hidden="true">·</i>
+              <button type="button" data-action="language" data-id="yue" aria-label="粤语">粤</button>
+              <i aria-hidden="true">·</i>
+              <button type="button" data-action="language" data-id="en" aria-label="English">EN</button>
+            </div>
+          </div>
+          <div class="seal-row">
+            <div class="seals" id="seals" aria-hidden="true"></div>
+            <span id="progress-label"></span>
+          </div>
+        </header>
+        <section class="navigation" id="navigation" aria-label="地图导航" hidden></section>
+      </div>
+
+      <main class="map-area" aria-label="长堤导览地图">
+        <div class="map-scroll" id="map-scroll" tabindex="0" aria-label="滚动查看地图">
+          <div class="map-stage" id="map-stage">
+            <p class="map-placeholder" id="map-placeholder" hidden>地图图片暂缺，仍可点选点位。</p>
+            <div class="map-base" aria-hidden="true"></div>
+            <div class="map-colors" id="map-colors" aria-hidden="true"></div>
+            <svg class="map-lines" id="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="map-points" id="map-points"></div>
+          </div>
+        </div>
+        <p class="map-note-text" id="map-disclaimer"></p>
+        <div class="zoom" role="group" aria-label="地图缩放">
+          <button type="button" data-action="zoom" data-id="1" aria-label="放大地图">+</button>
+          <output id="zoom-level" class="sr-only" aria-live="polite">100%</output>
+          <button type="button" data-action="zoom" data-id="-1" aria-label="缩小地图">−</button>
+        </div>
+      </main>
+
+      <div class="paper-bottom">
+        <section class="mini-player" id="mini-player" aria-label="讲解播放条" hidden></section>
+        <nav class="tabbar" aria-label="导览菜单">
+          <button type="button" data-action="menu" data-id="route"><span data-icon="route"></span>路线</button>
+          <button type="button" data-action="menu" data-id="scan"><span data-icon="scan"></span>扫码</button>
+          <button type="button" data-action="menu" data-id="services"><span data-icon="services"></span>服务</button>
+          <button type="button" data-action="menu" data-id="mine"><span data-icon="mine"></span>我的</button>
+        </nav>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay" hidden>
+      <button class="scrim" type="button" data-action="close" aria-label="关闭弹层" tabindex="-1"></button>
+      <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
+        <div class="sheet-drag" aria-hidden="true"><span></span></div>
+        <header class="sheet-header">
+          <div class="sheet-heading">
+            <p class="kicker" id="sheet-kicker"></p>
+            <h2 id="sheet-title"></h2>
+          </div>
+          <button class="icon-button close-button" type="button" data-action="close" aria-label="关闭弹层">×</button>
+        </header>
+        <div class="sheet-body" id="sheet-body"></div>
+      </section>
+    </div>
+
+    <div class="reward-layer" id="reward-layer" role="dialog" aria-modal="true" aria-label="收下一张小卡" hidden></div>
+    <p class="sr-only" id="announcement" role="status"></p>
+  </div>
+</body>
+</html>

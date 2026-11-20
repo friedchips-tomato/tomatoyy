@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>侨批风格样张</title>
+<style>
+:root {
+  --paper: #efe6d2;
+  --paper-2: #f6efe0;
+  --ink: #2b2723;
+  --muted: #7a6f60;
+  --red: #b23a2a;
+  --red-soft: rgba(178, 58, 42, .16);
+  --serif: "Songti SC", "STSong", "Noto Serif SC", serif;
+  --sans: -apple-system, "PingFang SC", sans-serif;
+  --edge: url(a/edge-paper.png) repeat-x 0 0 / 512px 20px;
+  --edge-2: url(a/edge-paper2.png) repeat-x 0 0 / 512px 20px;
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: #d9d2c3; font-family: var(--sans); color: var(--ink); }
+.phone { position: relative; width: 390px; height: 844px; overflow: hidden; background: var(--paper); display: flex; flex-direction: column; }
+
+/* 顶栏：标题 + 语言 + 七枚印格 */
+.top { position: relative; z-index: 2; padding: 16px 16px 10px; background: var(--paper); filter: drop-shadow(0 2px 3px rgba(60, 45, 30, .16)); }
+/* 纸边：只在纸与地图交界处露出毛边 */
+.top::after { content: ""; position: absolute; left: 0; right: 0; bottom: -12px; height: 20px; background: var(--edge); transform: scaleY(-1); }
+.top-line { display: flex; align-items: center; justify-content: space-between; }
+h1 { font: 700 23px/1.2 var(--serif); letter-spacing: .12em; }
+.lang { display: flex; align-items: center; font-size: 13px; color: var(--muted); }
+.lang span { display: grid; place-items: center; width: 34px; height: 34px; }
+.lang .on { color: var(--red); font-weight: 600; border: 1px solid var(--red); border-radius: 50%; width: 30px; height: 30px; margin: 2px; }
+.lang i { font-style: normal; opacity: .5; }
+.seals { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.seal { width: 20px; height: 20px; border: 1px dashed rgba(178, 58, 42, .45); border-radius: 2px; }
+.seal.lit { border: 0; background: var(--red); color: #f8eadb; font: 700 12px/20px var(--serif); text-align: center; transform: rotate(-4deg); box-shadow: inset 0 0 0 1.5px #f3d9c9, inset 0 0 0 2.5px var(--red); }
+.seal.lit:nth-child(2) { transform: rotate(3deg); }
+.seals small { margin-left: 4px; font-size: 11px; color: var(--muted); }
+
+/* 地图 */
+.map { position: relative; flex: 1; overflow: hidden; background: #ddd6c6; }
+.stage { position: absolute; top: -2%; left: -40px; height: 103%; aspect-ratio: 2 / 3; }
+.base, .color { background: url(a/map.jpg) no-repeat; image-rendering: pixelated; }
+.base { position: absolute; inset: 0; background-size: 100% 100%; filter: grayscale(1) sepia(.18) contrast(.94) brightness(1.05); }
+.color { position: absolute; }
+.label { position: absolute; transform: translate(-50%, -40%); white-space: nowrap; font: 600 11px/1 var(--sans); color: var(--ink);
+  text-shadow: 0 0 2px var(--paper-2), 0 0 2px var(--paper-2), 0 0 3px var(--paper-2), 0 0 4px var(--paper-2); }
+.label.lit, .label.sel { padding: 4px 6px 3px; background: var(--paper-2); color: var(--red); text-shadow: none;
+  font: 700 12px/1 var(--serif); letter-spacing: .06em; border: 1px solid var(--red); box-shadow: inset 0 0 0 2px var(--paper-2), inset 0 0 0 3px rgba(178, 58, 42, .55); }
+.label.sel { background: var(--red); color: #fbeee2; box-shadow: inset 0 0 0 2px var(--red), inset 0 0 0 3px #f3d9c9; }
+.label.park::before { content: "P"; display: inline-block; margin-right: 4px; padding: 1px 3px; background: #3f6b62; color: #fff; font-size: 10px; text-shadow: none; }
+.note { position: absolute; left: 10px; bottom: 10px; font-size: 10px; color: var(--muted); text-shadow: 0 0 3px var(--paper-2), 0 0 3px var(--paper-2); }
+.zoom { position: absolute; right: 12px; bottom: 12px; display: grid; gap: 8px; }
+.zoom span { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--paper-2); color: var(--ink);
+  font: 300 22px/1 var(--sans); box-shadow: 0 1px 4px rgba(60, 45, 30, .18); }
+
+/* 底部菜单 */
+.tabs { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px 0 8px; background: var(--paper); filter: drop-shadow(0 -2px 3px rgba(60, 45, 30, .14)); }
+.tabs::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 20px; background: var(--edge); background-position: 230px 0; }
+.tabs div { display: grid; justify-items: center; gap: 3px; font-size: 11px; color: #4a443d; }
+.tabs svg { width: 22px; height: 22px; }
+
+/* 点位卡：信笺 */
+#card { position: absolute; inset: 0; z-index: 5; }
+.scrim { position: absolute; inset: 0; background: rgba(43, 32, 20, .14); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 16px 24px; background: var(--paper-2);
+  filter: drop-shadow(0 -3px 6px rgba(60, 45, 30, .2)); }
+.sheet::after { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 20px; background: var(--edge-2); }
+.sheet::before { content: ""; position: absolute; inset: 22px 10px 0; border: 1px solid var(--red-soft); border-bottom: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 31px, rgba(178, 58, 42, .07) 31px 32px); }
+.grip { width: 32px; height: 4px; margin: 0 auto 18px; border-radius: 2px; background: #c7bba7; }
+.sheet > * { position: relative; }
+.head { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 4px 0; }
+.kind { font-size: 11px; color: var(--red); letter-spacing: .14em; }
+.sheet h2 { margin-top: 6px; font: 700 24px/1.25 var(--serif); letter-spacing: .06em; }
+.close { width: 32px; height: 32px; display: grid; place-items: center; color: var(--muted); font-size: 20px; }
+.body { display: grid; grid-template-columns: 116px 1fr; gap: 14px; align-items: center; margin-top: 14px; padding: 0 4px; }
+.pic { aspect-ratio: 1; overflow: hidden; position: relative; background: #f6f3eb; box-shadow: 0 1px 3px rgba(60, 45, 30, .2); }
+.pic img { position: absolute; width: 143%; max-width: none; left: 50%; top: 50%; transform: translate(-50%, -47%); image-rendering: pixelated; }
+.body p { font-size: 14px; line-height: 1.7; }
+.body small { display: block; margin-top: 6px; font-size: 12px; color: var(--muted); }
+.more { display: inline-block; margin-top: 8px; font-size: 13px; color: var(--red); }
+.play { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 22px 4px 0; height: 50px; border-radius: 25px;
+  background: var(--red); color: #fbeee2; font: 600 16px/1 var(--sans); letter-spacing: .1em; }
+.play svg { width: 14px; height: 14px; }
+.hint { margin-top: 12px; text-align: center; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <header class="top">
+    <div class="top-line">
+      <h1>长堤风貌街</h1>
+      <div class="lang"><span class="on">普</span><i>·</i><span>粤</span><i>·</i><span>EN</span></div>
+    </div>
+    <div class="seals" aria-label="已点亮 2 / 7">
+      <span class="seal lit">启</span><span class="seal lit">博</span><span class="seal"></span><span class="seal"></span><span class="seal"></span><span class="seal"></span><span class="seal"></span>
+      <small>已点亮 2 / 7</small>
+    </div>
+  </header>
+  <main class="map">
+    <div class="stage" id="stage"><div class="base"></div></div>
+    <p class="note">示意图 · 位置待核实</p>
+    <div class="zoom"><span>+</span><span>−</span></div>
+  </main>
+  <nav class="tabs">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5h14v7H5v7h14"/><circle cx="5" cy="5" r="2" fill="currentColor"/><circle cx="19" cy="19" r="2" fill="currentColor"/></svg>路线</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8V3h5m8 0h5v5m0 8v5h-5m-8 0H3v-5m4-4h10"/></svg>扫码</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v11H10l-4 4v-4H4zM8 9.5h8M8 12.5h5"/></svg>服务</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 7h8M8 11h8M8 15h4"/></svg>我的</div>
+  </nav>
+  <div id="card" hidden>
+    <div class="scrim"></div>
+    <section class="sheet">
+      <div class="grip"></div>
+      <div class="head">
+        <div><div class="kind">历史建筑 · 开埠</div><h2>江门海关旧址</h2></div>
+        <span class="close">×</span>
+      </div>
+      <div class="body">
+        <div class="pic"><img src="a/card-haiguan.jpg" alt=""></div>
+        <div><p>1904 年江门开埠后，<br>长堤一带商号林立。</p><small>位置与外观待核实</small><span class="more">看详情 ›</span></div>
+      </div>
+      <div class="play"><svg viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="currentColor"/></svg>听讲解</div>
+      <p class="hint">走到这里后，可以盖下这一站的印</p>
+    </section>
+  </div>
+</div>
+<script>
+const card = location.search.includes("card");
+const pts = [
+  ["蓬江大桥", 60, 3, 38, 7],
+  ["启明里", 2, 9, 22, 12, "lit"],
+  ["江门海关旧址", 24, 12, 27, 18, card ? "sel" : ""],
+  ["江门市博物馆长堤分馆", 34, 39, 21, 17, "lit"],
+  ["水埠头石阶", 55, 53, 24, 12],
+  ["堤东路骑楼", 25, 61, 26, 19],
+  ["新市路", 2, 68, 22, 6],
+  ["墟顶老街", 6, 75, 19, 13],
+  ["沿江停车场", 43, 83, 17, 7, "park"],
+  ["江门铁桥", 50, 91, 48, 6]
+];
+const stage = document.getElementById("stage");
+for (const [name, x, y, w, h, cls = ""] of pts) {
+  if (cls === "lit") {
+    const c = document.createElement("div");
+    c.className = "color";
+    Object.assign(c.style, { left: x + "%", top: y + "%", width: w + "%", height: h + "%",
+      backgroundSize: `${10000 / w}% ${10000 / h}%`,
+      backgroundPosition: `${x / (100 - w) * 100}% ${y / (100 - h) * 100}%` });
+    stage.append(c);
+  }
+  const l = document.createElement("span");
+  l.className = "label " + cls;
+  l.textContent = name;
+  Object.assign(l.style, { left: Math.min(Math.max(x + w / 2, 19), 92) + "%", top: Math.max(y, 2) + "%" });
+  stage.append(l);
+}
+if (card) document.getElementById("card").hidden = false;
+</script>
+</body>
+</html>

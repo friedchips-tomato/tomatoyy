@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>点位卡配图 · 三种做法对比</title>
+<link rel="stylesheet" href="paper.css">
+<style>
+html, body { background: var(--paper-2); }
+body { padding: 28px 32px 32px; width: 1240px; }
+h1 { font: 700 24px/1.3 var(--serif); letter-spacing: .1em; }
+.lead { margin-top: 6px; color: var(--muted); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 22px; }
+figure { margin: 0; display: grid; gap: 12px; align-content: start; }
+.crop { height: 420px; overflow: hidden; border: 1px solid var(--line); background: var(--paper-2); }
+.crop img { width: 100%; margin-top: -350px; }
+.pick { border: 2px solid var(--red); box-shadow: 0 0 0 4px var(--paper-2), 0 0 0 5px var(--red-line); }
+figcaption h2 { font: 700 18px/1.4 var(--serif); letter-spacing: .06em; display: flex; gap: 8px; align-items: center; }
+figcaption ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; line-height: 1.75; }
+.foot { margin-top: 18px; font-size: 13px; color: var(--ink-2); line-height: 1.8; }
+</style>
+</head>
+<body>
+<h1>点位卡配图 · 三种做法对比</h1>
+<p class="lead">同一点位（江门海关旧址，已盖印），同一套纸质界面，只换配图的呈现。网址加 <code>?pic=crop</code> / <code>?pic=mount</code> / <code>?pic=stamp</code> 可在真页面里切换。</p>
+<div class="grid">
+  <figure>
+    <div class="crop"><img src="screenshots/h5/pic-crop.png" alt=""></div>
+    <figcaption><h2>A · 方形裁切</h2><ul>
+      <li>11:25 样张的做法：裁到楼体，方图，浅投影。</li>
+      <li>最轻，楼最大。</li>
+      <li>没有边框，像一张贴纸浮在信笺上；和卡册、收卡用的「小卡」不是同一个物件。</li>
+    </ul></figcaption>
+  </figure>
+  <figure>
+    <div class="crop pick"><img src="screenshots/h5/pic-mount.png" alt=""></div>
+    <figcaption><h2>B · 衬纸相角 <span class="tag solid">采用</span></h2><ul>
+      <li>白衬纸＋四角朱红相角，3:4 竖幅，与收到的小卡同比例。</li>
+      <li>缩略图裁到楼体，收卡、详情大图显示整张卡；同一个物件从小到大一致。</li>
+      <li>相角呼应「米白纸卡＋细红框」，以后换实景照片或手绘，版式不用动。</li>
+    </ul></figcaption>
+  </figure>
+  <figure>
+    <div class="crop"><img src="screenshots/h5/pic-stamp.png" alt=""></div>
+    <figcaption><h2>C · 邮票齿孔</h2><ul>
+      <li>侨批题材感最强。</li>
+      <li>齿孔白边吃掉四周 7px，缩略图里楼更小；齿孔＋印章＋红框，红色元素过多。</li>
+      <li>像素画配齿孔边，近看偏碎。适合做收卡瞬间的彩蛋，不适合全站。</li>
+    </ul></figcaption>
+  </figure>
+</div>
+<p class="foot">实景照片与手绘没有放进对比：仓库里没有已授权的实景照片（总清单 1.2、3.5 要求逐项核验授权），手绘需要新出一套图。B 的相框对两者都适用，素材到位后替换 <code>data/points.js</code> 里的 <code>card</code> 路径即可。</p>
+</body>
+</html>
