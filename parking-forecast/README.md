@@ -137,12 +137,16 @@ parking-forecast/
     backtest.py   时间切分 + walk-forward 回测 + degrade_coverage + 指标 + 六维分层
     recommend.py  打分（分高靠前）+ 硬过滤 + 错峰 + 人话理由（04 §3）
     export.py     model.json 产物（{version, kind, features, payload, ranking_caps, ...}）
-  scripts/report.py      重新生成 artifacts/{model.json, metrics.json, manifest.json, report.md}
+  scripts/
+    report.py            重新生成 artifacts/{model.json, metrics.json, manifest.json, report.md}
+    export_browser.mjs   重新生成 prototype-paper/data/{parking-artifact.js, parking-runtime.js}
+    browser_adapter.js   浏览器安全适配层模板（runtime/index.mjs 的经典脚本等价物）
   tests/
     test_features.py     特征 / 基线 / 降级 D3–D4（2.1–2.2, 2.6, 2.7, 2.9, 2.10）
     test_backtest.py     切分 / walk-forward / 降级覆盖 / 指标（2.3–2.5, 2.13–2.14）
     test_leakage.py      删除未来观测特征预测逐位不变（2.1–2.2）
     test_consistency.py  生成 500 条 Python 黄金基准供 node 逐位比对（2.17, 2.25）
+    test_export_browser.py  浏览器产物导出脚本的可复现性回归（连跑两次字节相同 + 与入库产物一致）
   runtime/               零依赖 Node ESM 运行时（与 Python 逐位一致）
     index.mjs     入口 + artifact schema 校验 + 产物缺失/版本不兼容降级 unavailable
     features.mjs  特征构造（同 features.py）
@@ -167,13 +171,58 @@ python -m pytest tests -q
 
 # 3) JS 运行时测试（读取 model.json + 黄金基准，逐位比对；18 条断言）
 node --test "runtime/test/*.test.mjs"
+
+# 4) 重新生成浏览器产物（prototype-paper 的两个注入脚本，见下节）
+node scripts/export_browser.mjs          # 写出
+node scripts/export_browser.mjs --check  # 只校验：与入库产物比对 + 脚本内置自检
 ```
 
 依赖：阶段 2 在阶段 1 之上新增 `numpy` + `scikit-learn`（`Ridge`、`HistGradientBoostingRegressor`）。
 运行时 `runtime/*.mjs` 为**零依赖 Node ESM**（Node ≥ 18，本机验证 Node 22）。
 
+> **行尾策略（生成物一律 LF）**：`pf.export.write_json` / `write_text` 与 `pf.synth._write_jsonl` /
+> `_write_json` 都显式 `newline="\n"`，生成物不随平台默认换行转换而变。于是
+> 「磁盘字节 = Git blob 字节 = `manifest.json` 里记录的 SHA-256 字节」三者在任何平台都相等：
+> `data/synthetic/manifest.json` 的 `file_sha256` 与 `artifacts/manifest.json` 的 `files` 才是可用的
+> 完整性凭据（改动这几个写出函数时**不得**去掉 `newline="\n"`）。
+> 注意检出环境仍可能把 LF 检出成 CRLF（`core.autocrlf=true`），此时用 LF 归一化后的字节比对即可
+> （`scripts/export_browser.mjs` 的 `checkFingerprint` 就是这么做的）。
+
 > 说明：`node --test runtime/test/`（目录形式）在本机 Windows + Node 22.17 下会退化为「按模块路径加载」而失败，
 > 故用 glob 形式 `node --test "runtime/test/*.test.mjs"`（或 `node --test` 无参扫描），二者语义等价。
+
+### 浏览器产物导出（prototype-paper 注入脚本）
+
+`prototype-paper/data/` 下有两个**自动生成**的产物，入库它们是为了让演示页不必重跑训练管线：
+
+| 产物 | 来源 | 说明 |
+| --- | --- | --- |
+| `parking-artifact.js` | `artifacts/model.json` + `data/synthetic/{lots,observations,signals}.jsonl` | 把模型与合成数据内联成 `window.CD_PARKING_ARTIFACT` |
+| `parking-runtime.js` | `runtime/{format,features,forecast,reasons,recommend}.mjs` + `scripts/browser_adapter.js` | 去 ESM 的 import/export 后拼成 IIFE，末尾接浏览器安全适配层 |
+
+```sh
+cd parking-forecast
+
+node scripts/export_browser.mjs           # 重新写出两个产物
+node scripts/export_browser.mjs --check   # 只校验不写盘：与入库产物逐字节比对 + 内置自检
+```
+
+脚本特性（`scripts/export_browser.mjs`，零第三方依赖，只用 Node 内置模块）：
+
+- **确定性**：无时间戳、无随机序、无机器路径；同输入必得同字节。产物按 **LF** 写出
+  （Git 存储形式即 LF；检出环境可能是 CRLF，`--check` 比对时两侧都归一化为 LF）。
+- **不改上游语义**：只搬运与包装。`runtime/*.mjs` 的函数体逐行不变（去掉 import/export 之外不动一字），
+  适配层是 `runtime/index.mjs` 的经典脚本等价物（见 `scripts/browser_adapter.js` 头部的逐条对应关系）。
+- **输出必须是经典脚本（IIFE）**，不能改成 `.mjs` ESM——演示用 `python -m http.server` 会把 `.mjs`
+  当 `text/plain` 发出，浏览器拒绝模块脚本。
+- **内置自检**（`--check` 也会跑）：
+  1. 产物的 `data_fingerprint` == `model.json` == `data/synthetic/manifest.json` 派生的三份 jsonl 哈希；
+  2. 产物内联的 model / dataset 与上游文件逐字段一致（解析产物文本再比，不是自证）；
+  3. runtime 包里每个 `runtime/*.mjs` 的代码与上游逐行一致；
+  4. 适配层与 `runtime/index.mjs` **行为一致**：合法产物下 `forecastLot` / `recommend` 输出逐字节相同；
+     版本不兼容（`schema_version` 不匹配）时两边都降级为 `unavailable` 且不抛异常；
+     产物缺失时 `artifactPresent=false` / `ready=false` / `artifactError="missing artifact"`。
+
 
 ### 模型产物（artifacts/model.json）
 
