@@ -2,7 +2,7 @@
 
 本文面向 H5 游客端、运营台和微信小程序，说明长堤风貌街停车预测与推荐接口的请求、响应和判读规则。字段名、错误码和路径保持英文原样。接口的权威定义以 [OpenAPI](openapi.yaml) 为准，本文与契约冲突时以契约为准。
 
-数据为合成示范数据，响应中的 `source` 固定为 `synthetic`，不是真实车场余位。所有展示位置必须标注「模拟」，不得把静态信息或合成预测说成实时余位。
+当前数据为合成示范数据：响应顶层的 `source` 为 `synthetic`，车场静态条目的 `source` 枚举允许 `synthetic`、`manual`、`api`、`camera`。这不是真实车场余位，所有展示位置必须标注「模拟」，不得把静态信息或合成预测说成实时余位。
 
 ## 通用约定
 
@@ -42,33 +42,37 @@
 | --- | --- | --- | --- |
 | `lot_id` | string | 否 | 车场目录代码，例如 `P1` |
 | `name` | string | 否 | 车场名称 |
-| `total_spaces` | integer | 否 | 车位总数 |
+| `total_spaces` | integer | 否 | 车位总数，不小于 1 |
 | `fee` | object | 否 | 计费信息，见下表 |
 | `access` | object | 否 | 通行限制，见下表 |
 | `walk_to_street` | object | 否 | 到街区步行距离，见下表 |
-| `district` | string | 否 | 所属街区或片区 |
-| `notes` | string | 否 | 补充说明，合成数据会注明用途 |
-| `source` | string | 否 | 数据来源，固定 `synthetic` |
+| `district` | string | 是 | 所属街区或片区，未知时为 `null` |
+| `notes` | string | 是 | 补充说明，合成数据会注明用途；无说明时为 `null` |
+| `source` | string | 否 | 车场静态数据来源：`synthetic`、`manual`、`api` 或 `camera`；当前为 `synthetic` |
+
+`fee` 对象本身一定存在，其中部分字段的值可能为 `null`：
 
 | `fee` 字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
-| `mode` | string | 否 | 计费方式，例如 `hourly` |
-| `amount` | number | 否 | 计费金额 |
-| `unit` | string | 否 | 币种或单位，例如 `CNY` |
+| `mode` | string | 否 | 计费方式：`hourly`、`flat` 或 `unknown` |
+| `amount` | number | 是 | 计费金额，未知时为 `null` |
+| `unit` | string | 是 | 币种，目前为 `CNY`，未知时为 `null` |
 | `note` | string | 否 | 面向游客的计费说明 |
+
+`access` 对象本身一定存在，其中部分字段的值可能为 `null`：
 
 | `access` 字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
-| `open_hours` | string | 否 | 开放时段 |
+| `open_hours` | string | 是 | 开放时段，未知时为 `null` |
 | `one_way` | boolean | 否 | 是否单行进出 |
-| `restricted_hours` | string[] | 否 | 受限时段，无限制时为空数组 |
-| `height_limit_m` | number | 是 | 限高（米），无限制时为 `null` |
+| `restricted_hours` | object[] | 是 | 受限时段，无相关数据时为 `null`；每项为 `{ from, to, note }`，三个键均为字符串 |
+| `height_limit_m` | number | 是 | 限高（米），无限制或未知时为 `null` |
 | `note` | string | 否 | 通行限制说明 |
 
 | `walk_to_street` 字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
-| `meters` | integer | 否 | 步行距离（米） |
-| `minutes` | number | 否 | 步行时间（分钟） |
+| `meters` | integer | 否 | 步行距离（米），不小于 0 |
+| `minutes` | integer | 否 | 步行时间（分钟），不小于 0 |
 
 ## 2. 停车推荐
 
@@ -97,7 +101,7 @@
 | `items` | array | 否 | 首选推荐 |
 | `alternates` | array | 否 | 备选推荐 |
 | `excluded` | array | 否 | 被排除的车场及原因 |
-| `offsets` | array | 否 | 偏移或时间调整建议 |
+| `offsets` | array | 否 | 偏移或时间调整建议；原样透传，元素结构以上游运行时为准 |
 
 `items`、`alternates`、`offsets` 的元素字段一致（snake_case）：
 
@@ -105,24 +109,43 @@
 | --- | --- | --- | --- |
 | `lot_id` | string | 否 | 车场目录代码 |
 | `name` | string | 否 | 车场名称 |
-| `arrive_free` | integer | 是 | 到达时预计空闲车位；`null` 表示不可用，不是 0 |
+| `arrive_free` | number | 是 | 到达时预计空闲车位；`null` 表示不可用，不是 0 |
 | `arrive_free_rate` | number | 是 | 空闲车位占比（0–1），不可用时为 `null` |
-| `arrive_free_p10` | integer | 是 | 空闲车位预测下限（P10），不可用时为 `null` |
-| `arrive_free_p90` | integer | 是 | 空闲车位预测上限（P90），不可用时为 `null` |
+| `arrive_free_p10` | number | 是 | 空闲车位预测下限（P10），不可用时为 `null` |
+| `arrive_free_p90` | number | 是 | 空闲车位预测上限（P90），不可用时为 `null` |
 | `walk_meters` | integer | 否 | 到目的地步行距离（米） |
 | `walk_minutes` | number | 否 | 步行时间（分钟） |
-| `fee_amount` | number | 否 | 预计停车费用金额 |
-| `fee_unit` | string | 否 | 费用单位，例如 `CNY` |
-| `updated_at` | string | 否 | 该条数据或预测的更新时间（UTC） |
+| `fee_amount` | number | 是 | 预计停车费用金额，费用未知时为 `null` |
+| `fee_unit` | string | 是 | 费用单位，例如 `CNY`；`fee_amount` 为 `null` 时也为 `null` |
+| `updated_at` | string | 是 | 该条数据或预测的更新时间（UTC），无更新时间时为 `null` |
 | `stale` | boolean | 否 | 数据是否已过时 |
 | `score` | number | 否 | 综合评分，越高越优先 |
-| `score_breakdown` | object | 否 | 评分构成明细，键值由实现定义 |
+| `score_breakdown` | object[] | 否 | 评分构成，固定七项，见下表 |
 | `reasons` | string[] | 否 | 推荐理由列表 |
 | `total_time_minutes` | number | 否 | 含停车与步行的总耗时（分钟） |
-| `transfer` | object | 是 | 换乘或接驳信息，无换乘或不可用时为 `null`，结构由实现定义 |
+| `transfer` | object | 否 | 换乘或接驳信息，见下表 |
 | `restrictions` | string[] | 否 | 限制条件说明，无限制时为空数组 |
 | `forecast_method` | string | 否 | 该条预测来源，见「判读规则」 |
 | `degraded` | boolean | 否 | 该条结果是否来自降级路径 |
+
+`score_breakdown` 为数组，固定七项且顺序固定：`arrive_free`、`arrive_free_rate`、`walk_cost`、`total_time`、`fee_cost`、`confidence`、`restriction_penalty`。每项：
+
+| 字段 | 类型 | 可空 | 含义 |
+| --- | --- | --- | --- |
+| `factor` | string | 否 | 评分因子，取上列七项之一 |
+| `weight` | number | 否 | 该因子的权重 |
+| `raw` | number | 是 | 原始值；`arrive_free`/`arrive_free_rate` 预测不可用时为 `null`，`fee_cost` 费用未知时也为 `null` |
+| `normalized` | number | 否 | 归一化后的取值 |
+| `contribution` | number | 否 | 对总分的贡献 |
+
+`transfer` 对象本身始终存在：
+
+| 字段 | 类型 | 可空 | 含义 |
+| --- | --- | --- | --- |
+| `mode` | string | 是 | 接驳方式，无数据时为 `null` |
+| `feasible` | boolean | 否 | 当前是否可换乘接驳；当前实现恒为 `false` |
+| `minutes` | number | 是 | 接驳耗时（分钟），无数据时为 `null` |
+| `note` | string | 否 | 接驳说明，当前为「暂无可用接驳点数据」 |
 
 `excluded` 每项：
 
@@ -160,15 +183,15 @@
 | `issued_at` | string | 否 | 签发时间（UTC） |
 | `target_ts` | string | 否 | 预测目标时刻（UTC） |
 | `horizon_minutes` | integer | 否 | 预测时长，`15`、`30`、`45` 或 `60` |
-| `point_free` | integer | 否 | 目标时刻预计空闲车位数 |
-| `p10` | integer | 否 | 空闲车位预测下限（P10） |
-| `p90` | integer | 否 | 空闲车位预测上限（P90） |
-| `free_rate` | number | 否 | 预计空闲车位占比（0–1） |
+| `point_free` | integer | 是 | 目标时刻预计空闲车位数；`method=unavailable` 时为 `null` |
+| `p10` | integer | 是 | 空闲车位预测下限（P10）；`method=unavailable` 时为 `null` |
+| `p90` | integer | 是 | 空闲车位预测上限（P90）；`method=unavailable` 时为 `null` |
+| `free_rate` | number | 是 | 预计空闲车位占比（0–1）；`method=unavailable` 时为 `null` |
 | `method` | string | 否 | 预测来源方法，见「判读规则」 |
 | `degraded` | boolean | 否 | 该条预测是否来自降级路径 |
-| `degrade_reason` | string | 是 | 降级原因，未降级时为 `null` |
-| `model_version` | string | 否 | 生成预测的模型版本 |
-| `data_asof` | string | 否 | 所依据数据的最新时刻（UTC） |
+| `degrade_reason` | string | 是 | 降级原因，未降级时为 `null`；不可预测时给出 `missing_observation`、`stale_observation` 或 `no_history` 等原因 |
+| `model_version` | string | 是 | 生成预测的模型版本；`method=unavailable` 时为 `null` |
+| `data_asof` | string | 是 | 所依据数据的最新时刻（UTC）；`method=unavailable` 时为 `null` |
 | `source` | string | 否 | 数据来源，固定 `synthetic` |
 
 ## 判读规则
@@ -182,8 +205,10 @@
   - `last_known`：沿用最近一次观测；
   - `same_slot_baseline`：同一时段历史基线；
   - `same_weekday_baseline`：同一星期历史基线；
-  - `unavailable`：该时段不可预测，按不可用处理。
+  - `unavailable`：该时段不可预测，按不可用处理；此时 `point_free`、`p10`、`p90`、`free_rate`、`model_version`、`data_asof` 全部为 `null`，原因见 `degrade_reason`。
   - 取值以外的内容以 OpenAPI 为准。
+- `score_breakdown[].raw` 可能为 `null`：`arrive_free`/`arrive_free_rate` 预测不可用时为 `null`，`fee_cost` 费用未知时也为 `null`。不得把 `raw=null` 当作 0 参与展示或再计算。
+- `transfer.feasible` 当前恒为 `false`，表示暂无接驳点数据。前端不得据此显示「可换乘接驳」，只能展示 `transfer.note` 的提示。
 - `excluded` 中的车场不参与推荐，展示原因即可，不要把它们当作 0 空位。
 - `score` 只在同一次响应内比较，不跨请求、跨偏好比较。
 
@@ -202,10 +227,12 @@
 浏览器 H5 必须走 guide-bridge 的同源代理，不直连后端。原因是通过同源请求避免跨域限制，也不在浏览器中暴露后端地址：
 
 - `GET /bridge/parking/lots`
-- `GET /bridge/parking/recommendations?<白名单参数>`
-- `GET /bridge/parking/lots/{lot_id}/forecast?<白名单参数>`
+- `GET /bridge/parking/recommendations?<查询参数>`
+- `GET /bridge/parking/lots/{lot_id}/forecast?<查询参数>`
 
-代理只透传白名单参数 `destination_id`、`arrive_at`、`preference`、`vehicle_height_m`、`stay_hours`、`issued_at`、`horizons`，并原样透传上游状态码与 JSON。上游不可达返回 502 `{"error":"unavailable"}`，未知路径返回 404。代理不注入 token。
+guide-bridge 是同源代理：只做路径映射、状态码与 JSON 原文透传，上游不可达或超时返回 502 `{"error":"unavailable"}`，未知路径返回 404，代理不注入 token。**查询参数原样透传，不做过滤或改写**；参数合法性由服务端统一校验，服务端对未知参数或同名重复参数返回 400 `invalid_filter`。
+
+不在代理层过滤参数的原因：若代理静默丢掉写错的参数名（例如 `prefernce`），请求会悄悄退回默认的 `save_time`，推荐结果错了却没有任何报错。宁可让前端拿到明确的 400。
 
 微信小程序按部署基址直接调用上述 `/api/v1/public/parking/*` 路径，接口同样匿名（以 OpenAPI 为准）。
 

@@ -809,19 +809,23 @@ components:
       type: object
       additionalProperties: false
       required: [mode, amount, unit, note]
-      description: 计费信息，示范数据。
+      description: 计费信息。对象本身一定存在，amount 与 unit 的值可能为 null。
       properties:
         mode:
           type: string
-          description: 计费方式，例如 hourly（按小时）。
+          enum: [hourly, flat, unknown]
+          description: 计费方式。unknown 表示计费方式未知。
           example: hourly
         amount:
           type: number
-          description: 计费金额。
+          nullable: true
+          description: 计费金额，未知时为 null。
           example: 5
         unit:
           type: string
-          description: 币种或单位。
+          nullable: true
+          enum: [CNY]
+          description: 币种，未知时为 null。
           example: CNY
         note:
           type: string
@@ -831,24 +835,38 @@ components:
       type: object
       additionalProperties: false
       required: [open_hours, one_way, restricted_hours, height_limit_m, note]
-      description: 通行限制信息，示范数据。
+      description: 通行限制信息。对象本身一定存在，部分字段的值可能为 null。
       properties:
         open_hours:
           type: string
-          description: 开放时段。
+          nullable: true
+          description: 开放时段，未知时为 null。
           example: 00:00-24:00
         one_way:
           type: boolean
           description: 是否单行进出。
         restricted_hours:
           type: array
-          description: 受限时段列表，无限制时为空数组。
+          nullable: true
+          description: 受限时段列表，无相关数据时为 null。
           items:
-            type: string
+            type: object
+            additionalProperties: false
+            required: [from, to, note]
+            properties:
+              from:
+                type: string
+                description: 受限开始时刻。
+              to:
+                type: string
+                description: 受限结束时刻。
+              note:
+                type: string
+                description: 受限说明。
         height_limit_m:
           type: number
           nullable: true
-          description: 限高（米），无限制时为 null。
+          description: 限高（米），无限制或未知时为 null。
         note:
           type: string
           description: 通行限制说明。
@@ -860,11 +878,13 @@ components:
       properties:
         meters:
           type: integer
-          description: 步行距离（米）。
+          minimum: 0
+          description: 步行距离（米），不小于 0。
           example: 150
         minutes:
-          type: number
-          description: 步行时间（分钟）。
+          type: integer
+          minimum: 0
+          description: 步行时间（分钟），不小于 0。
           example: 2
     ParkingLot:
       type: object
@@ -882,7 +902,8 @@ components:
           example: 沿江停车场
         total_spaces:
           type: integer
-          description: 车位总数。
+          minimum: 1
+          description: 车位总数，不小于 1。
           example: 120
         fee:
           $ref: '#/components/schemas/ParkingFee'
@@ -892,16 +913,18 @@ components:
           $ref: '#/components/schemas/ParkingWalk'
         district:
           type: string
-          description: 所属街区或片区。
+          nullable: true
+          description: 所属街区或片区，未知时为 null。
           example: 长堤骑楼街
         notes:
           type: string
-          description: 补充说明，合成数据会注明用途。
+          nullable: true
+          description: 补充说明，合成数据会注明用途；无说明时为 null。
           example: 合成数据，仅用于管线验证
         source:
           type: string
-          enum: [synthetic]
-          description: 数据来源，固定为合成示范数据。
+          enum: [synthetic, manual, api, camera]
+          description: 车场静态数据来源。
     ParkingLotsResponse:
       type: object
       additionalProperties: false
@@ -965,7 +988,7 @@ components:
           type: string
           description: 车场名称。
         arrive_free:
-          type: integer
+          type: number
           nullable: true
           description: 到达时的预计空闲车位。null 表示不可用，不是 0。
         arrive_free_rate:
@@ -973,11 +996,11 @@ components:
           nullable: true
           description: 到达时空闲车位占比（0–1），不可用时为 null。
         arrive_free_p10:
-          type: integer
+          type: number
           nullable: true
           description: 空闲车位预测下限（P10），不可用时为 null。
         arrive_free_p90:
-          type: integer
+          type: number
           nullable: true
           description: 空闲车位预测上限（P90），不可用时为 null。
         walk_meters:
@@ -988,14 +1011,17 @@ components:
           description: 步行时间（分钟）。
         fee_amount:
           type: number
-          description: 预计停车费用金额。
+          nullable: true
+          description: 预计停车费用金额，费用未知时为 null。
         fee_unit:
           type: string
-          description: 费用单位或币种，例如 CNY。
+          nullable: true
+          description: 费用单位或币种，例如 CNY；fee_amount 为 null 时也为 null。
         updated_at:
           type: string
           format: date-time
-          description: 该条数据或预测的更新时间（UTC）。
+          nullable: true
+          description: 该条数据或预测的更新时间（UTC），无更新时间时为 null。
         stale:
           type: boolean
           description: 数据是否已过时。
@@ -1003,9 +1029,35 @@ components:
           type: number
           description: 综合评分，越高越优先。
         score_breakdown:
-          type: object
-          additionalProperties: true
-          description: 评分构成明细，键值由实现定义。
+          type: array
+          description: |
+            评分构成明细，固定七项且顺序固定：
+            arrive_free、arrive_free_rate、walk_cost、total_time、fee_cost、confidence、restriction_penalty。
+            每项给出权重、原始值、归一值和对总分的贡献。
+          items:
+            type: object
+            additionalProperties: false
+            required: [factor, weight, raw, normalized, contribution]
+            properties:
+              factor:
+                type: string
+                enum: [arrive_free, arrive_free_rate, walk_cost, total_time, fee_cost, confidence, restriction_penalty]
+                description: 评分因子。
+              weight:
+                type: number
+                description: 该因子的权重。
+              raw:
+                type: number
+                nullable: true
+                description: |
+                  原始值。arrive_free 或 arrive_free_rate 预测不可用时为 null，
+                  fee_cost 费用未知时也为 null。
+              normalized:
+                type: number
+                description: 归一化后的取值。
+              contribution:
+                type: number
+                description: 对总分的贡献。
         reasons:
           type: array
           description: 推荐理由列表。
@@ -1016,9 +1068,26 @@ components:
           description: 含停车与步行的总耗时（分钟）。
         transfer:
           type: object
-          nullable: true
-          additionalProperties: true
-          description: 换乘或接驳信息，无换乘或不可用时为 null，字段结构由实现定义。
+          additionalProperties: false
+          required: [mode, feasible, minutes, note]
+          description: |
+            换乘或接驳信息。对象本身始终存在；当前实现恒为 mode=null、feasible=false、
+            minutes=null、note="暂无可用接驳点数据"，没有接驳点数据时不编造。
+          properties:
+            mode:
+              type: string
+              nullable: true
+              description: 接驳方式，无数据时为 null。
+            feasible:
+              type: boolean
+              description: 当前是否可换乘接驳；当前实现恒为 false。
+            minutes:
+              type: number
+              nullable: true
+              description: 接驳耗时（分钟），无数据时为 null。
+            note:
+              type: string
+              description: 接驳说明。
         restrictions:
           type: array
           description: 限制条件说明，例如限高、限时，无限制时为空数组。
@@ -1114,9 +1183,7 @@ components:
             $ref: '#/components/schemas/ParkingExcludedLot'
         offsets:
           type: array
-          description: 偏移或时间调整建议，字段同 items。
-          items:
-            $ref: '#/components/schemas/ParkingRecommendationItem'
+          description: 偏移或时间调整建议，原样透传，元素结构以上游运行时为准。
     ParkingForecast:
       type: object
       additionalProperties: false
@@ -1135,7 +1202,10 @@ components:
         - model_version
         - data_asof
         - source
-      description: 单个车场在某一预测时长上的余位预测。
+      description: |
+        单个车场在某一预测时长上的余位预测。
+        method 为 unavailable 时，point_free、p10、p90、free_rate、model_version、data_asof
+        全部为 null（不是 0），degrade_reason 给出原因，例如 missing_observation、stale_observation 或 no_history。
       properties:
         lot_id:
           type: string
@@ -1155,24 +1225,29 @@ components:
           description: 预测时长（分钟）。
         point_free:
           type: integer
-          description: 目标时刻的预计空闲车位数。
+          nullable: true
+          description: 目标时刻的预计空闲车位数，method=unavailable 时为 null。
           example: 41
         p10:
           type: integer
-          description: 空闲车位数预测下限（P10）。
+          nullable: true
+          description: 空闲车位数预测下限（P10），method=unavailable 时为 null。
           example: 30
         p90:
           type: integer
-          description: 空闲车位数预测上限（P90）。
+          nullable: true
+          description: 空闲车位数预测上限（P90），method=unavailable 时为 null。
           example: 52
         free_rate:
           type: number
-          description: 预计空闲车位占比（0–1）。
+          nullable: true
+          description: 预计空闲车位占比（0–1），method=unavailable 时为 null。
           example: 0.34
         method:
           type: string
           enum: [model, last_known, same_slot_baseline, same_weekday_baseline, unavailable]
-          description: 预测来源方法。
+          description: |
+            预测来源方法。unavailable 表示该时段不可预测，此时上述数值字段全部为 null。
         degraded:
           type: boolean
           description: 该条预测是否来自降级路径。
@@ -1182,12 +1257,14 @@ components:
           description: 降级原因，未降级时为 null。
         model_version:
           type: string
-          description: 生成预测的模型版本。
+          nullable: true
+          description: 生成预测的模型版本，method=unavailable 时为 null。
           example: 2.0.0
         data_asof:
           type: string
           format: date-time
-          description: 预测所依据数据的最新时刻（UTC）。
+          nullable: true
+          description: 预测所依据数据的最新时刻（UTC），method=unavailable 时为 null。
         source:
           type: string
           enum: [synthetic]

@@ -157,7 +157,7 @@ $env:CHANGDI_PARKING_RATE_LIMIT = '{"windowSeconds":600,"limit":60}'
 npm.cmd start
 ```
 
-浏览器端不直连后端，统一走 [guide-bridge](../guide-bridge/README.md) 的 `/bridge/parking/*` 同源代理：`/bridge/parking/lots`、`/bridge/parking/recommendations`、`/bridge/parking/lots/{lot_id}/forecast`。代理只透传白名单参数与上游状态码和 JSON，不注入 token；上游不可达返回 502 `{"error":"unavailable"}`。
+浏览器端不直连后端，统一走 [guide-bridge](../guide-bridge/README.md) 的 `/bridge/parking/*` 同源代理：`/bridge/parking/lots`、`/bridge/parking/recommendations`、`/bridge/parking/lots/{lot_id}/forecast`。代理只做路径映射、状态码与 JSON 原文透传，**查询参数原样透传，不过滤或改写**，参数合法性由服务端统一校验：未知参数或同名重复参数返回 400 `invalid_filter`。代理不注入 token；上游不可达或超时返回 502 `{"error":"unavailable"}`，未知路径返回 404。
 
 用合成数据复核接口与预测管线，测试以临时目录和随机端口启动服务：
 
