@@ -1,0 +1,20 @@
+长堤导览 · 侨批风格静态样张（待你确认）
+
+已完成
+- 首页、点位卡两屏静态样张，原型代码未改动
+- 顶栏：去掉副标题和进度条，改成 7 枚印格，点亮一处盖一枚
+- 语言切换改成纯文字「普 · 粤 · EN」，选中项加红圈
+- 地图标签平时只显示墨字，点亮后换成红框签，选中后换成实心红签；免责栏收成地图角落一行小注
+- 点位卡做成信笺：标题直接写地名，只留一个朱红色主按钮「听讲解」；「打卡」改成到站后提示，「详情」改成文字链接
+
+已验证
+- 页面渲染无脚本或控制台错误
+- 点位卡文字只用数据里已有的信息，没有新增史实
+
+未完成
+- 等你确认风格后，才写任务书交给 Codex 改原型
+
+成果文件
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/compare.png
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/after-01-home.png
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/after-02-point.png

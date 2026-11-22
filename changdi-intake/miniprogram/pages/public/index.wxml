@@ -1,0 +1,258 @@
+<view class="page">
+  <view class="card">
+    <text class="card-title">查询进度</text>
+    <text class="muted">输入回执中的公开查询码，或扫描回执二维码查看办理进度。</text>
+    <button class="button-secondary" bindtap="onBackTap">返回首页</button>
+  </view>
+
+  <view class="form">
+    <input
+      class="code-input"
+      value="{{code}}"
+      bindinput="onInput"
+      placeholder="24 位公开查询码"
+      placeholder-class="code-placeholder"
+      maxlength="64"
+      confirm-type="search"
+      bindconfirm="onSubmit"
+    />
+    <view class="actions">
+      <button class="button-primary" bindtap="onSubmit">查询</button>
+      <button class="button-secondary" bindtap="onScanTap">扫码</button>
+    </view>
+  </view>
+
+  <view class="feedback" wx:if="{{state === 'loading'}}">
+    <text class="muted">正在查询…</text>
+  </view>
+
+  <view class="feedback" wx:elif="{{state === 'invalid' || state === 'notfound' || state === 'timeout' || state === 'network' || state === 'error'}}">
+    <text class="feedback-text">{{message}}</text>
+    <button class="button-secondary retry" bindtap="onRetryTap">重试</button>
+  </view>
+
+  <view class="result" wx:if="{{state === 'success'}}">
+    <view class="card">
+      <text class="muted label">工单编号</text>
+      <text class="case-number">{{caseNumber}}</text>
+      <text class="muted label spaced">当前状态</text>
+      <text class="status">{{statusText}}</text>
+      <view class="verify-entry">
+        <button class="button-secondary" bindtap="onVerifyOpen">核验本人查看详情</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="card-title">可公开的时间节点</text>
+      <view class="timeline" wx:if="{{milestones.length > 0}}">
+        <view class="milestone" wx:for="{{milestones}}" wx:key="status">
+          <text class="milestone-status">{{item.label}}</text>
+          <text class="milestone-time">{{item.timeText}}</text>
+        </view>
+      </view>
+      <text class="muted" wx:else>暂无公开进度节点</text>
+    </view>
+  </view>
+
+  <view class="panel" wx:if="{{showVerify}}">
+    <view class="card" wx:if="{{verifyState !== 'success'}}">
+      <view class="panel-head">
+        <text class="card-title">核验本人</text>
+        <text class="close" bindtap="onVerifyClose">关闭</text>
+      </view>
+      <text class="muted">请输入回执中的私密查询凭证。凭证仅用于本机核验，提交后即清空，不进入网址、日志或分享内容。</text>
+      <input
+        class="code-input token-input"
+        value="{{privateToken}}"
+        bindinput="onPrivateTokenInput"
+        placeholder="私密查询凭证"
+        placeholder-class="code-placeholder"
+        maxlength="128"
+      />
+    </view>
+
+    <view class="feedback" wx:if="{{verifyState === 'loading'}}">
+      <text class="muted">正在核验…</text>
+    </view>
+
+    <view class="feedback" wx:elif="{{verifyState === 'unauthorized' || verifyState === 'invalid' || verifyState === 'limited' || verifyState === 'notfound' || verifyState === 'timeout' || verifyState === 'network' || verifyState === 'error'}}">
+      <text class="feedback-text">{{verifyMessage}}</text>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success'}}">
+      <text class="muted label">工单编号</text>
+      <text class="case-number">{{ownerCaseNumber}}</text>
+      <text class="muted label spaced">当前轮次</text>
+      <text class="status">{{ownerRound}}</text>
+      <text class="muted label spaced">当前状态</text>
+      <text class="status">{{ownerStatusText}}</text>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success'}}">
+      <text class="card-title">已发布反馈</text>
+      <view class="timeline" wx:if="{{ownerRounds.length > 0}}">
+        <view class="round" wx:for="{{ownerRounds}}" wx:key="round">
+          <text class="round-label">第 {{item.round}} 轮</text>
+          <text class="round-time" wx:if="{{item.publishedText}}">{{item.publishedText}}</text>
+          <text class="round-summary" wx:if="{{item.summary}}">{{item.summary}}</text>
+          <view class="evaluation" wx:if="{{item.evaluated}}">
+            <text class="evaluation-text">已评价：速度 {{item.speed}} 分，效果 {{item.effectiveness}} 分，态度 {{item.attitude}} 分</text>
+            <text class="evaluation-comment" wx:if="{{item.comment}}">{{item.comment}}</text>
+          </view>
+        </view>
+      </view>
+      <text class="muted" wx:else>暂无处理反馈</text>
+      <button wx:for="{{ownerFeedbackPhotos}}" wx:key="key" class="button-secondary feedback-photo-button"
+        data-photo="{{item.key}}" bindtap="onOpenFeedbackPhoto">查看第 {{item.round}} 轮第 {{item.position + 1}} 张反馈图</button>
+      <block wx:if="{{previewKind === 'feedback'}}">
+        <text wx:if="{{feedbackPhotoBusy}}" class="muted">正在读取反馈图…</text>
+        <text wx:if="{{feedbackPhotoError}}" class="feedback-text" aria-role="alert">{{feedbackPhotoError}}</text>
+        <image wx:if="{{feedbackPhotoPath}}" class="feedback-photo" src="{{feedbackPhotoPath}}" mode="aspectFit"
+          data-path="{{feedbackPhotoPath}}" binderror="onFeedbackImageError" aria-label="已发布反馈图" />
+        <button class="button-secondary feedback-photo-button" bindtap="onCloseFeedbackPhoto">关闭反馈图</button>
+      </block>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success' && ownerSupplementPhotos.length}}">
+      <text class="card-title">已提交的补件照片</text>
+      <button wx:for="{{ownerSupplementPhotos}}" wx:key="key" class="button-secondary feedback-photo-button"
+        data-photo="{{item.key}}" bindtap="onOpenSupplementPhoto">
+        第 {{item.round}} 轮 · 补件记录 {{item.submitVersion}} · 照片 {{item.position + 1}}
+      </button>
+      <block wx:if="{{previewKind === 'supplement'}}">
+        <text wx:if="{{feedbackPhotoBusy}}" class="muted">正在读取补件照片…</text>
+        <text wx:if="{{feedbackPhotoError}}" class="feedback-text" aria-role="alert">{{feedbackPhotoError}}</text>
+        <image wx:if="{{feedbackPhotoPath}}" class="feedback-photo" src="{{feedbackPhotoPath}}" mode="aspectFit"
+          data-path="{{feedbackPhotoPath}}" binderror="onFeedbackImageError" aria-label="已提交的补件照片" />
+        <button class="button-secondary feedback-photo-button" bindtap="onCloseFeedbackPhoto">关闭补件照片</button>
+      </block>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success' && reopenRequests.length > 0}}">
+      <text class="card-title">补办记录</text>
+      <view class="round" wx:for="{{reopenRequests}}" wx:key="round">
+        <text class="round-label">第 {{item.round}} 轮</text>
+        <text class="round-time" wx:if="{{item.requestedText}}">{{item.requestedText}}</text>
+        <text class="round-summary">{{item.reason}}</text>
+        <text class="evaluation-text" wx:if="{{item.decision === 'approved'}}">已批准补办</text>
+        <text class="evaluation-text" wx:elif="{{item.decision === 'rejected'}}">已驳回{{item.decisionReason ? '：' + item.decisionReason : ''}}</text>
+        <text class="evaluation-text" wx:else>待审核</text>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success' && (showEvaluate || showConfirm || showReopen || showSupplement)}}">
+      <text class="card-title">我的操作</text>
+
+      <view class="action-block" wx:if="{{showEvaluate}}">
+        <text class="muted">处理速度</text>
+        <view class="score-row">
+          <view
+            class="score {{scores.speed === item ? 'score-active' : ''}}"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:key="*this"
+            data-dimension="speed"
+            data-value="{{item}}"
+            bindtap="onScoreTap"
+          >{{item}}</view>
+        </view>
+        <text class="muted">处理效果</text>
+        <view class="score-row">
+          <view
+            class="score {{scores.effectiveness === item ? 'score-active' : ''}}"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:key="*this"
+            data-dimension="effectiveness"
+            data-value="{{item}}"
+            bindtap="onScoreTap"
+          >{{item}}</view>
+        </view>
+        <text class="muted">服务态度</text>
+        <view class="score-row">
+          <view
+            class="score {{scores.attitude === item ? 'score-active' : ''}}"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:key="*this"
+            data-dimension="attitude"
+            data-value="{{item}}"
+            bindtap="onScoreTap"
+          >{{item}}</view>
+        </view>
+        <input
+          class="code-input token-input"
+          value="{{comment}}"
+          bindinput="onCommentInput"
+          placeholder="意见（选填）"
+          placeholder-class="code-placeholder"
+          maxlength="1000"
+        />
+        <button class="button-primary action-button" bindtap="onEvaluateSubmit">提交评价</button>
+      </view>
+
+      <view class="action-block" wx:if="{{showConfirm}}">
+        <text class="muted">确认本事项已解决，工单将办结。未评分记为未评价。</text>
+        <button class="button-secondary action-button" bindtap="onConfirmResolved">确认解决</button>
+      </view>
+
+      <view class="action-block" wx:if="{{showReopen}}">
+        <text class="muted">说明未解决的事项，由管理方审核后开启新一轮。</text>
+        <textarea
+          class="reason-input"
+          value="{{reopenReason}}"
+          bindinput="onReopenReasonInput"
+          placeholder="未解决事项说明"
+          placeholder-class="code-placeholder"
+          maxlength="1000"
+          auto-height
+        />
+        <button class="button-secondary action-button" bindtap="onReopenSubmit">提交补办申请</button>
+      </view>
+
+      <view class="action-block" wx:if="{{showSupplement}}">
+        <text class="card-title">补充材料</text>
+        <text class="muted">管理方要求补充：{{supplementReason}}</text>
+        <text wx:if="{{supplementRequestedText}}" class="muted">提出时间 {{supplementRequestedText}}</text>
+        <textarea
+          class="reason-input"
+          value="{{supplementSummary}}"
+          bindinput="onSupplementSummaryInput"
+          placeholder="补件说明（必填）"
+          placeholder-class="code-placeholder"
+          maxlength="4000"
+          auto-height
+          disabled="{{actionPending}}"
+        />
+        <text class="muted">说明必填，最多 4000 字。可选 1–3 张 JPEG、PNG 或 WebP，每张不超过 5 MiB。</text>
+        <button class="button-secondary action-button" bindtap="onChooseSupplementPhotos"
+          loading="{{supplementPhotoChoosing}}" disabled="{{actionPending || supplementPhotoChoosing}}">选择补件照片</button>
+        <text wx:if="{{supplementPhotoCount}}" class="muted">已选择 {{supplementPhotoCount}} 张</text>
+        <button wx:if="{{supplementPhotoCount}}" class="button-secondary action-button" bindtap="onClearSupplementPhotos"
+          disabled="{{actionPending || supplementPhotoChoosing}}">清除照片</button>
+        <text wx:if="{{supplementPhotoError}}" class="feedback-text" aria-role="alert">{{supplementPhotoError}}</text>
+        <button class="button-primary action-button" bindtap="onSupplementSubmit"
+          loading="{{actionState === 'loading'}}" disabled="{{actionPending || supplementPhotoChoosing}}">提交补件</button>
+      </view>
+
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success' && actionState !== 'idle'}}">
+      <view class="feedback action-feedback" wx:if="{{actionState === 'loading'}}">
+        <text class="muted">正在提交…</text>
+      </view>
+      <view class="feedback action-feedback" wx:elif="{{actionState === 'invalid' || actionState === 'conflict' || actionState === 'expired' || actionState === 'timeout' || actionState === 'network' || actionState === 'error' || actionState === 'busy' || actionState === 'refresh_failed'}}">
+        <text class="feedback-text">{{actionMessage}}</text>
+      </view>
+      <view class="feedback action-feedback" wx:if="{{actionState === 'refresh_failed'}}">
+        <button class="button-secondary" bindtap="onRetryRefresh">重试刷新确认</button>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{verifyState === 'success' && supplementNotice}}">
+      <text class="card-title">补件事项</text>
+      <text class="muted">{{supplementNotice}}</text>
+    </view>
+  </view>
+
+  <view class="tip">
+    <text class="tip-text">本页仅显示工单编号、当前状态和可公开的时间节点，不显示申报内容、照片与联系方式。核验本人后可查看已发布反馈并办理本人事项。</text>
+  </view>
+</view>

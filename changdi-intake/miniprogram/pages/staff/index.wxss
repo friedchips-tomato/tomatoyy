@@ -1,0 +1,257 @@
+.staff-shell {
+  max-width: 1040rpx;
+  margin: 0 auto;
+}
+
+.staff-title,
+.section-title,
+.row-heading {
+  color: #192b41;
+  font-weight: 650;
+}
+
+.staff-title {
+  display: block;
+  font-size: 40rpx;
+  line-height: 1.3;
+}
+
+.section-title { font-size: 32rpx; }
+.row-heading { font-size: 29rpx; }
+
+.staff-block {
+  display: block;
+  margin-top: 10rpx;
+  overflow-wrap: anywhere;
+}
+
+.spaced { margin-top: 24rpx; }
+
+.staff-header,
+.section-header,
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14rpx;
+}
+
+.staff-header {
+  align-items: flex-start;
+  margin: 8rpx 0 26rpx;
+}
+
+.text-button,
+.queue-button,
+.case-row {
+  margin: 0;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+
+.text-button {
+  color: #1b559d;
+  padding: 12rpx 18rpx;
+  min-height: 64rpx;
+  line-height: 1.5;
+  font-size: 26rpx;
+  background: #edf3fa;
+  flex-shrink: 0;
+}
+
+.text-button::after,
+.queue-button::after,
+.case-row::after { border: 0; }
+
+.detail-toolbar { margin-bottom: 20rpx; }
+
+.queues {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12rpx;
+  margin-top: 20rpx;
+}
+
+.queue-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10rpx;
+  width: 100%;
+  min-height: 84rpx;
+  padding: 14rpx 18rpx;
+  background: #f0f4f8;
+  border: 2rpx solid transparent;
+  color: #233c57;
+  font-size: 27rpx;
+  line-height: 1.35;
+}
+
+.queue-active {
+  background: #e6f0ff;
+  border-color: #2e68a8;
+  color: #164b86;
+}
+
+.queue-count {
+  font-size: 30rpx;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.case-row {
+  width: 100%;
+  text-align: left;
+  font-size: 27rpx;
+  line-height: 1.5;
+  background: #f7f9fc;
+  border: 2rpx solid #e6ebf2;
+  padding: 20rpx;
+  margin-top: 14rpx;
+}
+
+.case-number {
+  font-size: 24rpx;
+  letter-spacing: 0.2rpx;
+}
+
+.status-tag,
+.select-chip {
+  flex-shrink: 0;
+  color: #184c83;
+  background: #e9f1fc;
+  border-radius: 12rpx;
+  padding: 6rpx 14rpx;
+  font-size: 24rpx;
+  line-height: 1.55;
+  font-weight: 550;
+}
+
+.select-chip { padding: 14rpx 18rpx; }
+
+.staff-notice,
+.warning {
+  color: #853b19;
+}
+
+.staff-notice {
+  display: block;
+  background: #fff4e8;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 18rpx;
+}
+
+.field-label {
+  display: block;
+  margin: 20rpx 0 8rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+}
+
+.staff-input,
+.select-field {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2rpx solid #cad6e3;
+  border-radius: 12rpx;
+  background: #fff;
+  font-size: 27rpx;
+  padding: 14rpx 16rpx;
+  min-height: 80rpx;
+}
+
+.text-area { min-height: 148rpx; }
+
+.action-buttons,
+.editor-buttons,
+.date-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.date-row picker { flex: 1 1 200rpx; }
+
+.small-button {
+  margin: 0;
+  min-height: 76rpx;
+  padding: 14rpx 20rpx;
+  font-size: 27rpx;
+  border-radius: 12rpx;
+}
+
+.editor {
+  margin-top: 22rpx;
+  padding: 20rpx;
+  border: 2rpx solid #dce6f0;
+  border-radius: 14rpx;
+  background: #f7fafe;
+}
+
+.switch-row { margin-top: 18rpx; }
+
+.support-note { margin-top: 18rpx; }
+
+.history-row {
+  border-top: 2rpx solid #edf0f4;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+}
+
+.detail-copy {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.task-event {
+  border-left: 4rpx solid #dce6f0;
+  padding-left: 16rpx;
+  margin-top: 14rpx;
+}
+
+.staff-photo-preview {
+  display: block;
+  width: 100%;
+  height: 420rpx;
+  margin-top: 14rpx;
+  background: #edf3fa;
+  border-radius: 12rpx;
+}
+.report-date {
+  overflow-wrap: anywhere;
+}
+
+.report-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16rpx;
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #edf0f4;
+}
+
+.report-value {
+  color: #192b41;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.report-rating {
+  border-top: 2rpx solid #edf0f4;
+  padding-top: 16rpx;
+  margin-top: 16rpx;
+}
+
+.rating-bins {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  text-align: center;
+  margin-top: 12rpx;
+}
+
+.rating-bins .report-value {
+  text-align: center;
+}

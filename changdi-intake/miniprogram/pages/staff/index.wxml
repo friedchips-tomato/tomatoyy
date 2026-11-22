@@ -1,0 +1,374 @@
+<template name="staff-image-preview">
+  <text wx:if="{{previewBusy}}" class="staff-block muted">正在读取原图…</text>
+  <text wx:if="{{previewError}}" class="staff-block warning" aria-role="alert">{{previewError}}</text>
+  <block wx:if="{{previewPath || previewBusy}}">
+    <image wx:if="{{previewPath}}" class="staff-photo-preview" src="{{previewPath}}" mode="aspectFit"
+      data-path="{{previewPath}}" binderror="onPhotoPreviewError" aria-label="{{previewLabel}}" />
+    <button class="text-button spaced" bindtap="onClosePhotoPreview">关闭原图</button>
+  </block>
+</template>
+
+<view class="page staff-shell">
+  <view wx:if="{{view === 'login'}}" class="card">
+    <text class="staff-title">管理方工作台</text>
+    <form wx:if="{{localEnabled}}" bindsubmit="onLoginSubmit">
+      <text class="staff-block muted">请使用本地服务生成的工作人员测试令牌。</text>
+      <label class="field-label" for="staff-token">本地测试令牌</label>
+      <block wx:for="{{loginKeys}}" wx:key="*this">
+        <input id="staff-token" class="staff-input" name="token" password maxlength="256"
+          placeholder="输入工作人员测试令牌" disabled="{{loginBusy}}" />
+      </block>
+      <button class="button-primary spaced" form-type="submit" loading="{{loginBusy}}" disabled="{{loginBusy}}">核验并进入</button>
+    </form>
+    <button wx:elif="{{wechatEnabled}}" class="button-primary spaced" bindtap="onWechatLogin"
+      loading="{{loginBusy}}" disabled="{{loginBusy}}">微信登录</button>
+    <text wx:else class="staff-block warning">服务地址无效，登录不可用。</text>
+    <text wx:if="{{loginError}}" class="staff-block warning" aria-role="alert">{{loginError}}</text>
+    <button class="button-secondary spaced" bindtap="onExit">返回首页</button>
+  </view>
+
+  <block wx:else>
+    <view class="staff-header">
+      <view>
+        <text class="staff-title">{{view === 'report' ? '街区月报' : view === 'detail' ? '工单办理' : '管理方工作台'}}</text>
+        <text wx:if="{{view === 'report'}}" class="staff-block muted">全街区汇总</text>
+        <text wx:else class="staff-block muted">{{staff.roleLabel}} · {{staff.id}}{{staff.department ? ' · ' + staff.department : ''}}</text>
+      </view>
+      <button class="text-button" bindtap="onLogout">退出登录</button>
+    </view>
+    <text wx:if="{{notice}}" class="staff-notice" aria-role="alert">{{notice}}</text>
+
+    <block wx:if="{{view === 'workbench'}}">
+      <button wx:if="{{staff.role === 'duty'}}" class="text-button detail-toolbar" bindtap="onOpenMonthlyReport">查看街区月报</button>
+      <view class="card">
+        <view class="section-header">
+          <text class="section-title">工单队列</text>
+          <button class="text-button" bindtap="onRefreshOverview">刷新</button>
+        </view>
+        <text wx:if="{{countBusy}}" class="staff-block muted">正在读取计数…</text>
+        <text wx:elif="{{countError}}" class="staff-block warning" aria-role="alert">{{countError}}</text>
+        <text wx:elif="{{asOfLabel}}" class="staff-block muted">统计时间 {{asOfLabel}} · 临期 {{dueSoonHours}} 小时</text>
+        <view class="queues">
+          <button wx:for="{{queues}}" wx:key="id" data-queue="{{item.id}}" bindtap="onQueueTap"
+            class="queue-button {{queue === item.id ? 'queue-active' : ''}}">
+            <text>{{item.label}}</text>
+            <text wx:if="{{item.id && counts}}" class="queue-count">{{counts[item.id]}}</text>
+          </button>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="section-header">
+          <text class="section-title">工单列表</text>
+          <picker mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}" bindchange="onStatusChange">
+            <view class="select-chip" aria-role="button">{{statusOptions[statusIndex].label}} ▾</view>
+          </picker>
+        </view>
+        <text wx:if="{{listBusy && !items.length}}" class="staff-block muted">正在读取工单…</text>
+        <text wx:if="{{listError}}" class="staff-block warning" aria-role="alert">{{listError}}</text>
+        <text wx:if="{{listReady && !items.length}}" class="staff-block muted">当前筛选下暂无工单。</text>
+        <button wx:for="{{items}}" wx:key="caseNumber" class="case-row" data-case="{{item.caseNumber}}" bindtap="onOpenCase">
+          <view class="section-header">
+            <text class="row-heading">{{item.category || '工单'}}</text>
+            <text class="status-tag">{{item.statusLabel}}</text>
+          </view>
+          <text class="staff-block muted case-number">{{item.caseNumber}}</text>
+          <text class="staff-block muted">{{item.sourceLabel}}{{item.department ? ' · ' + item.department : ''}}{{item.assignee ? ' · ' + item.assignee : ''}}</text>
+          <text wx:if="{{item.dueLabel}}" class="staff-block {{item.deadlineLabel ? 'warning' : 'muted'}}">截止 {{item.dueLabel}}{{item.deadlineLabel ? ' · ' + item.deadlineLabel : ''}}</text>
+        </button>
+        <button wx:if="{{nextBefore}}" class="button-secondary spaced" bindtap="onLoadMore"
+          disabled="{{listBusy}}" loading="{{listBusy}}">{{listError ? '重试下一页' : '加载更多'}}</button>
+        <button wx:elif="{{listError}}" class="button-secondary spaced" bindtap="onRefreshOverview">重试读取</button>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'report' && staff.role === 'duty'}}">
+      <button class="text-button detail-toolbar" bindtap="onCloseMonthlyReport">返回工作台</button>
+      <view class="card">
+        <view class="section-header">
+          <text class="section-title">统计月</text>
+          <picker mode="date" fields="month" value="{{reportMonth + '-01'}}" end="{{reportMaxMonth + '-01'}}" bindchange="onReportMonthChange">
+            <view class="select-chip" aria-role="button">{{reportMonth}} ▾</view>
+          </picker>
+        </view>
+        <text wx:if="{{reportBusy}}" class="staff-block muted">正在读取月报…</text>
+        <text wx:if="{{reportError}}" class="staff-block warning" aria-role="alert">{{reportError}}</text>
+        <button wx:if="{{reportError}}" class="text-button spaced" bindtap="onRetryMonthlyReport">重试读取</button>
+        <block wx:if="{{report}}">
+          <text class="staff-block muted">北京时间 · 含起点、不含终点</text>
+          <text class="staff-block report-date">{{report.start}} 至 {{report.endExclusive}}</text>
+          <text class="staff-block">取数截点 {{report.asOf}}</text>
+          <text class="staff-block">{{report.snapshotLabel}} {{report.snapshot}}</text>
+          <text wx:if="{{report.deadlineWarning}}" class="staff-block warning">{{report.deadlineWarning}}</text>
+        </block>
+      </view>
+      <block wx:if="{{report}}">
+        <view wx:for="{{report.groups}}" wx:for-item="group" wx:key="title" class="card">
+          <text class="section-title">{{group.title}}</text>
+          <view wx:for="{{group.rows}}" wx:key="label" class="report-row">
+            <text>{{item.label}}</text><text class="report-value">{{item.value}}</text>
+          </view>
+        </view>
+        <view class="card">
+          <text class="section-title">三维评分分布</text>
+          <view wx:for="{{report.ratings}}" wx:for-item="rating" wx:key="label" class="report-rating">
+            <view class="section-header">
+              <text class="row-heading">{{rating.label}}</text>
+              <text class="report-value">均分 {{rating.mean}}</text>
+            </view>
+            <view class="rating-bins">
+              <view wx:for="{{rating.bins}}" wx:key="score">
+                <text class="muted">{{item.score}} 分</text>
+                <text class="staff-block report-value">{{item.count}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{report.duplicateMissing || report.tourismMissing}}" class="card">
+          <text wx:if="{{report.duplicateMissing}}" class="staff-block muted">重复投诉待接入</text>
+          <text wx:if="{{report.tourismMissing}}" class="staff-block muted">导览数据缺失</text>
+        </view>
+      </block>
+    </block>
+
+    <block wx:elif="{{view === 'detail'}}">
+      <view class="section-header detail-toolbar">
+        <button class="text-button" bindtap="onReturnToList" disabled="{{saving || recovering}}">返回工单列表</button>
+        <button wx:if="{{detail || recovering}}" class="text-button" bindtap="onRetryDetail"
+          disabled="{{saving || recoveryBusy}}" loading="{{recoveryBusy}}">{{recovering ? '读回工单和协办' : '刷新详情'}}</button>
+      </view>
+      <view wx:if="{{detailBusy || detailError}}" class="card">
+        <text wx:if="{{detailBusy}}" class="staff-block muted">正在读取工单详情…</text>
+        <text wx:if="{{detailError}}" class="staff-block warning" aria-role="alert">{{detailError}}</text>
+        <button wx:if="{{detailError}}" class="button-secondary spaced" bindtap="onRetryDetail">重试读取</button>
+      </view>
+      <block wx:if="{{detail}}">
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">{{detail.category || '工单详情'}}</text>
+            <text class="status-tag">{{detail.statusLabel}}</text>
+          </view>
+          <text class="staff-block muted case-number">{{detail.caseNumber}}</text>
+          <text class="staff-block muted">{{detail.sourceLabel}} · 第 {{detail.round}} 轮</text>
+          <text wx:if="{{detail.occurredLabel}}" class="staff-block">发生时间 {{detail.occurredLabel}}</text>
+          <text wx:if="{{detail.location}}" class="staff-block">发生地点 {{detail.location}}</text>
+          <text wx:if="{{detail.suggestedDepartment}}" class="staff-block">建议部门 {{detail.suggestedDepartment}}</text>
+          <text wx:if="{{detail.department}}" class="staff-block">主责部门 {{detail.department}} · {{detail.assignee}}</text>
+          <text wx:if="{{detail.dueLabel}}" class="staff-block">办理截止 {{detail.dueLabel}}</text>
+          <text wx:if="{{detail.evaluationLabel}}" class="staff-block">评价截止 {{detail.evaluationLabel}}</text>
+          <text wx:if="{{detail.description}}" class="staff-block detail-copy">{{detail.description}}</text>
+        </view>
+
+        <view class="card">
+          <text class="section-title">办理操作</text>
+          <view wx:if="{{availableActions.length}}" class="action-buttons">
+            <button wx:for="{{availableActions}}" wx:key="id" data-action="{{item.id}}" bindtap="onActionTap"
+              class="button-secondary small-button" disabled="{{saving || recovering || !collaborationReady}}">{{item.label}}</button>
+            <button wx:if="{{canPublishFeedbackPhotos}}" class="button-secondary small-button"
+              bindtap="onOpenFeedbackPublisher" disabled="{{saving || recovering || !collaborationReady}}">发布图片反馈</button>
+          </view>
+          <text wx:else class="staff-block muted">当前角色和工单状态下没有可执行的操作。</text>
+          <view wx:if="{{editor}}" class="editor">
+            <text class="row-heading">{{editor.label}}</text>
+            <block wx:if="{{editor.needsAssignee}}">
+              <text wx:if="{{editor.pending}}" class="staff-block muted">读取可派承办人…</text>
+              <view wx:elif="{{editor.people.length}}">
+                <text class="field-label">可派承办人</text>
+                <picker range="{{editor.peopleLabels}}" value="{{editor.personIndex + 1}}"
+                  data-field="personIndex" bindchange="onEditorChange" disabled="{{saving}}">
+                  <view class="select-field" aria-role="button">{{editor.personIndex < 0 ? '请选择承办人' : editor.people[editor.personIndex].label}} ▾</view>
+                </picker>
+              </view>
+              <text class="field-label">办理截止时间（北京时间）</text>
+              <view class="date-row">
+                <picker mode="date" value="{{editor.date}}" data-field="date" bindchange="onEditorChange" disabled="{{saving}}">
+                  <view class="select-field" aria-role="button">{{editor.date || '选择日期'}} ▾</view>
+                </picker>
+                <picker mode="time" value="{{editor.time}}" data-field="time" bindchange="onEditorChange" disabled="{{saving}}">
+                  <view class="select-field" aria-role="button">{{editor.time || '选择时间'}} ▾</view>
+                </picker>
+              </view>
+            </block>
+            <view wx:if="{{editor.needsNextStatus}}" class="switch-row">
+              <text>通过后直接进入处理中</text>
+              <switch checked="{{editor.continueProcessing}}" data-field="continueProcessing"
+                bindchange="onEditorChange" disabled="{{saving}}" aria-label="通过后直接进入处理中" />
+            </view>
+            <block wx:if="{{editor.needsReason}}">
+              <label class="field-label" for="action-reason">{{editor.action === 'request_supplement' ? '补件要求（提交人可见）' : '原因'}}</label>
+              <textarea id="action-reason" class="staff-input text-area" value="{{editor.reason}}" maxlength="1000"
+                data-field="reason" bindinput="onEditorChange" disabled="{{saving}}" />
+            </block>
+            <block wx:if="{{editor.needsSummary}}">
+              <label class="field-label" for="action-summary">文字说明</label>
+              <textarea id="action-summary" class="staff-input text-area" value="{{editor.summary}}" maxlength="4000"
+                data-field="summary" bindinput="onEditorChange" disabled="{{saving}}" />
+            </block>
+            <block wx:if="{{editor.action === 'submit_result' || editor.action === 'publish_photos'}}">
+              <text class="field-label">{{editor.action === 'submit_result' ? '办理照片（选填）' : '独立脱敏 PNG'}}</text>
+              <text wx:if="{{editor.action === 'submit_result'}}" class="staff-block muted">可选 1–3 张 JPEG、PNG 或 WebP，每张不超过 5 MiB。</text>
+              <text wx:else class="staff-block muted">上传人工脱敏后另存的 8 位 RGB 非隔行 PNG，长宽各不超过 2048 像素，每张不超过 5 MiB。请检查画面中的姓名、号码、人脸和车牌。</text>
+              <view class="action-buttons">
+                <button class="button-secondary small-button" bindtap="onChoosePhotos"
+                  disabled="{{saving || editor.photoChoosing}}" loading="{{editor.photoChoosing}}">
+                  {{editor.action === 'publish_photos' ? '选择 PNG 文件' : '选择办理照片'}}
+                </button>
+                <button wx:if="{{editor.photoCount}}" class="text-button" bindtap="onClearPickedPhotos"
+                  disabled="{{saving || editor.photoChoosing}}">清除选择</button>
+              </view>
+              <text wx:if="{{editor.photoCount}}" class="staff-block muted">已选择 {{editor.photoCount}} 张</text>
+              <view wx:if="{{editor.action === 'publish_photos' && editor.photoCount}}" class="switch-row">
+                <text>已逐张检查，确认图片已人工脱敏并可发给本人</text>
+                <switch checked="{{editor.derivativesReviewed}}" data-field="derivativesReviewed"
+                  bindchange="onEditorChange" disabled="{{saving || editor.photoChoosing}}" aria-label="确认图片已人工脱敏并可发给本人" />
+              </view>
+            </block>
+            <block wx:if="{{editor.needsPhotoReason && !editor.photoCount}}">
+              <label class="field-label" for="action-photo-reason">未提供照片的原因</label>
+              <textarea id="action-photo-reason" class="staff-input text-area" value="{{editor.photoReason}}" maxlength="1000"
+                data-field="photoReason" bindinput="onEditorChange" disabled="{{saving}}" />
+            </block>
+            <text wx:if="{{editor.error}}" class="staff-block warning" aria-role="alert">{{editor.error}}</text>
+            <view class="editor-buttons">
+              <button class="button-secondary small-button" bindtap="onCancelAction" disabled="{{saving}}">取消</button>
+              <button class="button-primary small-button" bindtap="onActionSubmit" loading="{{saving}}"
+                disabled="{{saving || editor.pending || editor.photoChoosing || (editor.needsAssignee && !editor.people.length)}}">确认{{editor.label}}</button>
+            </view>
+          </view>
+          <text class="staff-block muted support-note">图片办理用于本地联调。生产 HTTPS 尚未接入。</text>
+        </view>
+
+        <view wx:if="{{supplementPhotos.length}}" class="card">
+          <text class="section-title">本人补件原图</text>
+          <view wx:for="{{supplementPhotos}}" wx:key="key" class="section-header history-row">
+            <text>第 {{item.round}} 轮 · 补件记录 {{item.submitVersion}} · 照片 {{item.position + 1}}</text>
+            <button class="text-button" bindtap="onPreviewSupplementPhoto" data-photo="{{item.key}}"
+              disabled="{{saving || recovering}}">查看</button>
+          </view>
+          <template wx:if="{{previewLabel === '补件原图'}}" is="staff-image-preview"
+            data="{{previewBusy: previewBusy, previewError: previewError, previewPath: previewPath, previewLabel: previewLabel}}" />
+        </view>
+
+        <view wx:if="{{submissionPhotos.length}}" class="card">
+          <text class="section-title">承办送审原图</text>
+          <view wx:for="{{submissionPhotos}}" wx:key="key" class="section-header history-row">
+            <text class="muted">第 {{item.round}} 轮 · 送审 {{item.submitVersion}} · 第 {{item.position + 1}} 张 · {{item.typeLabel}}</text>
+            <button class="text-button" bindtap="onPreviewOriginal" data-photo="{{item.key}}" disabled="{{saving}}">查看</button>
+          </view>
+          <template wx:if="{{!previewTaskId && previewLabel === '送审原图'}}" is="staff-image-preview"
+            data="{{previewBusy: previewBusy, previewError: previewError, previewPath: previewPath, previewLabel: previewLabel}}" />
+        </view>
+
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">协办任务</text>
+            <button wx:if="{{canAssignCollaboration}}" class="text-button" bindtap="onAssignCollaboration"
+              disabled="{{saving || recovering}}">派发协办</button>
+          </view>
+          <text wx:if="{{collaborationBusy}}" class="staff-block muted">正在读取协办任务…</text>
+          <text wx:if="{{collaborationError}}" class="staff-block warning" aria-role="alert">{{collaborationError}}</text>
+          <text wx:if="{{collaborationReady && !collaborations.length}}" class="staff-block muted">暂无协办任务。</text>
+
+          <view wx:if="{{collaborationEditor}}" class="editor">
+            <text class="row-heading">{{collaborationEditor.label}}</text>
+            <block wx:if="{{collaborationEditor.action === 'assign'}}">
+              <label class="field-label" for="collaboration-merchant">本地商户编号</label>
+              <input id="collaboration-merchant" class="staff-input" value="{{collaborationEditor.merchantId}}"
+                maxlength="64" data-field="merchantId" bindinput="onCollaborationInput" disabled="{{saving}}" />
+              <label class="field-label" for="collaboration-instructions">协办说明</label>
+              <textarea id="collaboration-instructions" class="staff-input text-area" value="{{collaborationEditor.instructions}}"
+                maxlength="1000" data-field="instructions" bindinput="onCollaborationInput" disabled="{{saving}}" />
+              <label class="field-label" for="collaboration-location">必要地点（选填）</label>
+              <input id="collaboration-location" class="staff-input" value="{{collaborationEditor.location}}"
+                maxlength="300" data-field="location" bindinput="onCollaborationInput" disabled="{{saving}}" />
+              <text class="field-label">协办截止时间（北京时间）</text>
+              <view class="date-row">
+                <picker mode="date" value="{{collaborationEditor.date}}" data-field="date" bindchange="onCollaborationInput" disabled="{{saving}}">
+                  <view class="select-field" aria-role="button">{{collaborationEditor.date}} ▾</view>
+                </picker>
+                <picker mode="time" value="{{collaborationEditor.time}}" data-field="time" bindchange="onCollaborationInput" disabled="{{saving}}">
+                  <view class="select-field" aria-role="button">{{collaborationEditor.time || '选择时间'}} ▾</view>
+                </picker>
+              </view>
+            </block>
+            <block wx:else>
+              <text class="staff-block muted">商户 {{collaborationEditor.merchantId}}</text>
+              <block wx:if="{{collaborationEditor.action !== 'approve'}}">
+                <label class="field-label" for="collaboration-reason">原因</label>
+                <textarea id="collaboration-reason" class="staff-input text-area" value="{{collaborationEditor.reason}}"
+                  maxlength="1000" data-field="reason" bindinput="onCollaborationInput" disabled="{{saving}}" />
+              </block>
+            </block>
+            <text wx:if="{{collaborationEditor.error}}" class="staff-block warning" aria-role="alert">{{collaborationEditor.error}}</text>
+            <view class="editor-buttons">
+              <button class="button-secondary small-button" bindtap="onCancelCollaboration" disabled="{{saving}}">取消</button>
+              <button class="button-primary small-button" bindtap="onSubmitCollaboration"
+                disabled="{{saving || recovering}}" loading="{{saving}}">确认{{collaborationEditor.label}}</button>
+            </view>
+          </view>
+
+          <view wx:for="{{collaborations}}" wx:for-item="task" wx:key="taskId" class="history-row">
+            <view class="section-header">
+              <text class="row-heading">商户 {{task.merchantId}}</text>
+              <text class="status-tag">{{task.statusLabel}}</text>
+            </view>
+            <text class="staff-block muted case-number">{{task.taskId}} · 第 {{task.round}} 轮</text>
+            <text wx:if="{{task.dueLabel}}" class="staff-block muted">协办截止 {{task.dueLabel}}</text>
+            <text class="staff-block detail-copy">{{task.instructions}}</text>
+            <text wx:if="{{task.location}}" class="staff-block detail-copy">必要地点 {{task.location}}</text>
+            <text wx:if="{{task.latestSubmission}}" class="staff-block detail-copy">最新说明 {{task.latestSubmission}}</text>
+            <text wx:if="{{task.returnReason}}" class="staff-block detail-copy">退回原因 {{task.returnReason}}</text>
+            <view wx:if="{{task.submissionPhotos.length}}" class="history-row">
+              <text class="row-heading">协办送审原图</text>
+              <view wx:for="{{task.submissionPhotos}}" wx:key="key" class="section-header history-row">
+                <text class="muted">送审版本 {{item.submitVersion}} · 第 {{item.position + 1}} 张 · {{item.typeLabel}}</text>
+                <button class="text-button" bindtap="onPreviewCollaborationPhoto" data-task="{{task.taskId}}"
+                  data-photo="{{item.key}}" disabled="{{saving || recovering}}">查看</button>
+              </view>
+              <template wx:if="{{previewTaskId === task.taskId}}" is="staff-image-preview"
+                data="{{previewBusy: previewBusy, previewError: previewError, previewPath: previewPath, previewLabel: '协办送审原图'}}" />
+            </view>
+            <view wx:if="{{task.actions.length}}" class="action-buttons">
+              <button wx:for="{{task.actions}}" wx:key="id" data-task="{{task.taskId}}" data-action="{{item.id}}"
+                class="button-secondary small-button" bindtap="onReviewCollaboration"
+                disabled="{{saving || recovering}}">{{item.label}}</button>
+            </view>
+            <view wx:for="{{task.history}}" wx:for-item="entry" wx:key="version" class="task-event">
+              <text class="staff-block muted">{{entry.title}}{{entry.time ? ' · ' + entry.time : ''}}{{entry.actor ? ' · ' + entry.actor : ''}}</text>
+              <text wx:if="{{entry.note}}" class="staff-block detail-copy">{{entry.note}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{detail.reopenRequests.length}}" class="card">
+          <text class="section-title">补办申请</text>
+          <view wx:for="{{detail.reopenRequests}}" wx:key="id" class="history-row">
+            <text class="row-heading">{{item.decision}}</text>
+            <text class="staff-block muted">{{item.time}} · 申请前 {{item.previous}}</text>
+            <text class="staff-block detail-copy">{{item.reason}}</text>
+            <text wx:if="{{item.decisionReason}}" class="staff-block detail-copy">审核意见 {{item.decisionReason}}</text>
+          </view>
+        </view>
+
+        <view wx:if="{{detail.rounds.length}}" class="card">
+          <text class="section-title">历轮反馈及评价</text>
+          <view wx:for="{{detail.rounds}}" wx:key="round" class="history-row">
+            <text class="row-heading">第 {{item.round}} 轮</text>
+            <text wx:if="{{item.summary}}" class="staff-block detail-copy">{{item.summary}}</text>
+            <text class="staff-block muted">{{item.evaluation ? '速度 / 效果 / 态度：' + item.evaluation : '未评价'}}</text>
+          </view>
+        </view>
+
+        <view class="card">
+          <text class="section-title">流转记录</text>
+          <text wx:if="{{!detail.history.length}}" class="staff-block muted">暂无流转记录。</text>
+          <view wx:for="{{detail.history}}" wx:key="id" class="history-row">
+            <text class="row-heading">{{item.title}}</text>
+            <text class="staff-block muted">{{item.time}}{{item.actor ? ' · ' + item.actor : ''}}{{item.status ? ' · ' + item.status : ''}}</text>
+            <text wx:if="{{item.notes}}" class="staff-block detail-copy">{{item.notes}}</text>
+          </view>
+        </view>
+      </block>
+    </block>
+  </block>
+</view>

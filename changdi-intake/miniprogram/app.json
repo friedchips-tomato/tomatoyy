@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/submit/index",
+    "pages/public/index",
+    "pages/merchant/index",
+    "pages/staff/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "长堤风貌街",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6f8"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

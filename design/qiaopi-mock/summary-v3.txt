@@ -1,0 +1,19 @@
+长堤导览 · 侨批样张 v3：纸边毛边
+
+已完成
+- 去掉上一版满版的纸纹和深浅斑，纸面恢复干净
+- 只在纸和地图交界处做自然毛边：顶栏下缘、底部菜单上缘、点位卡信笺上缘
+- 毛边是不规则的撕纸轮廓，边上露出细纤维，靠边一圈纸略薄略亮，下方有淡投影
+
+已验证
+- 样张渲染无脚本或控制台错误
+- 3 倍放大检查毛边：没有深色斑点，纤维是浅色
+- 修正点位卡被底部菜单压住的层级问题
+
+未完成
+- 等你确认后，再写任务书交给 Codex 改原型
+
+成果文件
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/compare.png
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/a/edge-paper.png
+/Volumes/1t扩展盘/AI/orca/worktrees/tomatoyy/design/qiaopi-mock/a/edge-paper2.png

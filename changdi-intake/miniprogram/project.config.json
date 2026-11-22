@@ -1,0 +1,54 @@
+{
+  "appid": "wx778cccce29fdcdcb",
+  "projectname": "changdi-intake",
+  "description": "长堤风貌街接诉即办小程序（首页与导航骨架）",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "libVersion": "3.0.0",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false
+  },
+  "compileHotReLoad": {
+    "isAutoHotReload": false
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "test",
+        "type": "folder"
+      }
+    ],
+    "include": []
+  },
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}
