@@ -1,7 +1,6 @@
 import {HttpError} from '../http.js';
 
-export function createParkingLimiter(raw, now) {
-  const config = raw === undefined ? {windowSeconds: 600, limit: 60} : JSON.parse(raw);
+export function createParkingLimiter(config = {windowSeconds: 600, limit: 60}, now) {
   if (!config || Object.keys(config).some(key => !['windowSeconds', 'limit'].includes(key)) ||
       !Number.isSafeInteger(config.windowSeconds * 1000) || !Number.isSafeInteger(config.windowSeconds) ||
       config.windowSeconds < 1 || !Number.isSafeInteger(config.limit) || config.limit < 1) {

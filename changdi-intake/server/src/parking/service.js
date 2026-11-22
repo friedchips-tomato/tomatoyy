@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
+import {timestamp} from '../http.js';
 
 const vendor = fileURLToPath(new URL('./vendor/', import.meta.url));
 const lotFields = ['lot_id', 'name', 'total_spaces', 'fee', 'access', 'walk_to_street', 'district', 'notes', 'source'];
@@ -11,6 +12,10 @@ const local = value => new Date(Date.parse(value) + 8 * 3600000).toISOString().s
 
 export async function loadParking(dir = vendor) {
   const state = {lots: [], note: null};
+  try {
+    const manifest = JSON.parse(await readFile(resolve(dir, 'artifacts/manifest.json'), 'utf8'));
+    state.generatedAt = timestamp(manifest.generated_at);
+  } catch { /* 清单缺失或时间无效时，目录接口使用装载时刻。 */ }
   for (const root of new Set([dir, vendor])) {
     try {
       const data = await readFile(resolve(root, 'data/synthetic/lots.jsonl'), 'utf8');
@@ -35,6 +40,8 @@ export async function loadParking(dir = vendor) {
   return state;
 }
 
+// 本接口不承诺预测精度；上游主口径为 MAE_ratio（绝对车位 MAE 见上游 metrics.json），当前数据为合成数据，不构成达标结论。
+// 观测缺失（quality=missing/stale）时 free_spaces 为 NULL，0 表示真实零余位。本层保留观测与预测中的空值。
 export function getForecast(state, id, issued, horizons) {
   const time = local(issued);
   const {forecasts} = state.runtime.forecastLot(state.dataset, state.model, id, time, time, horizons);

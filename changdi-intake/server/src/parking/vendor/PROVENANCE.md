@@ -1,11 +1,16 @@
-# 停车运行时来源
+# 停车运行时来源（vendor 副本）
 
-上游版本：2.0.0。复制日期：2026-11-22。
+上游位于仓库根目录 `parking-forecast/`（分支 `friedchips-tomato/parking-forecast`），由总指挥「任务二」worker 产出。截至复制时，上游尚未提交进 Git，本副本是当时唯一提交进仓库的形态。上游改动后应重新同步副本并更新下表的 SHA-256。
 
-上游位置：C:/Users/17109/orca/workspaces/tomatoyy/parking-forecast/parking-forecast。下表路径相对于该目录；副本保持原始字节。
+上游版本为 `model_version = 2.0.0`、`schema_version = 2.0.0`。数据来源为 `source = synthetic`，仅供合成示范，不得对外表述为车场实测余位。
+
+复制日期为 2026-11-22。下表路径相对于上游目录，副本保持原始字节。
+
+只复制 `runtime/*.mjs` 运行时代码，不含上游测试与夹具；上游测试留在 parking-forecast/ 目录内。
 
 | 文件 | SHA-256 |
 | --- | --- |
+| artifacts/manifest.json | c7b9f183e10ba029abdeea8be49dbd1b32e551cad31e343dd2caf77e55a215c1 |
 | artifacts/model.json | 751256384ffd6e8b1db655df3223adde722b96c8184fecb392f1baf7b931178f |
 | data/synthetic/lots.jsonl | f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb |
 | data/synthetic/manifest.json | 4ab0ab002c80b8e208547b2552223edccbe8da5399f0b3ef7cc881fe3b6a976a |
@@ -17,8 +22,7 @@
 | runtime/index.mjs | e22f5ce025744e8145deaf27f3f472c65aa38e1993d59d3c38b0c11ab7422231 |
 | runtime/reasons.mjs | 1527d34c849624b301b75688cd7db383383e3bb51a8edd37c67cd2519786cbf7 |
 | runtime/recommend.mjs | 2b2e06239efcde4ee6fbcb4f37c9f5d02b11b1e770f08fd114a7d81e819f584e |
-| runtime/test/consistency.test.mjs | 9cfcf3b9f04f093c9b2f5de379da4709dbc856d81f475658561c396e676f9825 |
-| runtime/test/determinism.test.mjs | cb869290bd8d0b31da95f9877e273dec17a27d26498dc139091ec6730014a4b9 |
-| runtime/test/fixtures/consistency.json | 499c5223a14eaf7d156bb97a12e8deb8c9dd175cf34dab8238205f7744800592 |
-| runtime/test/schema.test.mjs | 8be5cbff48aa1a2844b64772730253c6ac1a94e3bc4e3fb29c7f1f749dd828a7 |
-| runtime/test/version_compat.test.mjs | 725273d8bc0f70cfb8516927b8583a5af93b95fb66b1e0abda1daa18d52fd931 |
+
+上游若变更，联系后端设计指挥重新同步；同步时必须逐文件核对 SHA-256 一致后才允许提交。
+
+数据底座对应关系：数据库侧基表使用 `parking_id`、`fee_rule`。兼容视图 `ml_parking_lots`、`ml_parking_observations` 的字段分别与 `lot.schema.json`、`observation.schema.json` 一一对应。接入真实停车数据时，从这两个视图导出 JSONL 供运行时读取；对外接口继续使用由视图映射的 `lot_id`。

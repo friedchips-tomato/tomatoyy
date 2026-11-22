@@ -29,6 +29,8 @@ export function createIntakeServer({
   wechatCode,
   wechatLogin,
   publicRateLimit,
+  parkingRateLimit,
+  parkingDir = process.env.CHANGDI_PARKING_DIR,
 }) {
   if (!Buffer.isBuffer(receiptKey) || receiptKey.length !== 32) {
     throw new Error('Receipt key must contain 32 bytes');
@@ -41,7 +43,7 @@ export function createIntakeServer({
   }
   const auth = createAuth(integrations, staff, merchants, { wechatLogin, now });
   const rateLimiter = createPublicRateLimiter({ ...publicRateLimit, now });
-  const parkingLimit = createParkingLimiter(process.env.CHANGDI_PARKING_RATE_LIMIT, now);
+  const parkingLimit = createParkingLimiter(parkingRateLimit, now);
   const wechatClient = wechatCode === undefined ?
       null : createWechatCodeClient(wechatCode, now);
   const store = openStore(dbPath, receiptKey, now, {
@@ -64,7 +66,7 @@ export function createIntakeServer({
   }
 
   const routeContext = { auth, store, receiptCode, readPhotoUpload, rateLimiter,
-    parking: loadParking(process.env.CHANGDI_PARKING_DIR), parkingLimit, now, snapshotAt: now().toISOString() };
+    parking: loadParking(parkingDir), parkingLimit, now, snapshotAt: now().toISOString() };
   const server = createServer({
     headersTimeout: 15_000,
     requestTimeout: 20_000,
