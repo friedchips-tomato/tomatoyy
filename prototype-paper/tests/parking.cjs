@@ -2,7 +2,8 @@
 //   NODE_PATH=<含 playwright-core 的 node_modules> CHROMIUM_PATH=<chrome-headless-shell> \
 //     node prototype-paper/tests/parking.cjs http://127.0.0.1:8931/prototype-paper/
 // 覆盖：① 正常预测卡片（模拟数据标注 + 预测曲线）；② 偏好切换前后排序与理由；
-// ③ 理由数字与页面数字一致；④ 坏产物 / 无产物回退态。截图写入 prototype-paper/screenshots/parking/。
+// ③ 理由数字与页面数字一致；④ 坏产物 / 无产物回退态；⑤ DOM 内 (data-action, data-id) 唯一性。
+// 截图写入 prototype-paper/screenshots/parking/。
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -12,6 +13,59 @@ const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'screenshots', 'parking');
 const executablePath = process.env.CHROMIUM_PATH || path.join(os.homedir(),
   'Library/Caches/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-mac-arm64/chrome-headless-shell');
+
+// ── 防回归：同一业务对象不得被两个同名 CTA 重复指向 ────────────────────
+// 判据（按「同一 (action, id) 组合对应同一个业务对象」）：
+//   ① 带 data-id 的元素指向具体业务对象（车位 P1、点位、讲解员、路线…），
+//      其 (data-action, data-id) 在整个文档内必须唯一。重复即意味着同一业务对象
+//      被渲染成两个同名按钮（例如推荐榜与车场卡片列表都渲染 parking-start/P1）。
+//   ② 不带 data-id 的元素是通用按钮，不指向任何具体业务对象，彼此不构成「同一业务对象」
+//      的重复；但同一 action 在业务内容容器 #sheet-body 内仍只应出现一次。
+//      弹层 chrome 的「关闭弹层」是同一意图的两种视觉入口（遮罩 .scrim + 关闭按钮 .close-button），
+//      允许成对存在，故文档级统计时按「同一 aria-label 意图」豁免，不算重复。
+async function collectActionElements(page) {
+  return page.evaluate(() => [...document.querySelectorAll('[data-action]')].map(el => ({
+    action: el.getAttribute('data-action') || '',
+    id: el.getAttribute('data-id') || '',
+    inSheetBody: Boolean(el.closest('#sheet-body')),
+    chrome: Boolean(el.closest('#overlay')) && !el.closest('#sheet-body'),
+    label: el.getAttribute('aria-label') || ''
+  })));
+}
+
+async function assertUniqueActions(page, where) {
+  const els = await collectActionElements(page);
+
+  // 判据 ①：带 data-id 的 (action, id) 在文档内唯一
+  const keyed = new Map();
+  for (const el of els) {
+    if (!el.id) continue;
+    const key = JSON.stringify([el.action, el.id]);
+    keyed.set(key, (keyed.get(key) || 0) + 1);
+  }
+  const dupKeyed = [...keyed].filter(([, n]) => n > 1)
+    .map(([key, n]) => ({ pair: JSON.parse(key), count: n }));
+  assert.deepEqual(dupKeyed, [], `${where}：同一 (data-action, data-id) 组合重复 ${JSON.stringify(dupKeyed)}`);
+
+  // 判据 ②：无 data-id 的通用按钮按 action 分组
+  const groups = new Map();
+  for (const el of els) {
+    if (el.id) continue;
+    if (!groups.has(el.action)) groups.set(el.action, []);
+    groups.get(el.action).push(el);
+  }
+  for (const [action, group] of groups) {
+    if (group.length === 1) continue;
+    const inBody = group.filter(el => el.inSheetBody);
+    assert.equal(inBody.length, 0,
+      `${where}：通用 action「${action}」在业务内容中重复出现 ${inBody.length} 次`);
+    assert.ok(group.every(el => el.chrome),
+      `${where}：通用 action「${action}」在文档内重复出现 ${group.length} 次`);
+    assert.equal(new Set(group.map(el => el.label)).size, 1,
+      `${where}：通用 action「${action}」的重复元素意图不一致`);
+  }
+  return els;
+}
 
 async function main(url) {
   fs.mkdirSync(outDir, { recursive: true });
@@ -73,6 +127,29 @@ async function main(url) {
 
     await shot(page, '01-parking-normal', '停车 · 正常预测卡片（模拟数据 + 预测曲线）');
 
+    // ── 防回归：DOM 内 (data-action, data-id) 唯一，且两处 CTA 都还在 ────
+    await assertUniqueActions(page, '停车页（默认状态）');
+
+    // 推荐榜 CTA（parking-start）与车场卡片 CTA（parking-route）指向同一批车场，
+    // 但用不同 action，避免同一车场出现两个同名同 id 的按钮；两处按钮都不得被删。
+    const ctas = await page.evaluate(() => {
+      const pick = action => [...document.querySelectorAll('[data-action="' + action + '"]')]
+        .map(el => ({ id: el.getAttribute('data-id') || '', text: (el.textContent || '').trim() }));
+      return { start: pick('parking-start'), route: pick('parking-route') };
+    });
+    assert.equal(ctas.start.length, 2, '推荐榜应有 2 个「从这里出发排路线」按钮');
+    assert.equal(ctas.route.length, 2, '车场卡片列表应有 2 个「从这里出发排路线」按钮');
+    assert.deepEqual(ctas.start.map(c => c.id).sort(), ['P1', 'P2']);
+    assert.deepEqual(ctas.route.map(c => c.id).sort(), ['P1', 'P2']);
+    assert.ok([...ctas.start, ...ctas.route].every(c => c.text === '从这里出发排路线'),
+      '两处 CTA 文案应一致');
+    assert.equal(await page.locator('[data-action="parking-start"][data-id="P1"]').count(), 1,
+      'parking-start/P1 应唯一');
+    assert.equal(await page.locator('[data-action="parking-route"][data-id="P1"]').count(), 1,
+      'parking-route/P1 应唯一');
+    const ctaTotal = await page.getByText('从这里出发排路线', { exact: true }).count();
+    assert.equal(ctaTotal, 4, '停车页应共 4 个「从这里出发排路线」按钮（推荐榜 2 + 车场卡片 2）');
+
     // ── 3.8 理由数字与页面数字一致 ───────────────────────────────────────
     const pageFree = firstText.match(/到达时预计余位\s*(\d+)\s*个/);
     const reasonFree = firstText.match(/到达时预计余位\s*(\d+)\s*个（约\s*(\d+)%\s*空置率）/);
@@ -99,6 +176,7 @@ async function main(url) {
     assert.notEqual(beforeHint, afterHint, '偏好权重说明未变化');
     assert.notEqual(beforeScore, afterScore, '偏好切换未改变综合分');
     assert(afterText.includes('首选'), '少走路偏好下仍应有首选');
+    await assertUniqueActions(page, '停车页（切换偏好后）');
     await shot(page, '02-parking-preference', '停车 · 偏好切换（少走路）');
 
     assert.deepEqual(errors, [], '正常场景出现控制台/页面错误');
