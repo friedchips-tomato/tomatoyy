@@ -41,6 +41,7 @@ function createHarness(handlers = {}) {
     calls: [],
     navigations: [],
     storageWrites: [],
+    storage: new Map(),
     chooseResult: null
   };
   let page = null;
@@ -51,7 +52,11 @@ function createHarness(handlers = {}) {
       (handlers.request || (value => value.success({ statusCode: 201, data: receipt() })))(options);
     },
     navigateTo: options => state.navigations.push(options.url),
-    setStorageSync: (key, value) => state.storageWrites.push([key, value]),
+    getStorageSync: key => (state.storage.has(key) ? state.storage.get(key) : ''),
+    setStorageSync: (key, value) => {
+      state.storageWrites.push([key, value]);
+      state.storage.set(key, value);
+    },
     setStorage: options => state.storageWrites.push([options.key, options.data]),
     removeStorageSync: key => state.storageWrites.push(['remove', key]),
     chooseMedia: options => {
@@ -234,10 +239,10 @@ test('照片 1 张与 3 张时 multipart 带对应文件 part', async () => {
   }
 });
 
-test('私密凭证只留在页面内存：不进网址、不写存储、不进请求体', async () => {
+test('私密凭证只留在页面内存：本机只写允许字段，成功后写一次', async () => {
   const { page, state } = createHarness();
   try {
-    fillForm(page);
+    fillForm(page, { formContact: '13800000000' });
     await page.onSubmit();
     await tick();
 
@@ -245,15 +250,63 @@ test('私密凭证只留在页面内存：不进网址、不写存储、不进�
     assert.equal(page.data.receipt.privateLookupToken, PRIVATE_TOKEN, '回执上显示私密凭证');
     assert.ok(!call.url.includes(PRIVATE_TOKEN), '网址不含私密凭证');
     assert.ok(!bodyText(call).includes(PRIVATE_TOKEN), '请求体不含私密凭证');
-    assert.equal(state.storageWrites.length, 0, '不写任何存储');
-    for (const [key, value] of state.storageWrites) {
-      assert.ok(!String(key).includes(PRIVATE_TOKEN) && !String(value).includes(PRIVATE_TOKEN), '存储不含私密凭证');
-    }
+
+    // 本机只写回执夹，且只写工单编号、公开查询码与提交时间三项。
+    assert.equal(state.storageWrites.length, 1, '成功后只写一次存储');
+    const [key, value] = state.storageWrites[0];
+    assert.equal(key, 'changdi:my-cases:v1', '只写回执夹这一处存储');
+    const stored = JSON.parse(value);
+    assert.equal(stored.length, 1, '回执夹里有一条记录');
+    assert.deepEqual(
+      Object.keys(stored[0]).sort(),
+      ['caseNumber', 'publicLookupCode', 'submittedAt'],
+      '存储只含允许的三个字段'
+    );
+    assert.equal(stored[0].caseNumber, CASE_NUMBER, '存了工单编号');
+    assert.equal(stored[0].publicLookupCode, PUBLIC_CODE, '存了公开查询码');
+    assert.ok(!value.includes(PRIVATE_TOKEN), '存储不含私密凭证');
+    assert.ok(!value.includes('合成游客地点'), '存储不含发生地点');
+    assert.ok(!value.includes('合成游客诉求正文'), '存储不含问题描述');
+    assert.ok(!value.includes('13800000000'), '存储不含联系方式');
+    assert.ok(bodyText(call).includes('13800000000'), '联系方式只随提交发出');
+    assert.equal(page.data.submitMessage, '', '保存成功时不打扰用户');
 
     page.onViewProgress();
     assert.equal(state.navigations.length, 1, '跳转到公开进度页');
     assert.equal(state.navigations[0], '/pages/public/index?code=' + PUBLIC_CODE, '网址只带公开查询码');
     assert.ok(!state.navigations[0].includes(PRIVATE_TOKEN), '跳转网址不含私密凭证');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('提交失败不写本机回执夹；本机保存失败时回执照常展示', async () => {
+  const failed = createHarness({
+    request: options => options.fail({ errMsg: 'request:fail timeout' })
+  });
+  try {
+    fillForm(failed.page);
+    await failed.page.onSubmit();
+    await tick();
+    assert.equal(failed.state.storageWrites.length, 0, '提交失败不写存储');
+    assert.equal(failed.page.data.receipt, null, '没有拿到回执');
+  } finally {
+    restoreGlobals();
+  }
+
+  // 存储不可用时给出轻提示，回执仍然正常展示。
+  const broken = createHarness();
+  try {
+    broken.state.storageWrites.length = 0;
+    global.wx.getStorageSync = () => { throw new Error('storage unavailable'); };
+    fillForm(broken.page);
+    await broken.page.onSubmit();
+    await tick();
+    assert.equal(broken.state.storageWrites.length, 0, '存储异常时不写存储');
+    assert.equal(broken.page.data.view, 'receipt', '回执照常展示');
+    assert.equal(broken.page.data.receipt.caseNumber, CASE_NUMBER);
+    assert.match(broken.page.data.submitMessage, /本机记录保存失败/);
+    assert.equal(broken.page.data.receipt.privateLookupToken, PRIVATE_TOKEN, '私密凭证仍只在页面内存');
   } finally {
     restoreGlobals();
   }

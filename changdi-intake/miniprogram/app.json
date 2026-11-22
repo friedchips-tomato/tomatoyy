@@ -2,6 +2,7 @@
   "pages": [
     "pages/home/index",
     "pages/submit/index",
+    "pages/mine/index",
     "pages/public/index",
     "pages/merchant/index",
     "pages/staff/index"

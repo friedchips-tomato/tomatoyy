@@ -11,10 +11,10 @@ Page({
         placeholder: false
       },
       {
-        key: 'public',
+        key: 'mine',
         title: '游客与居民',
-        desc: '查询诉求进度',
-        path: '/pages/public/index',
+        desc: '我的诉求与进度查询',
+        path: '/pages/mine/index',
         placeholder: false
       },
       {
