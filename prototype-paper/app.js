@@ -69,6 +69,9 @@
     flashTimer: 0,
     serviceTab: "guides",
     guideLang: "",
+    parkingDestination: "",
+    parkingArriveTime: "",
+    parkingPreference: "save_time",
     feedback: { type: "", description: "", contact: "", photo: null },
     pendingListen: null
   };
@@ -96,6 +99,24 @@
   const pad = value => String(value).padStart(2, "0");
   const sealOf = point => sealChars[point.id] || point.name[0];
   const shortName = point => point.name.replace(/（.*?）/g, "");
+  const feeText = lot => {
+    const fee = lot && lot.fee;
+    if (!fee || typeof fee !== "object") return String(fee ?? "");
+    if (fee.amount === null || fee.amount === undefined) return "收费以现场为准";
+    if (fee.mode === "hourly") return `${fee.amount} 元/小时`;
+    if (fee.mode === "flat") return `${fee.amount} 元`;
+    return "收费以现场为准";
+  };
+  // 合成数据时间均为「墙钟 +08:00」；这里只做墙钟加减，偏移量仅作展示。
+  const addIsoMinutes = (iso, minutes) => {
+    const p = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/.exec(iso || "");
+    if (!p) return iso;
+    const base = new Date(Date.UTC(+p[1], +p[2] - 1, +p[3], +p[4], +p[5], +p[6]));
+    base.setUTCMinutes(base.getUTCMinutes() + minutes);
+    const n = value => String(value).padStart(2, "0");
+    return `${base.getUTCFullYear()}-${n(base.getUTCMonth() + 1)}-${n(base.getUTCDate())}T${n(base.getUTCHours())}:${n(base.getUTCMinutes())}:${n(base.getUTCSeconds())}+08:00`;
+  };
+  const isoTime = iso => (iso || "").slice(11, 16);
 
   function action(label, name, id = "", classes = "button", attributes = "") {
     return `<button type="button" class="${classes}" data-action="${name}" data-id="${escape(id)}" ${attributes}>${escape(label)}</button>`;
@@ -512,12 +533,17 @@
   }
 
   function openRoute(start = null) {
-    state.routeDraft = { interests: new Set(), minutes: 60, mode: start ? "drive" : "walk", start, loading: false };
+    const pf = parkingRuntime();
+    const now = (pf && pf.demoNow) || "2026-04-10T14:00:00+08:00";
+    state.routeDraft = {
+      interests: new Set(), minutes: 60, mode: start ? "drive" : "walk", start, loading: false,
+      arriveAt: addIsoMinutes(now, 30), preference: state.parkingPreference || "save_time"
+    };
     showSheet("route");
   }
 
   function renderRouteForm() {
-    const { interests, minutes, mode, start, loading } = state.routeDraft;
+    const { interests, minutes, mode, start, loading, arriveAt, preference } = state.routeDraft;
     if (loading) {
       return '<p role="status" class="small">正在排行程</p>' + '<div class="card skeleton" aria-hidden="true"><span></span><span></span><span></span></div>'.repeat(3);
     }
@@ -531,7 +557,14 @@
       <fieldset><legend>③ 怎么来</legend><div class="chips">
         ${chip("步行", "transport", "walk", mode === "walk")}${chip("自驾", "transport", "drive", mode === "drive")}
       </div></fieldset>
-      ${start && mode === "drive" ? `<p class="small">路线起点：${escape(start.name)}</p>` : ""}
+      ${mode === "drive" ? `<fieldset><legend>④ 到达时刻与偏好</legend>
+        <label class="field">到达时刻<input type="time" data-route-arrive value="${escape(isoTime(arriveAt))}" aria-label="到达时刻"></label>
+        <div class="chips">
+          ${chip("省总时间", "route-preference", "save_time", preference === "save_time")}
+          ${chip("少走路", "route-preference", "less_walking", preference === "less_walking")}
+        </div>
+      </fieldset>` : ""}
+      ${start && mode === "drive" ? `<p class="small">路线起点：${escape(start.name)}（自驾 · 停车推荐作为起点）</p>` : ""}
       ${action("排出三条路线", "generate", "", "button primary wide")}
       <p class="small">演示版：三条路线来自预设数据，时长与距离为示意。</p>`;
   }
@@ -609,11 +642,92 @@
         "scan-point", point.id, "list-button", `aria-label="${escape(point.name)}"`)).join("") + "</div>";
   }
 
+  function renderParkingRecommendation() {
+    const pf = parkingRuntime();
+    if (!pf) return "";
+    const destDefault = data.routes[0]?.points[0] || (data.points.find(p => p.key) || data.points[0])?.id;
+    const destination = state.parkingDestination || destDefault;
+    const demoDay = pf.demoNow.slice(0, 10);
+    const arriveTime = state.parkingArriveTime || isoTime(addIsoMinutes(pf.demoNow, 30));
+    const preference = state.parkingPreference || "save_time";
+    const arriveIso = `${demoDay}T${arriveTime}:00+08:00`;
+
+    const destOptions = data.points.filter(p => p.key || p.parking).map(p =>
+      `<option value="${escape(p.id)}" ${p.id === destination ? "selected" : ""}>${escape(shortName(p))}</option>`).join("");
+    const prefHint = preference === "less_walking"
+      ? "少走路：步行权重 40% · 总时间 10%"
+      : "省总时间：总时间权重 35% · 步行 10%";
+
+    let rec = null;
+    try {
+      rec = pf.recommend(pf.dataset, pf.model, destination, arriveIso, { preference, travelMode: "drive", generatedAt: pf.demoNow });
+    } catch {
+      rec = null;
+    }
+
+    let body;
+    if (!rec) {
+      body = '<p class="notice">推荐暂不可用，请稍后重试。</p>';
+    } else if (!rec.items.length && !rec.alternates.length) {
+      body = `<p class="notice">${escape(rec.note || "当前条件下没有可推荐的停车场。")}</p>`;
+    } else {
+      const offsetByLot = {};
+      for (const o of rec.offsets) (offsetByLot[o.lot_id] ||= []).push(o);
+      const all = [...rec.items, ...rec.alternates];
+      body = all.map((item, index) => {
+        const offsets = offsetByLot[item.lot_id] || [];
+        const arrive = item.arrive_free !== null && item.arrive_free !== undefined
+          ? `${Math.trunc(item.arrive_free)} 个` : "暂无余位";
+        const interval = item.arrive_free_p10 !== null && item.arrive_free_p90 !== null
+          ? `（区间 ${Math.trunc(item.arrive_free_p10)}–${Math.trunc(item.arrive_free_p90)}）` : "";
+        const freeRate = item.arrive_free_rate !== null && item.arrive_free_rate !== undefined
+          ? ` · 空置率约 ${Math.round(item.arrive_free_rate * 100)}%` : "";
+        const fee = item.fee_amount !== null && item.fee_amount !== undefined ? `${Math.round(item.fee_amount)} 元` : "费用未知";
+        const age = item.updated_at ? pf.ageSeconds({ issued_at: rec.generated_at, data_asof: item.updated_at }) : null;
+        // available=true 且 degraded=true：标注降级方式与数据时刻（契约 v1.1）
+        const degradeNote = item.degraded
+          ? `<p class="notice">预测降级：${escape(methodLabel(item.forecast_method))}${item.updated_at ? ` · 更新于 ${escape(isoTime(item.updated_at))}` : ""}</p>` : "";
+        return `<article class="card">
+          <div class="row"><span class="tag">${index === 0 ? "首选" : "备选"}</span><span class="small">综合分 ${item.score.toFixed(1)}</span></div>
+          <div class="row"><h3>${escape(item.name)}</h3></div>
+          <p>到达时预计余位 <strong>${arrive}</strong>${interval}${freeRate}</p>
+          <p class="small">步行 ${item.walk_meters} 米 · 约 ${item.walk_minutes} 分钟 · ${fee} · ${escape(ageText(age))}</p>
+          ${degradeNote}
+          <ul class="reasons">${item.reasons.map(r => `<li>${escape(r)}</li>`).join("")}</ul>
+          ${offsets.map(o => `<p class="notice">${escape(o.note)}</p>`).join("")}
+          ${action("从这里出发排路线", "parking-start", item.lot_id, "button")}
+        </article>`;
+      }).join("");
+    }
+
+    const excluded = rec && rec.excluded && rec.excluded.length
+      ? `<section class="stack"><h3 class="section-title">排除的车场</h3>
+          ${rec.excluded.map(e => `<p class="small">${escape(e.name)}：${escape(e.reason)}</p>`).join("")}</section>` : "";
+
+    return `<section class="stack">
+      <div class="row"><span class="tag demo">模拟数据</span><span class="small">预测与推荐 · 合成数据，接入真实数据后替换</span></div>
+      <label class="field">目的地<select data-parking-destination aria-label="目的地">${destOptions}</select></label>
+      <label class="field">到达时刻<span class="small">演示日 ${escape(demoDay)}</span>
+        <input type="time" data-parking-arrive value="${escape(arriveTime)}" aria-label="到达时刻"></label>
+      <div class="row"><span class="small">偏好</span><div class="chips">
+        ${chip("省总时间", "parking-preference", "save_time", preference === "save_time")}
+        ${chip("少走路", "parking-preference", "less_walking", preference === "less_walking")}
+      </div></div>
+      <p class="small">${escape(prefHint)} · 步行距离按到街区主入口估算（演示版，未按目的地差异化）</p>
+      ${body}
+      ${excluded}
+    </section>`;
+  }
+
   function renderServices() {
     const tabs = [["guides", "讲解员"], ["parking", "停车"], ["feedback", "反馈"]];
     const contents = {
       guides: renderGuides,
-      parking: () => '<div><span class="tag demo">示范数据</span></div>' + data.parking.map(parkingCard).join(""),
+      parking: () => {
+        const pf = parkingRuntime();
+        if (pf) return renderParkingRecommendation() + data.parking.map(parkingCard).join("");
+        return '<div><span class="tag demo">示范数据</span></div>' + data.parking.map(parkingCard).join("");
+      },
       feedback: renderFeedback
     };
     return '<div class="segmented" role="group" aria-label="服务分类">' +
@@ -675,24 +789,121 @@
       ${action("查看我的预约", "my-records", "my-bookings", "button wide")}`;
   }
 
+  function parkingRuntime() {
+    const pf = window.CD_PARKING;
+    return pf && pf.ready && pf.model && pf.dataset ? pf : null;
+  }
+
+  // 运行时历史观测（到「演示现在」为止，最近 5 个点，画历史实线）
+  function lotHistory(pf, lot) {
+    try {
+      const cutoff = pf.demoNow.slice(0, 19);
+      const rows = pf.dataset.observations
+        .filter(o => o.lot_id === lot.id && (o.quality === "ok" || o.quality === "stale")
+          && o.free_spaces !== null && o.ts.slice(0, 19) <= cutoff)
+        .sort((a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : 0));
+      return rows.slice(-5).map(o => o.free_spaces);
+    } catch {
+      return [];
+    }
+  }
+
+  // 运行时预测：当前余位 + 未来 1 小时点预测与 p10/p90 区间
+  function lotForecast(lot) {
+    const pf = parkingRuntime();
+    if (!pf) return null;
+    try {
+      const { forecasts, features } = pf.forecastLot(pf.dataset, pf.model, lot.id, pf.demoNow, pf.demoNow, [15, 30, 45, 60]);
+      const meta = features && features.meta;
+      const currentFree = meta && meta.free_known !== null && meta.free_known !== undefined ? meta.free_known : null;
+      const first = forecasts && forecasts[0];
+      return {
+        source: pf.source,
+        currentFree,
+        currentRate: currentFree !== null ? currentFree / lot.total : null,
+        dataAsOf: meta ? meta.free_known_ts : null,
+        ageSeconds: meta && meta.age_seconds !== null && meta.age_seconds !== undefined ? meta.age_seconds : null,
+        degraded: Boolean(first && first.degraded),
+        method: first ? first.method : "unavailable",
+        forecasts,
+        history: lotHistory(pf, lot)
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  // 数据年龄文案（阈值与 reasons.mjs 一致：180s 内新鲜，900s 内延迟，超过 900s 过期）
+  function ageText(ageSeconds) {
+    if (ageSeconds === null || ageSeconds === undefined) return "更新时间未知";
+    const minutes = Math.max(0, Math.floor(ageSeconds / 60));
+    if (ageSeconds > 900) return "数据过期，以现场为准";
+    if (ageSeconds > 180) return `数据延迟 ${minutes} 分钟`;
+    return minutes > 0 ? `更新于 ${minutes} 分钟前` : "刚刚更新";
+  }
+
+  // 降级方式 → 人话标签（与 04/后端契约 v1.1 forecast_method 对齐）
+  function methodLabel(method) {
+    return {
+      model: "模型预测",
+      same_slot_baseline: "沿用同期观测",
+      same_weekday_baseline: "沿用同期工作日",
+      last_known: "沿用最近一次观测",
+      unavailable: "预测不可用"
+    }[method] || "降级预测";
+  }
+
   function parkingCard(lot) {
-    const percent = lot.free / lot.total * 100;
-    // 值班台把数据标记为陈旧时，余位改为灰色并注明不是实时
-    const stale = Boolean(readJSON(opsKey).lots?.[lot.id]?.stale);
-    const color = stale ? "#6f6556" : percent > 30 ? "#3f6b62" : percent >= 10 ? "#9a6a12" : "#b23a2a";
+    const fc = lotForecast(lot);
+    // 产物注入脚本存在但不可用（版本不兼容 / 字段缺失 / 数据集不完整）→ 回落静态并提示
+    const artifactBad = Boolean(window.CD_PARKING?.artifactPresent) && !window.CD_PARKING?.ready;
+    // 值班台把数据标记为陈旧时，余位改为灰色并注明不是实时（既有语义，保留）
+    const opsStale = Boolean(readJSON(opsKey).lots?.[lot.id]?.stale);
+    // 运行时数据过期（age > 900s）时复用 stale 视觉
+    const ageStale = Boolean(fc && fc.ageSeconds !== null && fc.ageSeconds > 900);
+    // available=false：余位不可用，一律不显示数字（后端契约 v1.1 回落判据）
+    const unavailable = Boolean(fc && fc.currentFree === null);
+    const stale = opsStale || ageStale;
+    const free = fc && fc.currentFree !== null ? fc.currentFree : lot.free;
+    const percent = unavailable ? 0 : (lot.total ? free / lot.total * 100 : 0);
+    const color = stale || unavailable ? "#6f6556" : percent > 30 ? "#3f6b62" : percent >= 10 ? "#9a6a12" : "#b23a2a";
+    const freeLabel = unavailable ? "—" : Math.trunc(free);
+
+    const predict = fc && fc.forecasts.find(f => f.horizon_minutes === 30);
+    const predictLine = (fc && predict && predict.point_free !== null)
+      ? `<p class="parking-predict">预计 30 分钟后约 <strong>${Math.trunc(predict.point_free)}</strong> 个`
+        + `${predict.p10 !== null && predict.p90 !== null ? `（区间 ${Math.trunc(predict.p10)}–${Math.trunc(predict.p90)}）` : ""}`
+        + `${predict.free_rate !== null ? ` · 空置率约 ${Math.round(predict.free_rate * 100)}%` : ""}</p>`
+      : "";
+    // available=true 且 degraded=true：可显示预测，但须标注降级方式与数据时刻
+    const degradeNote = fc && !unavailable && fc.degraded
+      ? `<p class="notice">预测降级：${escape(methodLabel(fc.method))}${fc.dataAsOf ? ` · 更新于 ${escape(isoTime(fc.dataAsOf))}` : ""}</p>`
+      : "";
+
     return `<article class="card${stale ? " stale" : ""}" style="--meter-color:${color}">
-      <div class="parking-header"><h3>${escape(lot.name)}</h3><strong>${lot.free}<small> / ${lot.total} 余位</small></strong></div>
+      ${fc ? '<span class="tag demo">模拟数据</span>' : ""}
+      <div class="parking-header"><h3>${escape(lot.name)}</h3><strong>${freeLabel}<small> / ${lot.total} 余位</small></strong></div>
       <div class="parking-meter" style="--free:${percent}%" aria-hidden="true"><span></span></div>
-      ${stale ? '<p class="notice">数据已过时，余位不代表现在，请以现场为准。</p>' : ""}
-      <p class="small">步行 ${lot.walk} 米 · ${escape(lot.fee)} · 更新于 ${escape(lot.updated)}</p>
+      ${opsStale ? '<p class="notice">数据已过时，余位不代表现在，请以现场为准。</p>' : ""}
+      ${ageStale ? '<p class="notice">数据过期，以现场为准。</p>' : ""}
+      ${unavailable ? '<p class="notice">实时余位暂不可用。</p>' : ""}
+      <p class="small">步行 ${lot.walk} 米 · ${escape(feeText(lot))} · ${fc ? escape(ageText(fc.ageSeconds)) : `更新于 ${escape(lot.updated)}`}</p>
       <p>${escape(lot.reason)}</p>
-      ${parkingChart(lot)}
-      <p class="chart-legend small"><span>实线 · 历史余位</span><span>虚线 · 未来 1 小时（模拟）</span></p>
+      ${parkingChart(lot, fc)}
+      <p class="chart-legend small"><span>实线 · 历史余位</span><span>虚线 · 未来 1 小时（${fc ? "预计" : "模拟"}）</span></p>
+      ${predictLine}
+      ${degradeNote}
+      ${artifactBad ? '<p class="notice">预测暂不可用（产物缺失或版本不兼容），以上为静态示范数据。</p>' : ""}
       ${action("从这里出发排路线", "parking-start", lot.id, "button")}
     </article>`;
   }
 
-  function parkingChart(lot) {
+  function parkingChart(lot, fc) {
+    if (fc && fc.currentFree !== null) return runtimeChart(lot, fc);
+    return staticChart(lot);
+  }
+
+  function staticChart(lot) {
     const values = [...lot.past, ...lot.forecast];
     const peak = Math.max(1, ...values);
     const coords = values.map((value, index) => `${6 + 288 * index / Math.max(1, values.length - 1)},${51 - 44 * value / peak}`);
@@ -703,6 +914,43 @@
       <line x1="${currentX}" x2="${currentX}" y1="4" y2="54" stroke="#c7bba7" stroke-dasharray="2 3"/>
       <polyline points="${coords.slice(0, now + 1).join(" ")}" stroke="#2b2723" stroke-width="1.6"/>
       <polyline points="${coords.slice(now).join(" ")}" stroke="#b23a2a" stroke-width="1.6" stroke-dasharray="4 4"/>
+    </svg>`;
+  }
+
+  function runtimeChart(lot, fc) {
+    // 时间轴：历史 t=-60..0（5 点），预测 +15..+60（4 点）；x 轴 0..300。
+    const slots = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
+    const nowIdx = 4;
+    const xOf = i => 6 + 288 * (slots[i] + 60) / 120;
+    const byH = {};
+    for (const f of fc.forecasts) byH[f.horizon_minutes] = f;
+    const forecastVals = [15, 30, 45, 60].map(h => (byH[h] ? byH[h].point_free : null));
+    const history = fc.history.length ? fc.history : lot.past;
+    const current = fc.currentFree;
+    const p10 = [15, 30, 45, 60].map(h => (byH[h] && byH[h].p10 !== null ? byH[h].p10 : null));
+    const p90 = [15, 30, 45, 60].map(h => (byH[h] && byH[h].p90 !== null ? byH[h].p90 : null));
+    const allNums = [...history, current, ...forecastVals, ...p10, ...p90].filter(v => v !== null && v !== undefined);
+    const peak = Math.max(1, ...allNums);
+    const yOf = v => 51 - 44 * v / peak;
+
+    const histPts = slots.slice(0, 5).map((_, i) => {
+      const v = i < history.length ? history[i] : current;
+      return `${xOf(i)},${yOf(v)}`;
+    });
+    const forecastPts = [current, ...forecastVals].map((v, i) => `${xOf(nowIdx + i)},${yOf(v === null ? current : v)}`);
+    const band = [];
+    if (p10.every(v => v !== null) && p90.every(v => v !== null)) {
+      const pts = [];
+      p10.forEach((v, i) => pts.push(`${xOf(nowIdx + 1 + i)},${yOf(v)}`));
+      for (let i = p90.length - 1; i >= 0; i--) pts.push(`${xOf(nowIdx + 1 + i)},${yOf(p90[i])}`);
+      band.push(`<polygon points="${pts.join(" ")}" fill="rgba(178,58,42,.08)" stroke="none"/>`);
+    }
+    return `<svg class="parking-chart" viewBox="0 0 300 58" preserveAspectRatio="none" role="img"
+      aria-label="历史余位：${history.join("、")}。未来 1 小时预测：${forecastVals.map(v => v === null ? "未知" : v).join("、")}。">
+      ${band.join("")}
+      <line x1="${xOf(nowIdx)}" x2="${xOf(nowIdx)}" y1="4" y2="54" stroke="#c7bba7" stroke-dasharray="2 3"/>
+      <polyline points="${histPts.join(" ")}" stroke="#2b2723" stroke-width="1.6"/>
+      <polyline points="${forecastPts.join(" ")}" stroke="#b23a2a" stroke-width="1.6" stroke-dasharray="4 4"/>
     </svg>`;
   }
 
@@ -1218,6 +1466,7 @@
         break;
       case "duration": state.routeDraft.minutes = Number(id); refreshSheet(button); break;
       case "transport": state.routeDraft.mode = id; refreshSheet(button); break;
+      case "route-preference": state.routeDraft.preference = id; refreshSheet(button); break;
       case "generate": generateRoutes(); break;
       case "adopt": adoptRoute(id); break;
       case "itinerary": showSheet("itinerary", "", button); break;
@@ -1232,7 +1481,12 @@
       case "service": service(id); break;
       case "service-tab": state.serviceTab = id; refreshSheet(button); break;
       case "book": showSheet("booking", id); break;
-      case "parking-start": openRoute(parking.get(id)); break;
+      case "parking-preference": state.parkingPreference = id; refreshSheet(button); break;
+      case "parking-start":
+        // 建议采纳（从这里出发排路线）：CD_TOURISM 不存在时静默跳过，不阻塞 UI
+        window.CD_TOURISM?.record?.("parking_advice_adopted", id);
+        openRoute(parking.get(id));
+        break;
       case "reset": reset(); break;
     }
   });
@@ -1250,6 +1504,15 @@
       state.guideLang = field.value;
       refreshSheet();
       focus(sheetBody.querySelector("[data-guide-filter]"));
+    } else if (field.hasAttribute("data-parking-destination")) {
+      state.parkingDestination = field.value;
+      refreshSheet();
+    } else if (field.hasAttribute("data-parking-arrive")) {
+      state.parkingArriveTime = field.value;
+      refreshSheet();
+    } else if (field.hasAttribute("data-route-arrive")) {
+      if (state.routeDraft) state.routeDraft.arriveAt = `${state.routeDraft.arriveAt.slice(0, 10)}T${field.value}:00+08:00`;
+      refreshSheet();
     } else if (field.name === "photo") {
       if (state.feedback.photo) URL.revokeObjectURL(state.feedback.photo);
       state.feedback.photo = field.files[0] ? URL.createObjectURL(field.files[0]) : null;

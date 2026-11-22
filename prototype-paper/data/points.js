@@ -249,10 +249,19 @@ window.CD_DATA = {
     { id: "G3", name: "讲解员 C", langs: ["粤语", "客家话"], level: "银牌", rating: 4.8, topics: "老街生活、方言故事", slots: ["11:00", "15:30", "17:00"] }
   ],
   parking: [
-    { id: "P1", name: "沿江停车场", total: 120, free: 18, walk: 150, fee: "5 元/小时", updated: "2 分钟前",
+    { id: "P1", name: "沿江停车场", total: 120, free: 18, walk: 150, walk_minutes: 2, updated: "2 分钟前",
+      updated_at: "2026-04-10T13:58:00+08:00", source: "synthetic",
+      fee: { mode: "hourly", amount: 5, unit: "CNY", note: "5 元/小时（示范）" },
+      access: { open_hours: "00:00-24:00", one_way: false, restricted_hours: [], height_limit_m: null,
+        note: "沿江路单行道，需从水埠头方向进入（示范）" },
       past: [62, 48, 35, 26, 18], forecast: [12, 8, 10, 15],
       reason: "离水埠头最近，停车后步行约 2 分钟；但 1 小时内可能停满。" },
-    { id: "P2", name: "内街停车场", total: 80, free: 41, walk: 450, fee: "4 元/小时", updated: "5 分钟前",
+    { id: "P2", name: "内街停车场", total: 80, free: 41, walk: 450, walk_minutes: 6, updated: "5 分钟前",
+      updated_at: "2026-04-10T13:55:00+08:00", source: "synthetic",
+      fee: { mode: "hourly", amount: 4, unit: "CNY", note: "4 元/小时（示范）" },
+      access: { open_hours: "06:00-24:00", one_way: true,
+        restricted_hours: [{ from: "07:00", to: "09:00", note: "早高峰只出不进（示范）" }],
+        height_limit_m: 2.2, note: "内街单行（示范）" },
       past: [55, 52, 47, 44, 41], forecast: [38, 36, 37, 40],
       reason: "余位充足，步行约 6 分钟到骑楼街，适合现在出发的游客。" }
   ],
