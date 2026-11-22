@@ -416,9 +416,14 @@ paths:
         按对端地址做窗口限流，默认每 600 秒 60 次，超限返回 429 too_many_requests 并带
         Retry-After（秒）。响应统一使用 Cache-Control: no-store，不缓存。
 
-        数据为合成示范数据（source 固定为 synthetic），不是真实车场余位，页面必须标注「模拟」。
-        运行时数据不可用时仍返回 200 和静态车场信息，available 为 false、degraded 为 true，
-        并在 note 中写明原因；本接口不返回 5xx。
+        本接口不接受任何查询参数；出现未列出的查询参数或同名参数重复返回 400 invalid_filter。
+
+        source 取自运行时产物，当前为 synthetic（合成示范数据，不是真实余位），页面必须标注「模拟」。
+        available 表示运行时产物是否可用；不可用时仍返回 200 和静态车场信息，不返回 5xx。
+        degraded 表示本次响应含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用），
+        note 为人类可读原因（降级链名或运行时不可用的原因），正常时为 null。
+        generated_at 为运行时数据的生成时刻（取自运行时产物 manifest），表示这份数据何时产生，
+        不是请求时刻。
       security: []
       responses:
         '200':
@@ -430,6 +435,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParkingLotsResponse'
+        '400':
+          description: 出现未列出的查询参数或同名参数重复（invalid_filter）。本接口不接受任何查询参数。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [invalid_filter]
         '429':
           description: 同一对端地址在限流窗口内的请求次数超限。
           headers:
@@ -452,11 +467,14 @@ paths:
       summary: 按目的地与到达时间推荐停车场
       description: |
         匿名只读接口，不要求 Authorization，限流与 Cache-Control: no-store 规则同车场目录。
-        未列出的查询参数或同名重复参数返回 400 invalid_filter。
+        未列出的查询参数或同名参数重复返回 400 invalid_filter；已知参数的取值非法用 invalid_field。
 
         arrive_at 须为带时区的 ISO8601 时间。预测不可用时 arrive_free 为 null，不得按 0 处理。
-        车场运行时数据不可用时仍返回 200，available 为 false、degraded 为 true，
-        静态车场信息照常给出，降级信息原样透传；本接口不返回 5xx。
+        available 表示运行时产物是否可用；不可用时仍返回 200，静态车场信息照常给出，不返回 5xx。
+        degraded 表示本次响应含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用），
+        note 为人类可读原因，正常时为 null。
+        generated_at 为该次推荐所依据预测的签发截点，即 min(数据装载时刻, arrive_at − 30 分钟)，
+        语义等于上游 forecast 的 issued_at，不是响应发送时刻。
       security: []
       parameters:
         - name: destination_id
@@ -510,10 +528,10 @@ paths:
                 $ref: '#/components/schemas/ParkingRecommendationsResponse'
         '400':
           description: |
-            destination_id 缺失或不匹配 ^[A-Za-z0-9_-]{1,64}$、preference 不在枚举内、
-            vehicle_height_m 或 stay_hours 不是正数（invalid_field）；
-            arrive_at 缺失或不是带时区的 ISO8601 日期时间（invalid_timestamp）；
-            出现未列出的参数或同名重复参数（invalid_filter）。
+            已知参数的取值非法（invalid_field）：destination_id 缺失或不匹配
+            ^[A-Za-z0-9_-]{1,64}$、preference 不在枚举内（例如 fast）、vehicle_height_m 或
+            stay_hours 不是正数。arrive_at 缺失或不是带时区的 ISO8601 日期时间（invalid_timestamp）。
+            出现未列出的参数或同名参数重复（invalid_filter）。
           content:
             application/json:
               schema:
@@ -544,12 +562,15 @@ paths:
       summary: 读取单个车场未来 15–60 分钟的余位预测
       description: |
         匿名只读接口，不要求 Authorization，限流与 Cache-Control: no-store 规则同车场目录。
-        未登记的 lot_id 返回 404 lot_not_found。
+        未登记的 lot_id 返回 404 lot_not_found。未列出的查询参数或同名参数重复返回 400
+        invalid_filter；已知参数的取值非法用 invalid_field。
 
-        issued_at 默认取服务器当前时间。horizons 为逗号分隔的分钟数，取值限于 15、30、45、60，
-        省略时返回全部。method 说明预测来源：model 为模型输出，last_known 沿用最近观测，
+        issued_at 为本次请求的签发时刻，默认取服务器当前时间（不是数据生成时刻）。
+        horizons 为逗号分隔的分钟数，取值限于 15、30、45、60，省略时返回全部。
+        method 说明预测来源：model 为模型输出，last_known 沿用最近观测，
         same_slot_baseline 与 same_weekday_baseline 为同槽位或同星期基线，
-        unavailable 表示该时段不可预测。degraded 与 degrade_reason 原样透传，本接口不返回 5xx。
+        unavailable 表示该时段不可预测。available 表示运行时产物是否可用；不可用时仍返回 200，
+        不返回 5xx。degraded 与 degrade_reason 原样透传。
       security: []
       parameters:
         - name: lot_id
@@ -589,8 +610,9 @@ paths:
                 $ref: '#/components/schemas/ParkingForecastResponse'
         '400':
           description: |
-            horizons 含不允许的取值或为空（invalid_field）；issued_at 不是带时区的 ISO8601
-            日期时间（invalid_timestamp）。
+            已知参数的取值非法（invalid_field）：horizons 含不允许的取值或重复取值（例如 15,90 或
+            15,15）、为空；issued_at 不是带时区的 ISO8601 日期时间（invalid_timestamp）。
+            出现未列出的参数或同名参数重复（invalid_filter）。
           content:
             application/json:
               schema:
@@ -598,7 +620,7 @@ paths:
                   - $ref: '#/components/schemas/Error'
                   - properties:
                       error:
-                        enum: [invalid_field, invalid_timestamp]
+                        enum: [invalid_field, invalid_timestamp, invalid_filter]
         '404':
           description: lot_id 未在车场目录中登记。
           content:
@@ -924,7 +946,7 @@ components:
         source:
           type: string
           enum: [synthetic, manual, api, camera]
-          description: 车场静态数据来源。
+          description: 车场静态数据来源，取自运行时产物；当前为 synthetic。
     ParkingLotsResponse:
       type: object
       additionalProperties: false
@@ -933,22 +955,21 @@ components:
       properties:
         source:
           type: string
-          enum: [synthetic]
-          description: 数据来源，固定为合成示范数据。
+          description: 数据来源，取自运行时产物；当前为 synthetic（合成示范数据，不是真实余位）。
         available:
           type: boolean
-          description: 运行时数据是否可用。false 时 items 仍为静态车场信息。
+          description: 运行时产物是否可用。false 时 items 仍为静态车场信息，接口仍返回 200。
         degraded:
           type: boolean
-          description: 是否处于降级状态。
+          description: 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用）。
         note:
           type: string
           nullable: true
-          description: 降级或不可用的原因，正常时为 null。
+          description: 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 null。
         generated_at:
           type: string
           format: date-time
-          description: 本次响应的生成时间（UTC）。
+          description: 运行时数据的生成时刻（取自运行时产物 manifest）。表示这份数据何时产生，不是请求时刻。
         items:
           type: array
           description: 车场列表。
@@ -1151,21 +1172,22 @@ components:
         generated_at:
           type: string
           format: date-time
-          description: 本次响应的生成时间（UTC）。
+          description: |
+            该次推荐所依据预测的签发截点，即 min(数据装载时刻, arrive_at − 30 分钟)。
+            语义等于上游 forecast 的 issued_at，不是响应发送时刻。
         source:
           type: string
-          enum: [synthetic]
-          description: 数据来源，固定为合成示范数据。
+          description: 数据来源，取自运行时产物；当前为 synthetic（合成示范数据，不是真实余位）。
         available:
           type: boolean
-          description: 运行时数据是否可用。false 时静态车场信息仍照常给出。
+          description: 运行时产物是否可用。false 时静态车场信息仍照常给出，接口仍返回 200。
         degraded:
           type: boolean
-          description: 是否处于降级状态。
+          description: 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用）。
         note:
           type: string
           nullable: true
-          description: 降级或不可用的原因，正常时为 null。
+          description: 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 null。
         items:
           type: array
           description: 首选推荐列表。
@@ -1214,7 +1236,7 @@ components:
         issued_at:
           type: string
           format: date-time
-          description: 预测的签发时间（UTC）。
+          description: 本次请求的签发时刻（UTC），与响应顶层 issued_at 一致，不是数据生成时刻。
         target_ts:
           type: string
           format: date-time
@@ -1267,8 +1289,7 @@ components:
           description: 预测所依据数据的最新时刻（UTC），method=unavailable 时为 null。
         source:
           type: string
-          enum: [synthetic]
-          description: 数据来源，固定为合成示范数据。
+          description: 数据来源，取自运行时产物；当前为 synthetic（合成示范数据，不是真实余位）。
     ParkingForecastResponse:
       type: object
       additionalProperties: false
@@ -1282,21 +1303,20 @@ components:
         issued_at:
           type: string
           format: date-time
-          description: 请求中的签发时间，回显为 UTC。
+          description: 本次请求的签发时刻，回显为 UTC；省略入参时取服务器当前时间，不是数据生成时刻。
         source:
           type: string
-          enum: [synthetic]
-          description: 数据来源，固定为合成示范数据。
+          description: 数据来源，取自运行时产物；当前为 synthetic（合成示范数据，不是真实余位）。
         available:
           type: boolean
-          description: 预测数据是否可用。
+          description: 运行时产物是否可用；false 时仍返回 200，forecasts 中 method 为 unavailable。
         degraded:
           type: boolean
-          description: 是否处于降级状态。
+          description: 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用）。
         note:
           type: string
           nullable: true
-          description: 降级或不可用的原因，正常时为 null。
+          description: 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 null。
         forecasts:
           type: array
           description: 按 horizons 顺序返回的预测列表。

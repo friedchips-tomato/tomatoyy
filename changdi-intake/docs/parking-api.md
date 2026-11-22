@@ -2,7 +2,9 @@
 
 本文面向 H5 游客端、运营台和微信小程序，说明长堤风貌街停车预测与推荐接口的请求、响应和判读规则。字段名、错误码和路径保持英文原样。接口的权威定义以 [OpenAPI](openapi.yaml) 为准，本文与契约冲突时以契约为准。
 
-当前数据为合成示范数据：响应顶层的 `source` 为 `synthetic`，车场静态条目的 `source` 枚举允许 `synthetic`、`manual`、`api`、`camera`。这不是真实车场余位，所有展示位置必须标注「模拟」，不得把静态信息或合成预测说成实时余位。
+本接口的数据由上游停车预测运行时提供：上游为仓库根目录 `parking-forecast/`（`model_version = 2.0.0`、`schema_version = 2.0.0`）。服务端内置一份只读副本（`server/src/parking/vendor/`，附来源与 SHA-256 记录，见同目录 `PROVENANCE.md`），可用环境变量 `CHANGDI_PARKING_DIR` 切换到别处；切换后数据可能不是合成数据，届时 `source` 会随之变化。
+
+当前数据为合成示范数据：响应顶层的 `source` 取自运行时产物，当前为 `synthetic`；车场静态条目的 `source` 枚举允许 `synthetic`、`manual`、`api`、`camera`。这不是真实车场余位，所有展示位置必须标注「模拟」，不得把静态信息或合成预测说成实时余位。
 
 ## 通用约定
 
@@ -16,24 +18,26 @@
 
 | 错误码 | HTTP | 说明 |
 | --- | --- | --- |
-| `invalid_field` | 400 | 字段缺失、格式或取值不合法 |
+| `invalid_field` | 400 | 已知参数的取值非法，例如 `preference=fast`、`horizons=15,90`、`horizons=15,15`、`vehicle_height_m=-1`、`stay_hours=0` |
 | `invalid_timestamp` | 400 | 时间不是带时区的 ISO8601 |
-| `invalid_filter` | 400 | 出现未列出的查询参数或同名重复参数（仅推荐接口） |
+| `invalid_filter` | 400 | 出现未列出的查询参数，或同名参数重复；三个接口都适用（`lots` 也不接受任何查询参数） |
 | `lot_not_found` | 404 | `lot_id` 未登记 |
 | `too_many_requests` | 429 | 超出限流窗口，按 `Retry-After` 重试 |
 | `unavailable` | 502 | 仅 guide-bridge 代理：上游不可达 |
 
+`invalid_filter` 只判断参数名是否合法、是否重复；已列出的参数名对应的取值不合法一律用 `invalid_field`，时间格式错误用 `invalid_timestamp`。
+
 ## 1. 车场目录
 
-`GET /api/v1/public/parking/lots`，无查询参数。
+`GET /api/v1/public/parking/lots`，不接受任何查询参数；传入未列出的参数或同名重复参数返回 400 `invalid_filter`。
 
 | 响应字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
-| `source` | string | 否 | 数据来源，固定 `synthetic` |
-| `available` | boolean | 否 | 运行时数据是否可用；`false` 时 `items` 仍为静态车场信息 |
-| `degraded` | boolean | 否 | 是否处于降级状态 |
-| `note` | string | 是 | 降级或不可用原因，正常时为 `null` |
-| `generated_at` | string | 否 | 响应生成时间（UTC） |
+| `source` | string | 否 | 数据来源，取自运行时产物；当前为 `synthetic`（合成示范数据，不是真实余位） |
+| `available` | boolean | 否 | 运行时产物是否可用；`false` 时 `items` 仍为静态车场信息，接口仍返回 200 |
+| `degraded` | boolean | 否 | 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用） |
+| `note` | string | 是 | 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 `null` |
+| `generated_at` | string | 否 | 运行时数据的生成时刻（取自运行时产物 manifest），表示这份数据何时产生，不是请求时刻 |
 | `items` | array | 否 | 车场列表 |
 
 `items` 每项（`ParkingLot`）：
@@ -48,7 +52,7 @@
 | `walk_to_street` | object | 否 | 到街区步行距离，见下表 |
 | `district` | string | 是 | 所属街区或片区，未知时为 `null` |
 | `notes` | string | 是 | 补充说明，合成数据会注明用途；无说明时为 `null` |
-| `source` | string | 否 | 车场静态数据来源：`synthetic`、`manual`、`api` 或 `camera`；当前为 `synthetic` |
+| `source` | string | 否 | 车场静态数据来源，取自运行时产物：`synthetic`、`manual`、`api` 或 `camera`；当前为 `synthetic` |
 
 `fee` 对象本身一定存在，其中部分字段的值可能为 `null`：
 
@@ -86,18 +90,18 @@
 | `vehicle_height_m` | 否 | number | 车辆高度（米），须为正数 |
 | `stay_hours` | 否 | number | 预计停留时长（小时），须为正数 |
 
-未列出的参数或同名重复参数返回 400 `invalid_filter`。`destination_id` 不合法返回 400 `invalid_field`，`arrive_at` 缺失或格式不符返回 400 `invalid_timestamp`。
+未列出的参数或同名重复参数返回 400 `invalid_filter`。已列出参数的取值非法返回 400 `invalid_field`（例如 `preference=fast`、`vehicle_height_m=-1`、`stay_hours=0`），`arrive_at` 缺失或格式不符返回 400 `invalid_timestamp`。
 
 | 响应字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
 | `destination_id` | string | 否 | 回显请求中的点位代码 |
 | `arrive_at` | string | 否 | 回显到达时间（UTC） |
 | `preference` | string | 否 | 实际采用的偏好 |
-| `generated_at` | string | 否 | 响应生成时间（UTC） |
-| `source` | string | 否 | 数据来源，固定 `synthetic` |
-| `available` | boolean | 否 | 运行时数据是否可用 |
-| `degraded` | boolean | 否 | 是否处于降级状态 |
-| `note` | string | 是 | 降级或不可用原因，正常时为 `null` |
+| `generated_at` | string | 否 | 该次推荐所依据预测的签发截点，即 min(数据装载时刻, `arrive_at` − 30 分钟)；语义等于上游 forecast 的 `issued_at`，不是响应发送时刻 |
+| `source` | string | 否 | 数据来源，取自运行时产物；当前为 `synthetic`（合成示范数据，不是真实余位） |
+| `available` | boolean | 否 | 运行时产物是否可用；`false` 时静态车场信息仍照常给出，接口仍返回 200 |
+| `degraded` | boolean | 否 | 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用） |
+| `note` | string | 是 | 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 `null` |
 | `items` | array | 否 | 首选推荐 |
 | `alternates` | array | 否 | 备选推荐 |
 | `excluded` | array | 否 | 被排除的车场及原因 |
@@ -162,17 +166,19 @@
 | 参数 | 位置 | 必填 | 类型 | 含义 |
 | --- | --- | --- | --- | --- |
 | `lot_id` | path | 是 | string | 车场目录代码，匹配 `^[A-Za-z0-9_-]{1,32}$`，未登记返回 404 `lot_not_found` |
-| `issued_at` | query | 否 | string | 签发时间，带时区的 ISO8601，默认服务器当前时间 |
+| `issued_at` | query | 否 | string | 本次请求的签发时刻，带时区的 ISO8601，默认服务器当前时间（不是数据生成时刻） |
 | `horizons` | query | 否 | string | 逗号分隔的分钟数，取值限于 `15,30,45,60`，默认全部 |
+
+未列出的参数或同名重复参数返回 400 `invalid_filter`；`horizons` 取值非法（例如 `15,90`、`15,15` 或为空）返回 400 `invalid_field`，`issued_at` 格式不符返回 400 `invalid_timestamp`。
 
 | 响应字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
 | `lot_id` | string | 否 | 车场目录代码 |
-| `issued_at` | string | 否 | 回显签发时间（UTC） |
-| `source` | string | 否 | 数据来源，固定 `synthetic` |
-| `available` | boolean | 否 | 预测数据是否可用 |
-| `degraded` | boolean | 否 | 是否处于降级状态 |
-| `note` | string | 是 | 降级或不可用原因，正常时为 `null` |
+| `issued_at` | string | 否 | 本次请求的签发时刻，回显为 UTC，不是数据生成时刻 |
+| `source` | string | 否 | 数据来源，取自运行时产物；当前为 `synthetic`（合成示范数据，不是真实余位） |
+| `available` | boolean | 否 | 运行时产物是否可用；`false` 时仍返回 200，`forecasts` 中 `method` 为 `unavailable` |
+| `degraded` | boolean | 否 | 本次响应是否含降级结果（任一时距或任一车场走了降级链，或运行时整体不可用） |
+| `note` | string | 是 | 人类可读的降级或不可用原因（降级链名或运行时不可用的原因），正常时为 `null` |
 | `forecasts` | array | 否 | 按 `horizons` 顺序返回的预测列表 |
 
 `forecasts` 每项：
@@ -180,7 +186,7 @@
 | 字段 | 类型 | 可空 | 含义 |
 | --- | --- | --- | --- |
 | `lot_id` | string | 否 | 车场目录代码 |
-| `issued_at` | string | 否 | 签发时间（UTC） |
+| `issued_at` | string | 否 | 本次请求的签发时刻（UTC），与响应顶层 `issued_at` 一致，不是数据生成时刻 |
 | `target_ts` | string | 否 | 预测目标时刻（UTC） |
 | `horizon_minutes` | integer | 否 | 预测时长，`15`、`30`、`45` 或 `60` |
 | `point_free` | integer | 是 | 目标时刻预计空闲车位数；`method=unavailable` 时为 `null` |
@@ -192,12 +198,13 @@
 | `degrade_reason` | string | 是 | 降级原因，未降级时为 `null`；不可预测时给出 `missing_observation`、`stale_observation` 或 `no_history` 等原因 |
 | `model_version` | string | 是 | 生成预测的模型版本；`method=unavailable` 时为 `null` |
 | `data_asof` | string | 是 | 所依据数据的最新时刻（UTC）；`method=unavailable` 时为 `null` |
-| `source` | string | 否 | 数据来源，固定 `synthetic` |
+| `source` | string | 否 | 数据来源，取自运行时产物；当前为 `synthetic`（合成示范数据，不是真实余位） |
 
 ## 判读规则
 
-- `available: false`：运行时数据不可用，响应中的静态车场信息仍可用，但预测类字段不可信。页面必须按「预测不可用」展示。
-- `degraded: true`：结果来自降级路径（例如沿用最近观测或基线），数值可以展示，但须标注降级状态。
+- `available`：运行时产物是否可用。`available: false` 时三个接口仍返回 200（不返回 5xx），静态车场信息可用，但预测类字段不可信，页面必须按「实时余位暂不可用」展示。
+- `degraded`：本次响应**含**降级结果——任一时距或任一车场走了降级链，或运行时整体不可用。数值可以展示，但须标注降级方式。
+- `note`：人类可读原因（降级链名，或运行时不可用的原因）；正常时为 `null`。
 - `stale: true`：该条数据或预测已过时，展示时须给出「数据已过时」提示。
 - `arrive_free: null`：预测不可用，**不是 0**。不得把它渲染成「无空位」或 0 个车位。
 - `forecast_method`、`method` 取值：
@@ -212,12 +219,21 @@
 - `excluded` 中的车场不参与推荐，展示原因即可，不要把它们当作 0 空位。
 - `score` 只在同一次响应内比较，不跨请求、跨偏好比较。
 
+## 预测精度口径
+
+本接口只返回预测值，不承诺预测精度，响应中不提供任何 accuracy 字段。上游主口径为 `MAE_ratio = mean|pred_free − actual_free| / total_spaces`（绝对车位 MAE 与其他口径见上游 `metrics.json`），需求书原文的单位与口径仍待项目方书面确认；当前数据为合成示范数据，不构成任何达标结论。前端不得据此宣称「预测准确」或展示达标百分比。
+
 ## 回落规则
 
-接口不可用（网络错误、非 2xx、`available: false`）时，前端回落静态示范数据，并明确显示「数据已过时 / 预测不可用」，不得把静态值说成实时余位。
+以下三条判据分别处理，不得混用：
 
-- 静默失败不可取：回落时必须展示可感知的提示文案。
-- `arrive_free` 等预测字段为 `null` 时展示「预测不可用」，不要填 0。
+1. `available=false`（运行时不可用）→ 只使用静态车场信息（名称、总位数、步行距离、费用、开放时段），**余位一律不显示**，标注「实时余位暂不可用」。
+2. `available=true` 但 `degraded=true` → 可以显示预测值，但必须标注降级方式（如 `forecast_method=last_known` 表示「沿用最近一次观测」），并显示 `updated_at`。
+3. `arrive_free=null`（该时刻不可用）→ 该车场按「暂无余位」处理，**不得显示为 0**。
+
+补充：`score_breakdown[].raw` 可能为 `null`；`transfer.feasible` 当前恒为 `false`（暂无接驳点数据），前端不得据此显示「可换乘接驳」。
+
+- 静默失败不可取：网络错误或非 2xx 时也必须展示可感知的提示文案，不得把静态值说成实时余位。
 - 收到 429 时按 `Retry-After` 退避，可先回落静态数据，不要连续重试。
 - `lot_id` 返回 404 时按不可推荐处理，不要猜测该车场。
 - 运营台同样适用以上规则，并在数据区标注「模拟」。

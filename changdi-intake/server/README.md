@@ -136,7 +136,7 @@ Authorization：请求携带凭据时同样按匿名申报处理。请求体与�
 
 ## 停车预测与推荐（本地）
 
-停车相关接口使用合成示范数据，`source` 固定为 `synthetic`，不是真实车场余位。页面和运营台必须标注「模拟」，不得把静态信息或合成预测说成实时余位。接口契约以 [OpenAPI](../docs/openapi.yaml) 为准，三个公开接口均匿名、只读，不要求 Bearer；按对端地址做窗口限流，默认每 600 秒 60 次，超限返回 429 `too_many_requests` 和 `Retry-After`（秒），响应统一带 `Cache-Control: no-store`。
+停车相关接口当前使用合成示范数据，`source` 取自运行时产物，当前为 `synthetic`，不是真实车场余位。页面和运营台必须标注「模拟」，不得把静态信息或合成预测说成实时余位。接口契约以 [OpenAPI](../docs/openapi.yaml) 为准，三个公开接口均匿名、只读，不要求 Bearer；按对端地址做窗口限流，默认每 600 秒 60 次，超限返回 429 `too_many_requests` 和 `Retry-After`（秒），响应统一带 `Cache-Control: no-store`。
 
 | 接口 | 用途 |
 | --- | --- |
