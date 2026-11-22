@@ -50,6 +50,13 @@
   const escape = value => String(value ?? "").replace(/[&<>"']/g, char => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   })[char]);
+  const feeText = lot => {
+    const fee = lot.fee;
+    if (!fee || typeof fee !== "object") return String(fee ?? "");
+    if (fee.mode === "hourly") return `${fee.amount} 元/小时`;
+    if (fee.mode === "flat") return `${fee.amount} 元`;
+    return "收费以现场为准";
+  };
   const pad = value => String(value).padStart(2, "0");
   const clock = iso => {
     const time = new Date(iso);
@@ -134,7 +141,7 @@
     return `<article class="card lot ${lot.stale ? "stale" : ""}" style="--meter-color:${color}">
       <div class="row"><h3>${escape(lot.name)}</h3><span><strong class="big">${lot.free}</strong><span class="small"> / ${lot.total}</span></span></div>
       <div class="meter" style="--free:${percent}%"><span></span></div>
-      <p class="small">更新于 ${escape(lot.updated)} · ${escape(lot.fee)}${lot.stale ? " · <b class='overdue'>已标记陈旧，游客端不显示为实时</b>" : ""}</p>
+      <p class="small">更新于 ${escape(lot.updated)} · ${escape(feeText(lot))}${lot.stale ? " · <b class='overdue'>已标记陈旧，游客端不显示为实时</b>" : ""}</p>
       ${compact ? "" : `<p>${escape(lot.reason)}</p><p class="small">未来 1 小时（模拟）：${lot.forecast.join(" → ")}</p>
         <div class="actions">${action(lot.stale ? "恢复为实时" : "标记数据陈旧", "lot", lot.id, lot.stale ? "button" : "button primary")}</div>`}
     </article>`;

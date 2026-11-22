@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_signal",
+  "description": "外部信号（02 §2.3，可空）。kind ∈ {calendar, weather, event}；各 kind 只携带其自身字段（如 event_strength 无事件数据时该字段不存在，不是 0）。lot_id=\"ALL\" 表示全局信号。",
+  "type": "object",
+  "required": ["lot_id", "ts", "kind", "source"],
+  "properties": {
+    "lot_id": { "type": "string", "description": "车场；\"ALL\" 表示全局信号（天气、街区级活动）" },
+    "ts": { "type": "string", "description": "信号生效时刻" },
+    "kind": { "enum": ["calendar", "weather", "event"] },
+    "is_workday": { "type": "boolean", "description": "kind=calendar" },
+    "is_holiday": { "type": "boolean", "description": "kind=calendar" },
+    "holiday_name": { "type": ["string", "null"], "description": "kind=calendar，如 国庆节" },
+    "peak": { "enum": ["none", "am_peak", "pm_peak", "evening"], "description": "kind=calendar" },
+    "weather": { "enum": ["sunny", "cloudy", "rain", "heavy_rain", "storm"], "description": "kind=weather" },
+    "temperature_c": { "type": ["number", "null"], "description": "kind=weather" },
+    "event_id": { "type": ["string", "null"], "description": "kind=event，与 event_strength 配对" },
+    "event_name": { "type": ["string", "null"], "description": "kind=event" },
+    "event_strength": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "kind=event，0..1，由配置给定不自行推断" },
+    "source": { "enum": ["synthetic", "calendar_api", "weather_api", "manual"] }
+  },
+  "additionalProperties": false
+}
