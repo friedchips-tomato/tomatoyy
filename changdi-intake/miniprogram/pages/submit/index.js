@@ -1,6 +1,7 @@
 const config = require('../../config.js');
 const { apiEnvironment, requestConfigured } = require('../../api-environment');
 const { choosePhotos, photoMessage } = require('../staff/photos');
+const { addReceipt } = require('../mine/receipts');
 const {
   CATEGORY_OPTIONS,
   MAX_PHOTOS,
@@ -198,6 +199,16 @@ Page({
           privateLookupToken: this._receiptToken
         }
       });
+      // 建单成功后把工单编号与公开查询码存进本机回执夹。
+      // 私密查询凭证不写入存储，保存失败不影响回执展示，只给一条轻提示。
+      const saved = addReceipt(
+        result.receipt.caseNumber,
+        result.receipt.publicLookupCode,
+        new Date().toISOString()
+      );
+      if (!saved.ok) {
+        this.setData({ submitMessage: '本机记录保存失败，请自行保存回执。' });
+      }
       return;
     }
     if (result.kind === 'cancelled') {
