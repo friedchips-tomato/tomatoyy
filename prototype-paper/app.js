@@ -937,7 +937,7 @@
       ${predictLine}
       ${degradeNote}
       ${artifactBad ? '<p class="notice">预测暂不可用（产物缺失或版本不兼容），以上为静态示范数据。</p>' : ""}
-      ${action("从这里出发排路线", "parking-start", lot.id, "button")}
+      ${action("从这里出发排路线", "parking-route", lot.id, "button")}
     </article>`;
   }
 
@@ -1550,7 +1550,9 @@
       case "book": showSheet("booking", id); break;
       case "parking-preference": state.parkingPreference = id; refreshSheet(button); break;
       case "parking-start":
+      case "parking-route":
         // 建议采纳（从这里出发排路线）：CD_TOURISM 不存在时静默跳过，不阻塞 UI
+        // parking-start = 推荐榜「首选/备选」；parking-route = 车场卡片列表；两者语义一致，共用同一段处理
         window.CD_TOURISM?.record?.("parking_advice_adopted", id);
         openRoute(parking.get(id));
         break;
