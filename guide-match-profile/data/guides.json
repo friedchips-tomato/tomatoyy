@@ -1,0 +1,1426 @@
+[
+  {
+    "person_id": "PV001",
+    "name": "讲解员A",
+    "languages": [
+      "普通话",
+      "粤语",
+      "English"
+    ],
+    "rating": 4.2,
+    "rating_count": 175,
+    "level": "铜牌",
+    "topics": [
+      "老街生活",
+      "方言故事"
+    ],
+    "service_point_ids": [
+      "LD001",
+      "LD002"
+    ],
+    "service_radius_m": 600,
+    "location": {
+      "longitude": 113.0922,
+      "latitude": 22.5805,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 320,
+    "bio": "讲解员A，铜牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "11:00",
+        "12:30",
+        "14:30",
+        "16:30"
+      ],
+      "2026-11-23": [
+        "11:00",
+        "15:00",
+        "16:30",
+        "17:30"
+      ],
+      "2026-11-28": [
+        "11:00",
+        "13:30",
+        "14:00",
+        "15:30"
+      ],
+      "2026-11-29": [
+        "13:30",
+        "14:30",
+        "15:30",
+        "17:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV002",
+    "name": "讲解员B",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 15,
+    "level": "银牌",
+    "topics": [
+      "开埠历史",
+      "外语讲解"
+    ],
+    "service_point_ids": [
+      "LD001",
+      "LD002",
+      "LD003"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.085,
+      "latitude": 22.5802,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 280,
+    "bio": "讲解员B，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "11:30",
+        "13:30",
+        "15:00",
+        "17:30"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "11:00",
+        "15:00",
+        "15:30"
+      ],
+      "2026-11-28": [
+        "12:00",
+        "15:30"
+      ],
+      "2026-11-29": [
+        "10:00",
+        "12:00",
+        "14:00",
+        "17:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV003",
+    "name": "讲解员C",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 75,
+    "level": "银牌",
+    "topics": [
+      "开埠历史",
+      "侨乡历史"
+    ],
+    "service_point_ids": [
+      "LD002",
+      "LD003",
+      "LD004"
+    ],
+    "service_radius_m": 600,
+    "location": {
+      "longitude": 113.0886,
+      "latitude": 22.5787,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 240,
+    "bio": "讲解员C，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "10:30",
+        "12:00",
+        "13:30",
+        "17:30"
+      ],
+      "2026-11-23": [
+        "11:00",
+        "14:30"
+      ],
+      "2026-11-28": [
+        "12:30",
+        "16:00"
+      ],
+      "2026-11-29": [
+        "11:00",
+        "15:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV004",
+    "name": "讲解员D",
+    "languages": [
+      "普通话",
+      "English"
+    ],
+    "rating": 4.6,
+    "rating_count": 104,
+    "level": "银牌",
+    "topics": [
+      "非遗技艺",
+      "骑楼建筑"
+    ],
+    "service_point_ids": [
+      "LD003",
+      "LD004",
+      "LD005"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0929,
+      "latitude": 22.5753,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 150,
+    "bio": "讲解员D，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "10:30",
+        "12:00",
+        "12:30",
+        "16:00"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "15:30",
+        "16:00"
+      ],
+      "2026-11-28": [
+        "09:30",
+        "12:30",
+        "15:30",
+        "16:30"
+      ],
+      "2026-11-29": [
+        "10:00",
+        "15:30",
+        "17:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV005",
+    "name": "讲解员E",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 15,
+    "level": "银牌",
+    "topics": [
+      "骑楼建筑",
+      "影视取景"
+    ],
+    "service_point_ids": [
+      "LD004",
+      "LD005",
+      "LD006"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0909,
+      "latitude": 22.5773,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ]
+    },
+    "price": 120,
+    "bio": "讲解员E，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-23": [
+        "10:00",
+        "15:00",
+        "15:30",
+        "17:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV006",
+    "name": "讲解员F",
+    "languages": [
+      "粤语",
+      "English"
+    ],
+    "rating": 4.4,
+    "rating_count": 9,
+    "level": "银牌",
+    "topics": [
+      "影视取景",
+      "开埠历史"
+    ],
+    "service_point_ids": [
+      "LD005",
+      "LD006",
+      "LD007"
+    ],
+    "service_radius_m": 600,
+    "location": {
+      "longitude": 113.0888,
+      "latitude": 22.5764,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 240,
+    "bio": "讲解员F，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:00",
+        "12:00",
+        "15:00",
+        "16:30"
+      ],
+      "2026-11-23": [
+        "14:30",
+        "15:00"
+      ],
+      "2026-11-28": [
+        "09:00",
+        "15:00",
+        "16:00"
+      ],
+      "2026-11-29": [
+        "09:30",
+        "14:30",
+        "15:00",
+        "17:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV007",
+    "name": "讲解员G",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.6,
+    "rating_count": 13,
+    "level": "银牌",
+    "topics": [
+      "外语讲解",
+      "侨乡历史"
+    ],
+    "service_point_ids": [
+      "LD006",
+      "LD007",
+      "LD008"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0882,
+      "latitude": 22.5758,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ]
+    },
+    "price": 320,
+    "bio": "讲解员G，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-23": [
+        "14:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV008",
+    "name": "讲解员H",
+    "languages": [
+      "普通话",
+      "粤语",
+      "客家话"
+    ],
+    "rating": 4.8,
+    "rating_count": 126,
+    "level": "金牌",
+    "topics": [
+      "侨乡历史",
+      "非遗技艺"
+    ],
+    "service_point_ids": [
+      "LD007",
+      "LD008",
+      "LD009"
+    ],
+    "service_radius_m": 1000,
+    "location": {
+      "longitude": 113.0857,
+      "latitude": 22.5738,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-12:00"
+      ]
+    },
+    "price": 280,
+    "bio": "讲解员H，金牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "10:00",
+        "10:30",
+        "11:00",
+        "11:30"
+      ],
+      "2026-11-23": [
+        "09:00",
+        "09:30",
+        "11:30",
+        "17:30"
+      ],
+      "2026-11-28": [
+        "09:30",
+        "10:30",
+        "11:00"
+      ],
+      "2026-11-29": [
+        "11:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV009",
+    "name": "讲解员I",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.9,
+    "rating_count": 14,
+    "level": "金牌",
+    "topics": [
+      "开埠历史",
+      "影视取景"
+    ],
+    "service_point_ids": [
+      "LD008",
+      "LD009",
+      "LD010"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.094,
+      "latitude": 22.573,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 150,
+    "bio": "讲解员I，金牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:00",
+        "09:30",
+        "10:30",
+        "17:30"
+      ],
+      "2026-11-23": [
+        "10:30"
+      ],
+      "2026-11-28": [
+        "09:30",
+        "12:00",
+        "17:00"
+      ],
+      "2026-11-29": [
+        "13:00",
+        "16:00",
+        "16:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV010",
+    "name": "讲解员J",
+    "languages": [
+      "普通话",
+      "English"
+    ],
+    "rating": 4.8,
+    "rating_count": 14,
+    "level": "金牌",
+    "topics": [
+      "骑楼建筑",
+      "侨乡历史"
+    ],
+    "service_point_ids": [
+      "LD009",
+      "LD010",
+      "LD011"
+    ],
+    "service_radius_m": 1000,
+    "location": {
+      "longitude": 113.0849,
+      "latitude": 22.5718,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 200,
+    "bio": "讲解员J，金牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "15:30"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "15:00"
+      ],
+      "2026-11-28": [
+        "13:00",
+        "13:30",
+        "14:30",
+        "15:00"
+      ],
+      "2026-11-29": [
+        "16:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV011",
+    "name": "讲解员K",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 50,
+    "level": "银牌",
+    "topics": [
+      "非遗技艺",
+      "影视取景"
+    ],
+    "service_point_ids": [
+      "LD010",
+      "LD011",
+      "LD012"
+    ],
+    "service_radius_m": 800,
+    "location": {
+      "longitude": 113.0874,
+      "latitude": 22.5764,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 120,
+    "bio": "讲解员K，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:00",
+        "13:00",
+        "14:30"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "11:00",
+        "17:00"
+      ],
+      "2026-11-28": [
+        "11:00",
+        "12:00"
+      ],
+      "2026-11-29": [
+        "15:30",
+        "16:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV012",
+    "name": "讲解员L",
+    "languages": [
+      "粤语",
+      "客家话"
+    ],
+    "rating": 4.6,
+    "rating_count": 24,
+    "level": "银牌",
+    "topics": [
+      "方言故事",
+      "骑楼建筑"
+    ],
+    "service_point_ids": [
+      "LD011",
+      "LD012"
+    ],
+    "service_radius_m": 1000,
+    "location": {
+      "longitude": 113.0911,
+      "latitude": 22.5759,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 150,
+    "bio": "讲解员L，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "10:00",
+        "11:00",
+        "16:30"
+      ],
+      "2026-11-23": [
+        "14:00",
+        "14:30",
+        "17:00"
+      ],
+      "2026-11-28": [
+        "10:00",
+        "12:30",
+        "16:30",
+        "17:00"
+      ],
+      "2026-11-29": [
+        "11:30",
+        "14:00",
+        "14:30",
+        "16:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV013",
+    "name": "讲解员M",
+    "languages": [
+      "普通话",
+      "粤语",
+      "English"
+    ],
+    "rating": 4.4,
+    "rating_count": 14,
+    "level": "铜牌",
+    "topics": [
+      "影视取景",
+      "骑楼建筑"
+    ],
+    "service_point_ids": [
+      "LD001",
+      "LD002"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.094,
+      "latitude": 22.5809,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 240,
+    "bio": "讲解员M，铜牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "12:30",
+        "13:00",
+        "17:30"
+      ],
+      "2026-11-23": [
+        "09:00"
+      ],
+      "2026-11-28": [
+        "16:00"
+      ],
+      "2026-11-29": [
+        "09:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV014",
+    "name": "讲解员N",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.6,
+    "rating_count": 94,
+    "level": "银牌",
+    "topics": [
+      "骑楼建筑",
+      "影视取景"
+    ],
+    "service_point_ids": [
+      "LD001",
+      "LD002",
+      "LD003"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0876,
+      "latitude": 22.5834,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 180,
+    "bio": "讲解员N，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:00",
+        "12:30",
+        "16:00",
+        "16:30"
+      ],
+      "2026-11-23": [
+        "09:00",
+        "14:30",
+        "15:00",
+        "17:00"
+      ],
+      "2026-11-28": [
+        "10:30",
+        "11:30",
+        "16:30",
+        "17:30"
+      ],
+      "2026-11-29": [
+        "10:00",
+        "11:00",
+        "12:30",
+        "17:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV015",
+    "name": "讲解员O",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.1,
+    "rating_count": 136,
+    "level": "铜牌",
+    "topics": [
+      "开埠历史",
+      "骑楼建筑"
+    ],
+    "service_point_ids": [
+      "LD002",
+      "LD003",
+      "LD004"
+    ],
+    "service_radius_m": 600,
+    "location": {
+      "longitude": 113.0898,
+      "latitude": 22.5789,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 120,
+    "bio": "讲解员O，铜牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:00"
+      ],
+      "2026-11-23": [
+        "10:30",
+        "14:30",
+        "17:00"
+      ],
+      "2026-11-28": [
+        "17:00"
+      ],
+      "2026-11-29": [
+        "11:00",
+        "11:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV016",
+    "name": "讲解员P",
+    "languages": [
+      "粤语",
+      "English"
+    ],
+    "rating": 4.9,
+    "rating_count": 41,
+    "level": "金牌",
+    "topics": [
+      "侨乡历史",
+      "方言故事"
+    ],
+    "service_point_ids": [
+      "LD003",
+      "LD004",
+      "LD005"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0924,
+      "latitude": 22.5752,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 200,
+    "bio": "讲解员P，金牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "14:00"
+      ],
+      "2026-11-23": [
+        "15:00",
+        "17:30"
+      ],
+      "2026-11-28": [
+        "11:00",
+        "15:30"
+      ],
+      "2026-11-29": [
+        "10:00",
+        "11:00",
+        "16:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV017",
+    "name": "讲解员Q",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.6,
+    "rating_count": 68,
+    "level": "银牌",
+    "topics": [
+      "外语讲解",
+      "开埠历史"
+    ],
+    "service_point_ids": [
+      "LD004",
+      "LD005",
+      "LD006"
+    ],
+    "service_radius_m": 600,
+    "location": {
+      "longitude": 113.0903,
+      "latitude": 22.5742,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 280,
+    "bio": "讲解员Q，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:30"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "11:00",
+        "14:30",
+        "17:30"
+      ],
+      "2026-11-28": [
+        "09:00",
+        "10:00",
+        "11:00",
+        "17:30"
+      ],
+      "2026-11-29": [
+        "16:30",
+        "17:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV018",
+    "name": "讲解员R",
+    "languages": [
+      "普通话",
+      "English"
+    ],
+    "rating": 4.6,
+    "rating_count": 92,
+    "level": "银牌",
+    "topics": [
+      "影视取景",
+      "开埠历史"
+    ],
+    "service_point_ids": [
+      "LD005",
+      "LD006",
+      "LD007"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0908,
+      "latitude": 22.5759,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 180,
+    "bio": "讲解员R，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "14:30"
+      ],
+      "2026-11-23": [
+        "10:00",
+        "15:00",
+        "16:00"
+      ],
+      "2026-11-28": [
+        "13:30",
+        "17:00"
+      ],
+      "2026-11-29": [
+        "10:00",
+        "14:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV019",
+    "name": "讲解员S",
+    "languages": [
+      "普通话",
+      "粤语",
+      "客家话"
+    ],
+    "rating": 4.4,
+    "rating_count": 42,
+    "level": "银牌",
+    "topics": [
+      "方言故事",
+      "影视取景"
+    ],
+    "service_point_ids": [
+      "LD006",
+      "LD007",
+      "LD008"
+    ],
+    "service_radius_m": 800,
+    "location": {
+      "longitude": 113.0878,
+      "latitude": 22.5747,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 320,
+    "bio": "讲解员S，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "09:30",
+        "14:00",
+        "14:30",
+        "16:30"
+      ],
+      "2026-11-23": [
+        "17:00"
+      ],
+      "2026-11-28": [
+        "09:30",
+        "10:30",
+        "11:30",
+        "16:00"
+      ],
+      "2026-11-29": [
+        "11:00",
+        "11:30",
+        "14:00",
+        "17:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV020",
+    "name": "讲解员T",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 12,
+    "level": "银牌",
+    "topics": [
+      "侨乡历史",
+      "骑楼建筑"
+    ],
+    "service_point_ids": [
+      "LD007",
+      "LD008",
+      "LD009"
+    ],
+    "service_radius_m": 800,
+    "location": {
+      "longitude": 113.0837,
+      "latitude": 22.5741,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 200,
+    "bio": "讲解员T，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "17:00"
+      ],
+      "2026-11-23": [
+        "09:30",
+        "15:30"
+      ],
+      "2026-11-28": [
+        "11:00",
+        "16:30"
+      ],
+      "2026-11-29": [
+        "14:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV021",
+    "name": "讲解员U",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.4,
+    "rating_count": 8,
+    "level": "银牌",
+    "topics": [
+      "非遗技艺",
+      "外语讲解"
+    ],
+    "service_point_ids": [
+      "LD008",
+      "LD009",
+      "LD010"
+    ],
+    "service_radius_m": 1000,
+    "location": {
+      "longitude": 113.0934,
+      "latitude": 22.5745,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 400,
+    "bio": "讲解员U，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "10:30",
+        "12:00",
+        "15:00"
+      ],
+      "2026-11-23": [
+        "09:00",
+        "10:30",
+        "11:00",
+        "11:30"
+      ],
+      "2026-11-28": [
+        "11:00"
+      ],
+      "2026-11-29": [
+        "13:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV022",
+    "name": "讲解员V",
+    "languages": [
+      "普通话",
+      "粤语",
+      "English"
+    ],
+    "rating": 4.5,
+    "rating_count": 137,
+    "level": "银牌",
+    "topics": [
+      "影视取景",
+      "外语讲解"
+    ],
+    "service_point_ids": [
+      "LD009",
+      "LD010",
+      "LD011"
+    ],
+    "service_radius_m": 1500,
+    "location": {
+      "longitude": 113.0829,
+      "latitude": 22.5707,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 200,
+    "bio": "讲解员V，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "13:30",
+        "17:00"
+      ],
+      "2026-11-23": [
+        "15:30"
+      ],
+      "2026-11-28": [
+        "13:00"
+      ],
+      "2026-11-29": [
+        "12:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV023",
+    "name": "讲解员W",
+    "languages": [
+      "普通话",
+      "粤语"
+    ],
+    "rating": 4.5,
+    "rating_count": 27,
+    "level": "银牌",
+    "topics": [
+      "侨乡历史",
+      "外语讲解"
+    ],
+    "service_point_ids": [
+      "LD010",
+      "LD011",
+      "LD012"
+    ],
+    "service_radius_m": 800,
+    "location": {
+      "longitude": 113.0887,
+      "latitude": 22.5752,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 200,
+    "bio": "讲解员W，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "12:30",
+        "17:00"
+      ],
+      "2026-11-23": [
+        "09:30",
+        "10:00",
+        "10:30",
+        "11:30"
+      ],
+      "2026-11-28": [
+        "11:30",
+        "17:00"
+      ],
+      "2026-11-29": [
+        "09:30",
+        "13:30",
+        "15:30"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "person_id": "PV024",
+    "name": "讲解员X",
+    "languages": [
+      "粤语",
+      "客家话"
+    ],
+    "rating": 4.6,
+    "rating_count": 141,
+    "level": "银牌",
+    "topics": [
+      "影视取景",
+      "开埠历史"
+    ],
+    "service_point_ids": [
+      "LD011",
+      "LD012"
+    ],
+    "service_radius_m": 800,
+    "location": {
+      "longitude": 113.0896,
+      "latitude": 22.5748,
+      "coord_system": "WGS84"
+    },
+    "service_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": [
+        "09:00-18:00"
+      ]
+    },
+    "price": 180,
+    "bio": "讲解员X，银牌讲解员，熟悉长堤风貌街（示例数据）。",
+    "available_slots": {
+      "2026-11-22": [
+        "11:00",
+        "12:00",
+        "16:30",
+        "17:00"
+      ],
+      "2026-11-23": [
+        "11:30",
+        "15:00",
+        "16:30",
+        "17:30"
+      ],
+      "2026-11-28": [
+        "11:00",
+        "16:00"
+      ],
+      "2026-11-29": [
+        "09:30",
+        "10:30",
+        "13:00",
+        "16:00"
+      ]
+    },
+    "capacity_per_slot": 1,
+    "data_source": "synthetic",
+    "verified": false
+  }
+]

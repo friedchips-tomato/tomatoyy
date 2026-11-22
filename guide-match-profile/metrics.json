@@ -1,0 +1,115 @@
+{
+  "algo_version": "guide-match-0.1.0",
+  "weights": {
+    "language_match": 0.22,
+    "rating": 0.2,
+    "distance": 0.12,
+    "slot_fit": 0.1,
+    "price_deviation": 0.08,
+    "review_trend": 0.18,
+    "load_balance": 0.1
+  },
+  "capability_weights": {
+    "rating": 0.35,
+    "dims": 0.25,
+    "punctuality": 0.2,
+    "repeat": 0.2
+  },
+  "event_weights": {
+    "view_route": 0.1,
+    "adopt_route": 0.5,
+    "finish_route": 0.4,
+    "arrive_point": 0.4,
+    "listen_guide": 0.3,
+    "ask_question": 0.2,
+    "view_parking": 0.0,
+    "adopt_parking": 0.0,
+    "book_guide": 0.2,
+    "feedback": 0.1
+  },
+  "proxy_eval": {
+    "n_queries": 22,
+    "top1_hit_rate": 0.545,
+    "top3_coverage": 0.864,
+    "baseline_top1_hit_rate": 0.045,
+    "baseline_top3_coverage": 0.182,
+    "language_filter_correctness": 1.0,
+    "eligible_nonempty_rate": 0.955,
+    "examples": [
+      {
+        "query_id": "Q001",
+        "ground_truth": "PV017",
+        "top1": "PV017",
+        "top3": [
+          "PV017",
+          "PV019",
+          "PV009"
+        ],
+        "baseline_top1": "PV009"
+      },
+      {
+        "query_id": "Q002",
+        "ground_truth": "PV004",
+        "top1": "PV004",
+        "top3": [
+          "PV004",
+          "PV006"
+        ],
+        "baseline_top1": "PV016"
+      },
+      {
+        "query_id": "Q003",
+        "ground_truth": "PV004",
+        "top1": "PV014",
+        "top3": [
+          "PV014",
+          "PV004",
+          "PV001"
+        ],
+        "baseline_top1": "PV009"
+      }
+    ],
+    "note": "真值=合成行为中游客实际预约的讲解员（显示偏好），样本为合成数据，不代表真实效果。"
+  },
+  "booking_usage_rate": {
+    "booking_usage_rate": 0.3667,
+    "n_visitors": 60,
+    "n_bookers": 22,
+    "denominator": "去重游客总数",
+    "numerator": "至少一次 book_guide 的去重游客数"
+  },
+  "avg_confirmation_minutes": {
+    "avg_confirmation_minutes": 24.77,
+    "n_confirmations": 22,
+    "over_30min_ratio": 0.3636,
+    "note": "口径：book_guide 提交时刻到 book_confirmed 确认时刻的分钟差均值；需线上真实确认时间戳才能验收 ≤30 分钟目标。"
+  },
+  "profile_update_example": {
+    "visitor_id": "V0001",
+    "event": {
+      "visitor_id": "V0001",
+      "ts": "2026-11-10T09:48:09+08:00",
+      "event_type": "arrive_point",
+      "point_id": "LD005",
+      "route_id": null,
+      "dwell_seconds": 388,
+      "interest_tags": "历史|摄影",
+      "device_lang": "English",
+      "guide_id": null
+    },
+    "interest_tags_before": {},
+    "interest_tags_after": {
+      "历史": 0.4,
+      "摄影": 0.4
+    },
+    "final_interest_tags": {
+      "历史": 2.3,
+      "摄影": 2.3,
+      "非遗": 1.7,
+      "侨乡": 0.7,
+      "建筑": 0.7
+    }
+  },
+  "metrics_usage_note": "booking_usage_rate(events) 与 avg_confirmation_minutes(events) 输入 visitor_events.csv 即可计算；当前为合成数据示例结果，「预约使用率≥30%」「平均确认时长≤30分钟」需线上真实埋点数据才能验收。",
+  "data_source": "synthetic"
+}
