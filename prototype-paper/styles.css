@@ -630,3 +630,13 @@ h1 { font: 700 23px/1.2 var(--serif); letter-spacing: .12em; }
   100% { transform: translate(0, 0) scale(1) rotate(-1deg); opacity: 1; }
 }
 @keyframes reward-text { 0%, 50% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: none; } }
+
+/* 接诉即办「我的诉求」面板：只显示本机保存的工单号与实时查到的真实进度 */
+.bridge-cases { display: grid; gap: 10px; }
+.bridge-cases > h3 { font: 700 16px/1.4 var(--serif); letter-spacing: .06em; }
+.bridge-case-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.bridge-case { display: grid; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shade); }
+.bridge-case-title { font: 700 15px/1.4 var(--serif); letter-spacing: .04em; overflow-wrap: anywhere; }
+.bridge-case-status { color: var(--ink-2); }
+.bridge-case-milestones { display: grid; gap: 4px; margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+.bridge-case .button { justify-self: start; }
