@@ -1,0 +1,21 @@
+{
+  "visitor_id": "V0001",
+  "interest_tags": [
+    "历史",
+    "建筑",
+    "侨乡"
+  ],
+  "pace": "normal",
+  "interest_weights": {
+    "历史": 0.9,
+    "建筑": 0.7,
+    "侨乡": 0.7,
+    "摄影": 0.3
+  },
+  "historical_behavior": {
+    "arrive_point": 3,
+    "listen_guide": 2,
+    "ask_question": 1
+  },
+  "data_source": "synthetic"
+}

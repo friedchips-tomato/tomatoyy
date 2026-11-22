@@ -1,0 +1,3423 @@
+[
+  {
+    "point_id": "LD001",
+    "name": "蓬江大桥",
+    "category": "街景节点",
+    "longitude": 113.0901,
+    "latitude": 22.5837,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "自然",
+      "摄影"
+    ],
+    "style_tags": [
+      "沿江"
+    ],
+    "crowd_level": "unknown",
+    "description": "长堤历史文化街区的东端起点。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-R01",
+    "sources": [
+      "携程景点页「长堤风貌街」"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD002",
+    "name": "启明里",
+    "category": "历史建筑",
+    "longitude": 113.0888,
+    "latitude": 22.58407,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "历史",
+      "建筑",
+      "侨乡"
+    ],
+    "style_tags": [
+      "侨房"
+    ],
+    "crowd_level": "unknown",
+    "description": "长堤东侧的华侨村落。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-V01",
+    "sources": [
+      "中国新闻网 2025-10-22 报道"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD003",
+    "name": "江门海关旧址（示意）",
+    "category": "历史建筑",
+    "longitude": 113.08772,
+    "latitude": 22.58352,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "历史",
+      "建筑"
+    ],
+    "style_tags": [
+      "开埠"
+    ],
+    "crowd_level": "unknown",
+    "description": "旧址位置待核实。",
+    "history_id": null,
+    "kg_id": "KG003",
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-A02",
+    "sources": [
+      "凤凰网《江门墟兴 老城脉续》"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD004",
+    "name": "江门市博物馆长堤分馆",
+    "category": "文化场馆",
+    "longitude": 113.08585,
+    "latitude": 22.5836,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:30-17:00",
+      "sat_sun": "09:30-17:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "历史",
+      "建筑",
+      "非遗"
+    ],
+    "style_tags": [
+      "骑楼"
+    ],
+    "crowd_level": "unknown",
+    "description": "原型资料列为双联骑楼内的博物馆分馆。",
+    "history_id": null,
+    "kg_id": "KG004",
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-A01",
+    "sources": [
+      "携程景点页「长堤风貌街」",
+      "新快报 2024-08-28 报道"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD005",
+    "name": "水埠头石阶",
+    "category": "街景节点",
+    "longitude": 113.08459,
+    "latitude": 22.58311,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "历史",
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "沿江"
+    ],
+    "crowd_level": "unknown",
+    "description": "沿江石阶码头，位置待核实。",
+    "history_id": null,
+    "kg_id": "KG005",
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-A03",
+    "sources": [
+      "携程游记",
+      "澎湃新闻报道"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD006",
+    "name": "堤东路骑楼",
+    "category": "历史建筑",
+    "longitude": 113.08375,
+    "latitude": 22.58348,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "历史",
+      "建筑",
+      "摄影"
+    ],
+    "style_tags": [
+      "骑楼"
+    ],
+    "crowd_level": "unknown",
+    "description": "堤东路骑楼段，范围待核实。",
+    "history_id": null,
+    "kg_id": "KG006",
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-S01",
+    "sources": [
+      "携程景点页「长堤风貌街」"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD007",
+    "name": "新市路",
+    "category": "街景节点",
+    "longitude": 113.08265,
+    "latitude": 22.58412,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "历史",
+      "摄影"
+    ],
+    "style_tags": [
+      "影视取景"
+    ],
+    "crowd_level": "unknown",
+    "description": "原型资料列为电视剧《狂飙》取景路段。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-S02",
+    "sources": [
+      "澎湃新闻报道"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD008",
+    "name": "墟顶老街",
+    "category": "街景节点",
+    "longitude": 113.08133,
+    "latitude": 22.58396,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "历史",
+      "侨乡",
+      "摄影"
+    ],
+    "style_tags": [
+      "老街"
+    ],
+    "crowd_level": "unknown",
+    "description": "又称三十三墟街，具体范围待核实。",
+    "history_id": null,
+    "kg_id": "KG008",
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-S03",
+    "sources": [
+      "携程游记"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD009",
+    "name": "沿江停车场（示范）",
+    "category": "停车场",
+    "longitude": 113.08409,
+    "latitude": 22.58302,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 2,
+    "interest_tags": [],
+    "style_tags": [],
+    "crowd_level": "unknown",
+    "description": "用于演示停车接驳。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-P01",
+    "sources": [],
+    "verified": false
+  },
+  {
+    "point_id": "LD010",
+    "name": "江门铁桥",
+    "category": "街景节点",
+    "longitude": 113.0768,
+    "latitude": 22.58312,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "00:00-24:00",
+      "sat_sun": "00:00-24:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 6,
+    "interest_tags": [
+      "自然",
+      "摄影"
+    ],
+    "style_tags": [
+      "沿江"
+    ],
+    "crowd_level": "unknown",
+    "description": "长堤历史文化街区的西端终点。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "prototype-paper/data/points.js",
+    "source_point_id": "CD-R02",
+    "sources": [
+      "携程景点页「长堤风貌街」"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD011",
+    "name": "钓台路公交站（待核实）",
+    "category": "公共服务",
+    "longitude": 113.08531,
+    "latitude": 22.58414,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "06:00-22:30",
+      "sat_sun": "06:00-22:30",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 2,
+    "interest_tags": [],
+    "style_tags": [
+      "公交接驳"
+    ],
+    "crowd_level": "unknown",
+    "description": "公交站名、位置与运营时段待核实。",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "docs/像素地图方案清单.md §2.1",
+    "source_point_id": "CD-T01",
+    "sources": [
+      "docs/像素地图方案清单.md §2.1"
+    ],
+    "verified": false
+  },
+  {
+    "point_id": "LD012",
+    "name": "压测占位 · 历史建筑 01",
+    "category": "历史建筑",
+    "longitude": 113.0896803,
+    "latitude": 22.5846177,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "侨乡",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD013",
+    "name": "压测占位 · 文化场馆 02",
+    "category": "文化场馆",
+    "longitude": 113.0820277,
+    "latitude": 22.582863,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "亲子",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD014",
+    "name": "压测占位 · 非遗业态 03",
+    "category": "非遗业态",
+    "longitude": 113.0817094,
+    "latitude": 22.5842348,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "侨乡",
+      "亲子"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD015",
+    "name": "压测占位 · 餐饮 04",
+    "category": "餐饮",
+    "longitude": 113.0813757,
+    "latitude": 22.585919,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD016",
+    "name": "压测占位 · 商业 05",
+    "category": "商业",
+    "longitude": 113.0870425,
+    "latitude": 22.584796,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "美食",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD017",
+    "name": "压测占位 · 街景节点 06",
+    "category": "街景节点",
+    "longitude": 113.0777827,
+    "latitude": 22.5844191,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "自然",
+      "建筑"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD018",
+    "name": "压测占位 · 公共服务 07",
+    "category": "公共服务",
+    "longitude": 113.0868804,
+    "latitude": 22.5860958,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD019",
+    "name": "压测占位 · 历史建筑 08",
+    "category": "历史建筑",
+    "longitude": 113.0898987,
+    "latitude": 22.584422,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "建筑",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD020",
+    "name": "压测占位 · 文化场馆 09",
+    "category": "文化场馆",
+    "longitude": 113.0847621,
+    "latitude": 22.5858711,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 11,
+    "interest_tags": [
+      "历史",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD021",
+    "name": "压测占位 · 非遗业态 10",
+    "category": "非遗业态",
+    "longitude": 113.0858581,
+    "latitude": 22.5833004,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 6,
+    "interest_tags": [
+      "亲子",
+      "非遗"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD022",
+    "name": "压测占位 · 餐饮 11",
+    "category": "餐饮",
+    "longitude": 113.0895378,
+    "latitude": 22.5860856,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD023",
+    "name": "压测占位 · 商业 12",
+    "category": "商业",
+    "longitude": 113.0790297,
+    "latitude": 22.5863835,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "摄影",
+      "美食"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD024",
+    "name": "压测占位 · 街景节点 13",
+    "category": "街景节点",
+    "longitude": 113.0850371,
+    "latitude": 22.5862741,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD025",
+    "name": "压测占位 · 公共服务 14",
+    "category": "公共服务",
+    "longitude": 113.0801658,
+    "latitude": 22.5855718,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD026",
+    "name": "压测占位 · 历史建筑 15",
+    "category": "历史建筑",
+    "longitude": 113.0858801,
+    "latitude": 22.5859739,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "侨乡",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD027",
+    "name": "压测占位 · 文化场馆 16",
+    "category": "文化场馆",
+    "longitude": 113.0879842,
+    "latitude": 22.5860703,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "非遗",
+      "亲子"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD028",
+    "name": "压测占位 · 非遗业态 17",
+    "category": "非遗业态",
+    "longitude": 113.0772226,
+    "latitude": 22.583681,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "非遗",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD029",
+    "name": "压测占位 · 餐饮 18",
+    "category": "餐饮",
+    "longitude": 113.0824226,
+    "latitude": 22.5857793,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD030",
+    "name": "压测占位 · 商业 19",
+    "category": "商业",
+    "longitude": 113.0843564,
+    "latitude": 22.5861257,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "亲子",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD031",
+    "name": "压测占位 · 街景节点 20",
+    "category": "街景节点",
+    "longitude": 113.0895956,
+    "latitude": 22.5862177,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "自然",
+      "摄影"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD032",
+    "name": "压测占位 · 公共服务 21",
+    "category": "公共服务",
+    "longitude": 113.0884684,
+    "latitude": 22.5844977,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD033",
+    "name": "压测占位 · 历史建筑 22",
+    "category": "历史建筑",
+    "longitude": 113.088289,
+    "latitude": 22.5828191,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 11,
+    "interest_tags": [
+      "建筑",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD034",
+    "name": "压测占位 · 文化场馆 23",
+    "category": "文化场馆",
+    "longitude": 113.0868828,
+    "latitude": 22.5838516,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "历史",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD035",
+    "name": "压测占位 · 非遗业态 24",
+    "category": "非遗业态",
+    "longitude": 113.0831665,
+    "latitude": 22.5848155,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 11,
+    "interest_tags": [
+      "侨乡",
+      "非遗"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD036",
+    "name": "压测占位 · 餐饮 25",
+    "category": "餐饮",
+    "longitude": 113.0813956,
+    "latitude": 22.5835411,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD037",
+    "name": "压测占位 · 商业 26",
+    "category": "商业",
+    "longitude": 113.0893822,
+    "latitude": 22.5851955,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "摄影",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD038",
+    "name": "压测占位 · 街景节点 27",
+    "category": "街景节点",
+    "longitude": 113.0810901,
+    "latitude": 22.5842428,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD039",
+    "name": "压测占位 · 公共服务 28",
+    "category": "公共服务",
+    "longitude": 113.0771476,
+    "latitude": 22.5843353,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD040",
+    "name": "压测占位 · 历史建筑 29",
+    "category": "历史建筑",
+    "longitude": 113.0782009,
+    "latitude": 22.5833476,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "侨乡",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD041",
+    "name": "压测占位 · 文化场馆 30",
+    "category": "文化场馆",
+    "longitude": 113.0867351,
+    "latitude": 22.5851111,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "亲子",
+      "历史"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD042",
+    "name": "压测占位 · 非遗业态 31",
+    "category": "非遗业态",
+    "longitude": 113.0830437,
+    "latitude": 22.5829502,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 6,
+    "interest_tags": [
+      "非遗",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD043",
+    "name": "压测占位 · 餐饮 32",
+    "category": "餐饮",
+    "longitude": 113.0778027,
+    "latitude": 22.5835325,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD044",
+    "name": "压测占位 · 商业 33",
+    "category": "商业",
+    "longitude": 113.0889239,
+    "latitude": 22.5854232,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 11,
+    "interest_tags": [
+      "美食",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD045",
+    "name": "压测占位 · 街景节点 34",
+    "category": "街景节点",
+    "longitude": 113.0829395,
+    "latitude": 22.5828895,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD046",
+    "name": "压测占位 · 公共服务 35",
+    "category": "公共服务",
+    "longitude": 113.0885459,
+    "latitude": 22.5852073,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD047",
+    "name": "压测占位 · 历史建筑 36",
+    "category": "历史建筑",
+    "longitude": 113.0853724,
+    "latitude": 22.5862983,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "历史",
+      "侨乡"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD048",
+    "name": "压测占位 · 文化场馆 37",
+    "category": "文化场馆",
+    "longitude": 113.082713,
+    "latitude": 22.5860561,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "历史",
+      "亲子"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD049",
+    "name": "压测占位 · 非遗业态 38",
+    "category": "非遗业态",
+    "longitude": 113.0852933,
+    "latitude": 22.5829941,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "亲子",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD050",
+    "name": "压测占位 · 餐饮 39",
+    "category": "餐饮",
+    "longitude": 113.0807549,
+    "latitude": 22.5834011,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD051",
+    "name": "压测占位 · 商业 40",
+    "category": "商业",
+    "longitude": 113.0830329,
+    "latitude": 22.5863189,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "亲子",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD052",
+    "name": "压测占位 · 街景节点 41",
+    "category": "街景节点",
+    "longitude": 113.0795096,
+    "latitude": 22.5855734,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "建筑",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD053",
+    "name": "压测占位 · 公共服务 42",
+    "category": "公共服务",
+    "longitude": 113.0780839,
+    "latitude": 22.5851568,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD054",
+    "name": "压测占位 · 历史建筑 43",
+    "category": "历史建筑",
+    "longitude": 113.0825626,
+    "latitude": 22.5847227,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "历史",
+      "侨乡"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD055",
+    "name": "压测占位 · 文化场馆 44",
+    "category": "文化场馆",
+    "longitude": 113.0891143,
+    "latitude": 22.5843938,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "亲子",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD056",
+    "name": "压测占位 · 非遗业态 45",
+    "category": "非遗业态",
+    "longitude": 113.0895739,
+    "latitude": 22.5861147,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "侨乡",
+      "亲子"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD057",
+    "name": "压测占位 · 餐饮 46",
+    "category": "餐饮",
+    "longitude": 113.0879566,
+    "latitude": 22.5846244,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD058",
+    "name": "压测占位 · 商业 47",
+    "category": "商业",
+    "longitude": 113.0890405,
+    "latitude": 22.5847466,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "亲子",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD059",
+    "name": "压测占位 · 街景节点 48",
+    "category": "街景节点",
+    "longitude": 113.0782196,
+    "latitude": 22.5860441,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "建筑",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD060",
+    "name": "压测占位 · 公共服务 49",
+    "category": "公共服务",
+    "longitude": 113.0783214,
+    "latitude": 22.5840936,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD061",
+    "name": "压测占位 · 历史建筑 50",
+    "category": "历史建筑",
+    "longitude": 113.0879944,
+    "latitude": 22.5840133,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "建筑",
+      "侨乡"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD062",
+    "name": "压测占位 · 文化场馆 51",
+    "category": "文化场馆",
+    "longitude": 113.0885001,
+    "latitude": 22.5855116,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 5,
+    "interest_tags": [
+      "亲子",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD063",
+    "name": "压测占位 · 非遗业态 52",
+    "category": "非遗业态",
+    "longitude": 113.0889001,
+    "latitude": 22.5844937,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "非遗",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD064",
+    "name": "压测占位 · 餐饮 53",
+    "category": "餐饮",
+    "longitude": 113.0770516,
+    "latitude": 22.5838285,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 11,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD065",
+    "name": "压测占位 · 商业 54",
+    "category": "商业",
+    "longitude": 113.0831939,
+    "latitude": 22.5832392,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 6,
+    "interest_tags": [
+      "美食",
+      "摄影"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD066",
+    "name": "压测占位 · 街景节点 55",
+    "category": "街景节点",
+    "longitude": 113.079478,
+    "latitude": 22.5862353,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "自然",
+      "建筑"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD067",
+    "name": "压测占位 · 公共服务 56",
+    "category": "公共服务",
+    "longitude": 113.0796583,
+    "latitude": 22.5833999,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD068",
+    "name": "压测占位 · 历史建筑 57",
+    "category": "历史建筑",
+    "longitude": 113.0798214,
+    "latitude": 22.5858388,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "侨乡",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD069",
+    "name": "压测占位 · 文化场馆 58",
+    "category": "文化场馆",
+    "longitude": 113.0898738,
+    "latitude": 22.5863208,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "亲子",
+      "历史"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD070",
+    "name": "压测占位 · 非遗业态 59",
+    "category": "非遗业态",
+    "longitude": 113.088511,
+    "latitude": 22.5833136,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "非遗",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD071",
+    "name": "压测占位 · 餐饮 60",
+    "category": "餐饮",
+    "longitude": 113.0875019,
+    "latitude": 22.5848323,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD072",
+    "name": "压测占位 · 商业 61",
+    "category": "商业",
+    "longitude": 113.0773033,
+    "latitude": 22.5861567,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD073",
+    "name": "压测占位 · 街景节点 62",
+    "category": "街景节点",
+    "longitude": 113.0807711,
+    "latitude": 22.5855675,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD074",
+    "name": "压测占位 · 公共服务 63",
+    "category": "公共服务",
+    "longitude": 113.0772376,
+    "latitude": 22.5838993,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD075",
+    "name": "压测占位 · 历史建筑 64",
+    "category": "历史建筑",
+    "longitude": 113.0808568,
+    "latitude": 22.5837544,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "建筑",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD076",
+    "name": "压测占位 · 文化场馆 65",
+    "category": "文化场馆",
+    "longitude": 113.0876357,
+    "latitude": 22.5863813,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "亲子",
+      "历史"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD077",
+    "name": "压测占位 · 非遗业态 66",
+    "category": "非遗业态",
+    "longitude": 113.080685,
+    "latitude": 22.5836689,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "亲子",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD078",
+    "name": "压测占位 · 餐饮 67",
+    "category": "餐饮",
+    "longitude": 113.0800614,
+    "latitude": 22.5862658,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD079",
+    "name": "压测占位 · 商业 68",
+    "category": "商业",
+    "longitude": 113.0856983,
+    "latitude": 22.5848722,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "摄影",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD080",
+    "name": "压测占位 · 街景节点 69",
+    "category": "街景节点",
+    "longitude": 113.0881423,
+    "latitude": 22.5862468,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 6,
+    "interest_tags": [
+      "自然",
+      "摄影"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD081",
+    "name": "压测占位 · 公共服务 70",
+    "category": "公共服务",
+    "longitude": 113.0784454,
+    "latitude": 22.5854488,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD082",
+    "name": "压测占位 · 历史建筑 71",
+    "category": "历史建筑",
+    "longitude": 113.0821168,
+    "latitude": 22.5857857,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "历史",
+      "建筑"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD083",
+    "name": "压测占位 · 文化场馆 72",
+    "category": "文化场馆",
+    "longitude": 113.079118,
+    "latitude": 22.5842403,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 10,
+    "interest_tags": [
+      "亲子",
+      "历史"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD084",
+    "name": "压测占位 · 非遗业态 73",
+    "category": "非遗业态",
+    "longitude": 113.0787821,
+    "latitude": 22.5831667,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "亲子",
+      "非遗"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD085",
+    "name": "压测占位 · 餐饮 74",
+    "category": "餐饮",
+    "longitude": 113.0877525,
+    "latitude": 22.5830396,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD086",
+    "name": "压测占位 · 商业 75",
+    "category": "商业",
+    "longitude": 113.0890053,
+    "latitude": 22.5840156,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD087",
+    "name": "压测占位 · 街景节点 76",
+    "category": "街景节点",
+    "longitude": 113.089321,
+    "latitude": 22.5842496,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 15,
+    "interest_tags": [
+      "摄影",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD088",
+    "name": "压测占位 · 公共服务 77",
+    "category": "公共服务",
+    "longitude": 113.0795839,
+    "latitude": 22.582999,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD089",
+    "name": "压测占位 · 历史建筑 78",
+    "category": "历史建筑",
+    "longitude": 113.0813233,
+    "latitude": 22.5828628,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "侨乡",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD090",
+    "name": "压测占位 · 文化场馆 79",
+    "category": "文化场馆",
+    "longitude": 113.081823,
+    "latitude": 22.5862119,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "历史",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD091",
+    "name": "压测占位 · 非遗业态 80",
+    "category": "非遗业态",
+    "longitude": 113.0776857,
+    "latitude": 22.5849836,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "08:00-20:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "非遗",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD092",
+    "name": "压测占位 · 餐饮 81",
+    "category": "餐饮",
+    "longitude": 113.0839972,
+    "latitude": 22.5845937,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD093",
+    "name": "压测占位 · 商业 82",
+    "category": "商业",
+    "longitude": 113.0792421,
+    "latitude": 22.5852947,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD094",
+    "name": "压测占位 · 街景节点 83",
+    "category": "街景节点",
+    "longitude": 113.082642,
+    "latitude": 22.5859399,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "建筑",
+      "自然"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD095",
+    "name": "压测占位 · 公共服务 84",
+    "category": "公共服务",
+    "longitude": 113.0865863,
+    "latitude": 22.5862894,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "自然",
+      "亲子"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD096",
+    "name": "压测占位 · 历史建筑 85",
+    "category": "历史建筑",
+    "longitude": 113.089139,
+    "latitude": 22.5841053,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "07:00-22:00",
+      "sat_sun": "07:00-22:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "建筑",
+      "历史"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD097",
+    "name": "压测占位 · 文化场馆 86",
+    "category": "文化场馆",
+    "longitude": 113.0812505,
+    "latitude": 22.5834925,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 12,
+    "interest_tags": [
+      "亲子",
+      "历史"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD098",
+    "name": "压测占位 · 非遗业态 87",
+    "category": "非遗业态",
+    "longitude": 113.0820742,
+    "latitude": 22.5847685,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": [
+        "mon"
+      ]
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 7,
+    "interest_tags": [
+      "亲子",
+      "侨乡"
+    ],
+    "style_tags": [
+      "手作场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD099",
+    "name": "压测占位 · 餐饮 88",
+    "category": "餐饮",
+    "longitude": 113.0853915,
+    "latitude": 22.5857264,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 13,
+    "interest_tags": [
+      "亲子",
+      "美食"
+    ],
+    "style_tags": [
+      "餐饮场景"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD100",
+    "name": "压测占位 · 商业 89",
+    "category": "商业",
+    "longitude": 113.0798764,
+    "latitude": 22.5831703,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 8,
+    "interest_tags": [
+      "美食",
+      "亲子"
+    ],
+    "style_tags": [
+      "商业场景"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD101",
+    "name": "压测占位 · 街景节点 90",
+    "category": "街景节点",
+    "longitude": 113.0820776,
+    "latitude": 22.5830018,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "10:00-20:00",
+      "sat_sun": "10:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "自然",
+      "摄影"
+    ],
+    "style_tags": [
+      "开放空间"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD102",
+    "name": "压测占位 · 公共服务 91",
+    "category": "公共服务",
+    "longitude": 113.0798861,
+    "latitude": 22.5861509,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "09:00-18:00",
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 9,
+    "interest_tags": [
+      "亲子",
+      "自然"
+    ],
+    "style_tags": [
+      "便民设施"
+    ],
+    "crowd_level": "medium",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD103",
+    "name": "压测占位 · 历史建筑 92",
+    "category": "历史建筑",
+    "longitude": 113.0854576,
+    "latitude": 22.586045,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": "08:00-20:00",
+      "sat_sun": "08:00-20:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 16,
+    "interest_tags": [
+      "历史",
+      "建筑"
+    ],
+    "style_tags": [
+      "建筑外观"
+    ],
+    "crowd_level": "low",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  },
+  {
+    "point_id": "LD104",
+    "name": "压测占位 · 文化场馆 93",
+    "category": "文化场馆",
+    "longitude": 113.0876657,
+    "latitude": 22.5856707,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "coordinate_source": "synthetic",
+    "opening_hours": {
+      "mon_fri": [
+        "09:00-12:00",
+        "14:00-18:00"
+      ],
+      "sat_sun": "09:00-18:00",
+      "closed_days": []
+    },
+    "schedule_source": "synthetic",
+    "visit_minutes": 14,
+    "interest_tags": [
+      "历史",
+      "非遗"
+    ],
+    "style_tags": [
+      "展览场景"
+    ],
+    "crowd_level": "high",
+    "description": "",
+    "history_id": null,
+    "kg_id": null,
+    "guide_content_id": null,
+    "image_refs": [],
+    "data_source": "synthetic",
+    "verified": false
+  }
+]
