@@ -24,7 +24,7 @@
 
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, basename, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import vm from "node:vm";
 
@@ -184,9 +184,11 @@ function firstDiff(a, b) {
  * 自检 1：产物里的 data_fingerprint 与上游 model.json 一致，且等于
  * data/synthetic/manifest.json 记录的三份 jsonl 的 sha256 指纹。
  *
- * 注：manifest.json 里的 file_sha256 是在 Windows 检出（CRLF）下算的；LF 检出时
- * 文件字节不同、哈希也不同，但两者都源自同一份内容。故这里同时接受「原始字节」
- * 与「CRLF 归一化字节」两种哈希，任一命中即认为数据未被篡改。
+ * 行尾方向（别写反）：合成数据由 pf.synth 的 _write_jsonl 以 **LF** 落盘，
+ * 所以 manifest 里记录的是 **LF 字节**的哈希，也就是 Git blob 的哈希。
+ * 但检出环境可能是 CRLF（core.autocrlf=true 的 Windows 检出把 LF 转成 CRLF），
+ * 此时磁盘字节的哈希与记录值不同。故这里以 **LF 归一化后的字节**为准：
+ * LF 检出时它就等于原始字节，CRLF 检出时它等于 Git blob 的字节，两种情形都成立。
  */
 function checkFingerprint(model, manifest) {
   const problems = [];
@@ -198,9 +200,14 @@ function checkFingerprint(model, manifest) {
   }
   for (const [name, want] of Object.entries(shas)) {
     const raw = readText(join(DATA_DIR, name));
-    const crlf = raw.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
-    if (sha256(raw) !== want && sha256(crlf) !== want) {
-      problems.push(`${name} 的内容哈希与 manifest.json 记录不一致（原始字节与 CRLF 归一化字节都不匹配）：数据被改过？`);
+    const lf = normalizeEol(raw);
+    if (sha256(lf) !== want) {
+      const alsoRaw = sha256(raw) === want;
+      problems.push(
+        `${name} 的内容哈希与 manifest.json 记录不一致：\n  记录值      = ${want}\n` +
+        `  LF 归一化   = ${sha256(lf)}\n  磁盘原始字节 = ${sha256(raw)}` +
+        `${alsoRaw ? "（记录值等于原始字节，但与 LF 归一化不同：落盘行尾策略可能被改动过）" : ""}`
+      );
     }
   }
   return problems;
@@ -273,8 +280,8 @@ async function checkBehaviour(runtimeText, artifactText, model, dataset) {
   const problems = [];
   const index = await import(pathToFileURL(join(RUNTIME_DIR, "index.mjs")).href);
 
-  const makeSandbox = () => {
-    const sandbox = { console };
+  const makeSandbox = (extra) => {
+    const sandbox = { console, ...(extra || {}) };
     sandbox.window = sandbox;
     vm.createContext(sandbox);
     return sandbox;
@@ -355,6 +362,23 @@ async function checkBehaviour(runtimeText, artifactText, model, dataset) {
     const theirBR = index.recommend(dataset, badModel, lotId, issuedAt, { preference: "save_time" });
     if (JSON.stringify(br) !== JSON.stringify(theirBR)) problems.push("版本不兼容时 recommend 输出与 runtime/index.mjs 不一致");
   }
+
+  // (d) 演示时间覆盖开关必须真的生效
+  //     回归防护：适配层 demoNow() 的正则若漏了 \d 转义，开关会静默失效（永远返回默认值）。
+  //     注意覆盖值必须与 DEMO_NOW 不同，否则「开关生效」与「开关失效」观测不到区别。
+  {
+    const override = "2026-05-20T09:30:00+08:00";
+    const sandbox2 = makeSandbox({ CD_PARKING_DEMO_NOW: override });
+    const opf = load(sandbox2, artifactText);
+    if (opf.demoNow !== override) {
+      problems.push(`CD_PARKING_DEMO_NOW 覆盖开关未生效：demoNow() 返回 ${opf.demoNow}（期望 ${override}）`);
+    }
+    const noOverride = makeSandbox();
+    const npf = load(noOverride, artifactText);
+    if (npf.demoNow !== "2026-04-10T14:00:00+08:00") {
+      problems.push(`未设置覆盖时 demoNow() 应回落到 DEMO_NOW，实为 ${npf.demoNow}`);
+    }
+  }
   return problems;
 }
 
@@ -376,10 +400,22 @@ function rel(path) {
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  const checkOnly = args.includes("--check");
-  const unknown = args.filter((a) => a !== "--check");
+  const argv = process.argv.slice(2);
+  const checkOnly = argv.includes("--check");
+  let outDir = null;
+  const rest = [];
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] === "--out-dir") {
+      outDir = argv[i + 1];
+      if (!outDir) die("--out-dir 需要一个目录参数");
+      i += 1;
+      continue;
+    }
+    rest.push(argv[i]);
+  }
+  const unknown = rest.filter((a) => a !== "--check");
   if (unknown.length) die(`未知参数：${unknown.join(" ")}`);
+  if (checkOnly && outDir) die("--check 与 --out-dir 不能同时用");
 
   const modelJson = JSON.parse(readText(MODEL_JSON));
   const manifest = JSON.parse(readText(MANIFEST_JSON));
@@ -435,20 +471,21 @@ async function main() {
   }
 
   for (const r of results) {
+    const target = outDir ? join(resolve(outDir), basename(r.path)) : r.path;
     // 内容相同就不重写：避免无谓地改动工作区的行尾（Git 存储形式是 LF，检出可能是 CRLF）。
-    const onDisk = existsSync(r.path) ? normalizeEol(readText(r.path)) : null;
+    const onDisk = existsSync(target) ? normalizeEol(readText(target)) : null;
     if (onDisk === r.text) {
       r.written = false;
       continue;
     }
-    writeFileSync(r.path, r.text, "utf8");
+    writeFileSync(target, r.text, "utf8");
     r.written = true;
   }
   const wrote = results.filter((r) => r.written).length;
   process.stdout.write(
     wrote === 0
-      ? "  已是最新，未改动任何文件（LF 行尾，跨平台字节一致）\n"
-      : `  已写出 ${wrote} 个文件（LF 行尾，跨平台字节一致）\n`
+      ? `  已是最新，未改动任何文件（LF 行尾，跨平台字节一致）${outDir ? `（输出目录 ${resolve(outDir)}）` : ""}\n`
+      : `  已写出 ${wrote} 个文件（LF 行尾，跨平台字节一致）${outDir ? `（输出目录 ${resolve(outDir)}）` : ""}\n`
   );
   if (problems.length) {
     process.stderr.write("export_browser: 自检未通过，仍写出了文件，请检查上面的问题\n");

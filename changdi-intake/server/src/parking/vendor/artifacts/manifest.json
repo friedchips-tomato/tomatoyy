@@ -1,5 +1,5 @@
 {
-  "data_fingerprint": "f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb:45bfe99fd903d065fb9a98f107b52e6c63a10771b0068fed1daad0c5ff8ad96f:ce5e1bc47f07eb1ad865bdc063b672d7f00459171e3204d56dc6c32c155d3988",
+  "data_fingerprint": "571c7f36d82b66db860b50f6e5b97d6eccd01237be43d40d24df3e1626b870ad:4f61d76032596b6a26e4c93ecc8b0e4cfedf0375d8358102327200bbbf1cae7d:6385dabe29609dcf3a902b8c4dd5e0b77f247d0ea25ae5a28e8ab756c1490990",
   "data_manifest": {
     "config": {
       "day_type": {
@@ -204,9 +204,9 @@
       }
     },
     "file_sha256": {
-      "lots.jsonl": "f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb",
-      "observations.jsonl": "45bfe99fd903d065fb9a98f107b52e6c63a10771b0068fed1daad0c5ff8ad96f",
-      "signals.jsonl": "ce5e1bc47f07eb1ad865bdc063b672d7f00459171e3204d56dc6c32c155d3988"
+      "lots.jsonl": "571c7f36d82b66db860b50f6e5b97d6eccd01237be43d40d24df3e1626b870ad",
+      "observations.jsonl": "4f61d76032596b6a26e4c93ecc8b0e4cfedf0375d8358102327200bbbf1cae7d",
+      "signals.jsonl": "6385dabe29609dcf3a902b8c4dd5e0b77f247d0ea25ae5a28e8ab756c1490990"
     },
     "generated_at": "2026-04-15T00:00:00+08:00",
     "generator_version": "1.0.0",
@@ -218,8 +218,8 @@
     "seed": 42
   },
   "files": {
-    "metrics.json": "e482ae44fac67000109621f6326e0988428fe16476ac8bd2fccfbfd0cbf03482",
-    "model.json": "751256384ffd6e8b1db655df3223adde722b96c8184fecb392f1baf7b931178f"
+    "metrics.json": "5bb6fd95c674e9cee6182e2b8efeefad7b6a7cdbbf69a2c8009d27895f4d4ff5",
+    "model.json": "83e74db9aad3ff906d68d2a3782bfbf902a1a9d67cbd3fccdfb32665be886edd"
   },
   "generated_at": "2026-04-15T00:00:00+08:00",
   "model_kind": "linear",

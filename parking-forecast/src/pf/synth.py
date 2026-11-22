@@ -392,13 +392,15 @@ def _inject(cfg: SynthConfig, rng: np.random.Generator, lot: Dict[str, Any],
 # 主入口
 # --------------------------------------------------------------------------- #
 def _write_jsonl(path: Path, lines: List[Dict[str, Any]]) -> None:
-    with open(path, "w", encoding="utf-8") as f:
+    # newline="\n"：生成物一律以 LF 落盘（Windows 上默认会把 \n 转成 \r\n，
+    # 那会让 manifest 里的 file_sha256 依赖平台，跨检出环境对不上）。
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         for rec in lines:
             f.write(json.dumps(rec, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def _write_json(path: Path, obj: Any) -> None:
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(obj, f, ensure_ascii=False, sort_keys=True, indent=2)
         f.write("\n")
 

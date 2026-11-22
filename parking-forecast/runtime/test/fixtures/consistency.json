@@ -56001,7 +56001,7 @@
       "lot_id": "P2"
     }
   ],
-  "data_fingerprint": "f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb:45bfe99fd903d065fb9a98f107b52e6c63a10771b0068fed1daad0c5ff8ad96f:ce5e1bc47f07eb1ad865bdc063b672d7f00459171e3204d56dc6c32c155d3988",
+  "data_fingerprint": "571c7f36d82b66db860b50f6e5b97d6eccd01237be43d40d24df3e1626b870ad:4f61d76032596b6a26e4c93ecc8b0e4cfedf0375d8358102327200bbbf1cae7d:6385dabe29609dcf3a902b8c4dd5e0b77f247d0ea25ae5a28e8ab756c1490990",
   "generated_by": "tests/test_consistency.py",
   "n_cases": 500,
   "n_recommend": 20,

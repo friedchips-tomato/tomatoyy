@@ -180,6 +180,14 @@ node scripts/export_browser.mjs --check  # 只校验：与入库产物比对 + �
 依赖：阶段 2 在阶段 1 之上新增 `numpy` + `scikit-learn`（`Ridge`、`HistGradientBoostingRegressor`）。
 运行时 `runtime/*.mjs` 为**零依赖 Node ESM**（Node ≥ 18，本机验证 Node 22）。
 
+> **行尾策略（生成物一律 LF）**：`pf.export.write_json` / `write_text` 与 `pf.synth._write_jsonl` /
+> `_write_json` 都显式 `newline="\n"`，生成物不随平台默认换行转换而变。于是
+> 「磁盘字节 = Git blob 字节 = `manifest.json` 里记录的 SHA-256 字节」三者在任何平台都相等：
+> `data/synthetic/manifest.json` 的 `file_sha256` 与 `artifacts/manifest.json` 的 `files` 才是可用的
+> 完整性凭据（改动这几个写出函数时**不得**去掉 `newline="\n"`）。
+> 注意检出环境仍可能把 LF 检出成 CRLF（`core.autocrlf=true`），此时用 LF 归一化后的字节比对即可
+> （`scripts/export_browser.mjs` 的 `checkFingerprint` 就是这么做的）。
+
 > 说明：`node --test runtime/test/`（目录形式）在本机 Windows + Node 22.17 下会退化为「按模块路径加载」而失败，
 > 故用 glob 形式 `node --test "runtime/test/*.test.mjs"`（或 `node --test` 无参扫描），二者语义等价。
 

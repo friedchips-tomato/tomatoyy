@@ -14,13 +14,6 @@
 //   demoNow / validDataset <- 浏览器侧新增（演示时间覆盖 + 数据集完整性）
 //   global.CD_PARKING      <- 浏览器侧新增（导出给 prototype-paper/app.js 消费）
 //
-// 已知遗留问题（保持与入库产物逐字节一致，未擅自修改）：
-//   demoNow() 里的正则 /^d{4}-d{2}-d{2}Td{2}:d{2}:d{2}/ 疑似漏了反斜杠，本应写成
-//   /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}/。当前写法永远匹配不上真实时间戳，
-//   于是 global.CD_PARKING_DEMO_NOW 这个覆盖开关实际是失效的（demoNow 恒返回
-//   DEMO_NOW = 2026-04-10T14:00:00+08:00）。修复它会改变入库产物的字节，故留待
-//   单独一次提交处理。
-//
 // @template-body
 const SCHEMA_VERSION = "2.0.0";
 
@@ -72,7 +65,7 @@ function recommendChecked(dataset, model, destinationId, arriveAtStr, opts) {
 const DEMO_NOW = "2026-04-10T14:00:00+08:00";
 function demoNow() {
   const override = global.CD_PARKING_DEMO_NOW;
-  return (typeof override === "string" && /^d{4}-d{2}-d{2}Td{2}:d{2}:d{2}/.test(override)) ? override : DEMO_NOW;
+  return (typeof override === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(override)) ? override : DEMO_NOW;
 }
 
 function validDataset(dataset) {
