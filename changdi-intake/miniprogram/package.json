@@ -1,0 +1,12 @@
+{
+  "name": "changdi-intake-miniprogram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "长堤风貌街接诉即办小程序前端骨架与本地模拟检查",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:unit": "node --test test/public-query.test.js test/owner-verify.test.js test/owner-actions.test.js test/owner-action-lock.test.js test/owner-supplement.test.js",
+    "test:merchant": "node --test test/merchant.test.js test/merchant-submit.test.js test/merchant-contract.test.js",
+    "test:contract": "node --test test/contract.test.js test/owner-supplement-contract.test.js"
+  }
+}

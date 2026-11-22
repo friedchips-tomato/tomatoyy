@@ -543,6 +543,10 @@ h1 { font: 700 23px/1.2 var(--serif); letter-spacing: .12em; }
 .parking-chart polyline, .parking-chart line { fill: none; vector-effect: non-scaling-stroke; }
 .chart-legend { display: flex; justify-content: space-between; }
 .card.stale .parking-header strong { text-decoration: line-through; }
+.parking-predict { margin-top: 6px; font-size: 13px; color: var(--ink-2); }
+.parking-predict strong { color: var(--red-ink); font: 700 15px/1 var(--serif); }
+.reasons { margin: 6px 0 0; padding-left: 18px; list-style: disc; color: var(--ink-2); font-size: 13px; line-height: 1.7; }
+.reasons li + li { margin-top: 2px; }
 .file-pick { display: flex; align-items: center; gap: 10px; min-height: 44px; padding-bottom: 6px; border-bottom: 1px dashed var(--red-line); cursor: pointer; }
 .file-pick:has(input:focus-visible) .button { outline: 2px solid var(--red); outline-offset: 2px; }
 .feedback-preview { max-width: 100%; max-height: 180px; object-fit: contain; justify-self: start; padding: 5px; background: #fffdf7; box-shadow: var(--shade); }

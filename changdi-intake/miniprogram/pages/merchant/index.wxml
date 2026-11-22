@@ -1,0 +1,355 @@
+<template name="own-receipt">
+  <text class="section-title">本人申报回执</text>
+  <text class="merchant-block case-number">{{receipt.caseNumber}}</text>
+  <text wx:if="{{receipt.submittedLabel}}" class="merchant-block muted">提交时间 {{receipt.submittedLabel}}</text>
+  <text wx:if="{{receipt.publicLookupCode}}" class="merchant-block">公开查询码 {{receipt.publicLookupCode}}</text>
+  <image wx:if="{{receipt.qrSource}}" src="{{receipt.qrSource}}" mode="aspectFit" class="receipt-image"
+    data-receipt="{{receiptKey}}" data-revision="{{receipt.qrRevision}}" binderror="onReceiptImageError" />
+  <button wx:if="{{receipt.qrSource}}" class="text-button spaced" data-receipt="{{receiptKey}}"
+    data-revision="{{receipt.qrRevision}}" bindtap="onClearReceiptImage">隐藏微信码图片</button>
+  <text wx:elif="{{receipt.publicLookupCode}}" class="merchant-block muted">可用公开查询码查看办理状态。</text>
+  <button wx:if="{{receipt.publicLookupCode}}" class="button-secondary spaced"
+    data-code="{{receipt.publicLookupCode}}" bindtap="onOpenPublicReceipt">公开查询进度</button>
+  <button class="button-secondary spaced" data-case="{{receipt.caseNumber}}" bindtap="onOpenClaimant">本人反馈、评价与补办</button>
+</template>
+
+<view class="page merchant-shell">
+  <view wx:if="{{view === 'login'}}" class="card">
+    <text class="merchant-title">商户核验</text>
+    <form wx:if="{{localEnabled}}" bindsubmit="onLoginSubmit">
+      <text class="merchant-block muted">请使用本地服务生成的商户测试令牌。</text>
+      <label class="field-label" for="merchant-token">本地测试令牌</label>
+      <block wx:for="{{loginKeys}}" wx:key="*this">
+        <input id="merchant-token" class="merchant-input" name="token" password maxlength="256"
+          placeholder="输入商户测试令牌" disabled="{{loginBusy}}" />
+      </block>
+      <button class="button-primary spaced" form-type="submit" loading="{{loginBusy}}" disabled="{{loginBusy}}">核验并进入</button>
+    </form>
+    <button wx:elif="{{wechatEnabled}}" class="button-primary spaced" bindtap="onWechatLogin"
+      loading="{{loginBusy}}" disabled="{{loginBusy}}">微信登录</button>
+    <text wx:else class="merchant-block warning">服务地址无效，登录不可用。</text>
+    <text wx:if="{{loginError}}" class="merchant-block warning" aria-role="alert">{{loginError}}</text>
+    <button class="button-secondary spaced" bindtap="onExit">返回首页</button>
+  </view>
+
+  <block wx:else>
+    <view class="merchant-header">
+      <view>
+        <text class="merchant-title">{{view === 'case' ? '商户工单详情' : view === 'task' ? '协办任务详情' : view === 'claimant' ? '本人办理' : view === 'representativeReport' ? '商户代表月报' : '商户工作台'}}</text>
+        <text class="merchant-block muted">绑定商户 {{merchant}}</text>
+        <text wx:if="{{permissionText}}" class="merchant-block muted">授权 {{permissionText}}</text>
+      </view>
+      <button class="text-button" bindtap="onLogout">退出登录</button>
+    </view>
+    <text wx:if="{{notice}}" class="merchant-notice" aria-role="alert">{{notice}}</text>
+
+    <block wx:if="{{view === 'workbench'}}">
+      <button wx:if="{{canViewRepresentativeReport}}" class="button-secondary spaced"
+        bindtap="onOpenRepresentativeReport">查看商户代表月报</button>
+      <block wx:if="{{permissions.length === 0}}">
+        <view class="card">
+          <text class="section-title">当前账号没有可用的商户授权</text>
+          <text class="merchant-block muted">请联系运营人员核验并授予本商户的读取、提交或协办权限。</text>
+        </view>
+      </block>
+
+      <block wx:if="{{canReadCases}}">
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">本商户工单</text>
+            <button class="text-button" bindtap="onRefresh">刷新</button>
+          </view>
+          <picker mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}"
+            bindchange="onStatusChange">
+            <view class="select-chip" aria-role="button">{{statusOptions[statusIndex].label}} ▾</view>
+          </picker>
+          <text class="merchant-block muted">若上一次提交结果未确认，请先在本列表核对是否已有该诉求，再提交新的申报。</text>
+          <text wx:if="{{casesBusy && !cases.length}}" class="merchant-block muted">正在读取工单…</text>
+          <text wx:if="{{casesError}}" class="merchant-block warning" aria-role="alert">{{casesError}}</text>
+          <text wx:elif="{{casesReady && !cases.length}}" class="merchant-block muted">暂无本商户工单。</text>
+          <button wx:for="{{cases}}" wx:key="caseNumber" class="case-row" data-case="{{item.caseNumber}}"
+            bindtap="onOpenCase">
+            <view class="section-header">
+              <text class="row-heading">工单 {{item.caseNumber}}</text>
+              <text class="status-tag">{{item.statusLabel}}</text>
+            </view>
+            <text wx:if="{{item.submittedLabel}}" class="merchant-block muted">提交时间 {{item.submittedLabel}}</text>
+          </button>
+          <button wx:if="{{casesNextBefore}}" class="button-secondary spaced" bindtap="onLoadMoreCases"
+            disabled="{{casesBusy}}" loading="{{casesBusy}}">加载更多</button>
+        </view>
+      </block>
+
+      <block wx:if="{{canCollaborate}}">
+        <view class="card">
+          <text class="section-title">协办待办</text>
+          <text wx:if="{{tasksBusy && !tasks.length}}" class="merchant-block muted">正在读取协办任务…</text>
+          <text wx:if="{{tasksError}}" class="merchant-block warning" aria-role="alert">{{tasksError}}</text>
+          <text wx:elif="{{tasksReady && !tasks.length}}" class="merchant-block muted">暂无协办任务。</text>
+          <button wx:for="{{tasks}}" wx:key="taskId" class="case-row" data-task="{{item.taskId}}" bindtap="onOpenTask">
+            <view class="section-header">
+              <text class="row-heading">{{item.instructions || '协办任务'}}</text>
+              <text class="status-tag">{{item.statusLabel}}</text>
+            </view>
+            <text class="merchant-block muted">{{item.taskId}}</text>
+            <text wx:if="{{item.dueLabel}}" class="merchant-block muted">办理期限 {{item.dueLabel}}</text>
+          </button>
+          <button wx:if="{{tasksNextBefore}}" class="button-secondary spaced" bindtap="onLoadMoreTasks"
+            disabled="{{tasksBusy}}" loading="{{tasksBusy}}">加载更多</button>
+        </view>
+      </block>
+
+      <block wx:if="{{canSubmitCases}}">
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">提交新诉求</text>
+            <button class="text-button" bindtap="onOpenForm">新建</button>
+          </view>
+          <text class="merchant-block muted">按提交权限填写并提交新诉求。可选照片最多 3 张（每张不超过 5 MiB，仅 JPEG/PNG/WebP），与正文一次提交；照片可留空。</text>
+
+          <block wx:if="{{showForm}}">
+            <text class="field-label">发生时间</text>
+            <view class="picker-row">
+              <picker mode="date" value="{{formDate}}" bindchange="onFormDateChange" disabled="{{submitBusy || submitPending}}">
+                <view class="select-chip" aria-role="button">{{formDate}} ▾</view>
+              </picker>
+              <picker mode="time" value="{{formTime}}" bindchange="onFormTimeChange" disabled="{{submitBusy || submitPending}}">
+                <view class="select-chip" aria-role="button">{{formTime}} ▾</view>
+              </picker>
+            </view>
+            <label class="field-label" for="form-location">发生地点</label>
+            <input id="form-location" class="merchant-input" value="{{formLocation}}" maxlength="300"
+              bindinput="onFormLocationInput" disabled="{{submitBusy || submitPending}}" placeholder="填写发生地点" />
+            <label class="field-label" for="form-category">事项分类</label>
+            <input id="form-category" class="merchant-input" value="{{formCategory}}" maxlength="80"
+              bindinput="onFormCategoryInput" disabled="{{submitBusy || submitPending}}" placeholder="填写事项分类" />
+            <label class="field-label" for="form-description">诉求说明</label>
+            <textarea id="form-description" class="merchant-input text-area" value="{{formDescription}}" maxlength="4000"
+              bindinput="onFormDescriptionInput" disabled="{{submitBusy || submitPending}}" placeholder="填写问题经过与诉求" />
+            <label class="field-label" for="form-department">建议处理部门（选填）</label>
+            <input id="form-department" class="merchant-input" value="{{formSuggestedDepartment}}" maxlength="100"
+              bindinput="onFormSuggestedDepartmentInput" disabled="{{submitBusy || submitPending}}" />
+            <label class="field-label" for="form-contact">联系方式（选填）</label>
+            <input id="form-contact" class="merchant-input" value="{{formContact}}" maxlength="300"
+              bindinput="onFormContactInput" disabled="{{submitBusy || submitPending}}" placeholder="便于回访的联系方式" />
+            <text class="field-label">现场照片（选填，最多 3 张）</text>
+            <view class="picker-row">
+              <button class="button-secondary" bindtap="onChoosePhotos" loading="{{photoChoosing}}"
+                disabled="{{submitBusy || submitPending || photoChoosing}}">选择照片</button>
+              <button class="button-secondary" bindtap="onClearPhotos"
+                disabled="{{submitBusy || submitPending || photoChoosing || !photoCount}}">清除照片</button>
+            </view>
+            <text class="merchant-block muted">已选 {{photoCount}} 张。照片从本机临时文件读取，不访问任何网址；读取或校验失败时请求不会发出，可重新选择。</text>
+            <text wx:if="{{submitRequestId}}" class="merchant-block muted">请求号 {{submitRequestId}}（重试保持不变）</text>
+            <text wx:if="{{submitPending}}" class="merchant-block warning">本次提交结果未确认，申报已锁定：不能修改内容、清空重来或更换照片，请重试确认同一请求（请求号、字段与已发出的照片均不变）。服务端按请求号与内容去重，重试不会重复建单。</text>
+            <text wx:if="{{submitPending && canReadCases}}" class="merchant-block muted">重试仍无法确认时，请先在本商户工单列表核对是否已有同一事项的工单。</text>
+            <button class="button-primary spaced" bindtap="onSubmitNewCase" loading="{{submitBusy}}"
+              disabled="{{submitBusy}}">{{submitButtonText}}</button>
+            <button class="button-secondary spaced" bindtap="onResetForm" disabled="{{submitBusy || submitPending}}">清空重填</button>
+            <text wx:if="{{submitMessage}}" class="merchant-block warning" aria-role="alert">{{submitMessage}}</text>
+          </block>
+
+        </view>
+      </block>
+      <view wx:if="{{canReadCases || canSubmitCases}}" class="card">
+        <view wx:if="{{submitReceipt}}">
+          <template is="own-receipt" data="{{receipt: submitReceipt, receiptKey: 'submitReceipt'}}" />
+        </view>
+        <label class="field-label" for="receipt-lookup">按工单号重取本人回执</label>
+        <input id="receipt-lookup" class="merchant-input" value="{{receiptLookup}}" maxlength="35"
+          disabled="{{receiptBusy || submitBusy}}" bindinput="onReceiptLookupInput" placeholder="输入完整工单号" />
+        <button class="button-secondary spaced" disabled="{{receiptBusy || submitBusy}}" loading="{{receiptBusy}}"
+          bindtap="onFindReceipt">读取本人回执</button>
+        <text wx:if="{{receiptError}}" class="merchant-block warning">{{receiptError}}</text>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'representativeReport'}}">
+      <button class="text-button back-list" bindtap="onCloseRepresentativeReport">返回商户工作台</button>
+      <view class="card">
+        <picker mode="date" fields="month" value="{{reportMonth + '-01'}}" end="{{reportMaxMonth + '-01'}}"
+          bindchange="onRepresentativeMonthChange">
+          <view class="select-chip" aria-role="button">{{reportMonth}} ▾</view>
+        </picker>
+        <text wx:if="{{extraBusy}}" class="merchant-block muted">正在读取月报…</text>
+        <text wx:if="{{extraError}}" class="merchant-block warning" aria-role="alert">{{extraError}}</text>
+        <view wx:for="{{reportRows}}" wx:key="label" class="history-row">
+          <text class="row-heading">{{item.label}}</text>
+          <text class="merchant-block">{{item.value}}</text>
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'claimant'}}">
+      <view class="section-header back-list">
+        <button class="text-button" bindtap="onCloseClaimant" disabled="{{extraBusy}}">返回本人回执</button>
+        <button class="text-button" bindtap="onReadClaimant" disabled="{{extraBusy}}">刷新本人办理</button>
+      </view>
+      <view class="card">
+        <text class="section-title">工单 {{extraCase}}</text>
+        <text wx:if="{{extraBusy}}" class="merchant-block muted">正在读取或保存…</text>
+        <text wx:if="{{extraError}}" class="merchant-block warning" aria-role="alert">{{extraError}}</text>
+        <block wx:if="{{claimant}}">
+          <text wx:if="{{claimant.evaluationDeadline}}" class="merchant-block muted">评价截止 {{claimant.evaluationDeadline}}</text>
+          <text wx:if="{{claimant.reopenDeadline}}" class="merchant-block muted">补办截止 {{claimant.reopenDeadline}}</text>
+          <text wx:if="{{!claimant.rounds.length}}" class="merchant-block muted">暂无发布反馈。</text>
+          <view wx:for="{{claimant.rounds}}" wx:key="round" class="history-row">
+            <text class="row-heading">第 {{item.round}} 轮</text>
+            <text wx:if="{{item.summary}}" class="merchant-block detail-copy">{{item.summary}}</text>
+            <text wx:if="{{item.evaluation}}" class="merchant-block">已评价（速度、效果、态度） {{item.evaluation}}</text>
+            <button wx:for="{{item.photos}}" wx:for-item="photo" wx:key="key" class="text-button"
+              bindtap="onPreviewClaimPhoto" data-photo="{{photo.key}}" disabled="{{claimPhotoBusy || extraBusy}}">查看反馈图片 {{photo.position + 1}}</button>
+          </view>
+          <text wx:if="{{claimPhotoBusy}}" class="merchant-block muted">正在读取反馈图片…</text>
+          <text wx:if="{{claimPhotoError}}" class="merchant-block warning">{{claimPhotoError}}</text>
+          <view wx:if="{{claimPhotoPath || claimPhotoBusy}}" class="history-row">
+            <image wx:if="{{claimPhotoPath}}" src="{{claimPhotoPath}}" mode="widthFix" class="receipt-image" />
+            <button class="text-button" bindtap="onCloseClaimPhoto">关闭图片</button>
+          </view>
+          <view wx:for="{{claimant.reopen}}" wx:key="id" class="history-row">
+            <text class="row-heading">补办 {{item.status}}</text>
+            <text class="merchant-block">{{item.reason}}</text>
+            <text wx:if="{{item.decisionReason}}" class="merchant-block">{{item.decisionReason}}</text>
+          </view>
+          <button wx:for="{{claimant.actions}}" wx:key="id" class="button-secondary spaced"
+            data-action="{{item.id}}" bindtap="onChooseClaimAction" disabled="{{extraBusy || claimRefresh}}">{{item.label}}</button>
+          <view wx:if="{{claimForm}}" class="history-row">
+            <text class="row-heading">{{claimForm.label}}</text>
+            <block wx:if="{{claimForm.action === 'evaluate'}}">
+              <picker range="{{ratings}}" data-field="speed" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">速度 {{claimForm.speed || '请选择'}} ▾</view>
+              </picker>
+              <picker range="{{ratings}}" data-field="effectiveness" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">效果 {{claimForm.effectiveness || '请选择'}} ▾</view>
+              </picker>
+              <picker range="{{ratings}}" data-field="attitude" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">态度 {{claimForm.attitude || '请选择'}} ▾</view>
+              </picker>
+            </block>
+            <textarea wx:if="{{claimForm.action === 'request_reopen'}}" class="merchant-input text-area"
+              maxlength="1000" placeholder="填写补办理由" value="{{claimForm.reason}}" data-field="reason" bindinput="onClaimInput" />
+            <button class="button-primary spaced" bindtap="onSaveClaimAction" disabled="{{extraBusy || claimRefresh}}">确认提交</button>
+          </view>
+        </block>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'case'}}">
+      <button class="text-button back-list" bindtap="onReturnToWorkbench">返回商户工作台</button>
+      <view wx:if="{{caseBusy || caseError}}" class="card">
+        <text wx:if="{{caseBusy}}" class="merchant-block muted">正在读取工单详情…</text>
+        <text wx:if="{{caseError}}" class="merchant-block warning" aria-role="alert">{{caseError}}</text>
+        <button wx:if="{{caseError}}" class="button-secondary spaced" bindtap="onRetryCase">重试读取</button>
+      </view>
+      <block wx:if="{{caseDetail}}">
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">{{caseDetail.category || '工单详情'}}</text>
+            <text class="status-tag">{{caseDetail.statusLabel}}</text>
+          </view>
+          <text class="merchant-block muted case-number">{{caseDetail.caseNumber}}</text>
+          <text wx:if="{{caseDetail.round}}" class="merchant-block">当前轮次 {{caseDetail.round}}</text>
+          <text wx:if="{{caseDetail.occurredLabel}}" class="merchant-block">发生时间 {{caseDetail.occurredLabel}}</text>
+          <text wx:if="{{caseDetail.location}}" class="merchant-block">发生地点 {{caseDetail.location}}</text>
+          <text wx:if="{{caseDetail.description}}" class="merchant-block detail-copy">{{caseDetail.description}}</text>
+        </view>
+
+        <view wx:if="{{caseDetail.feedback.length}}" class="card">
+          <text class="section-title">已发布反馈</text>
+          <view wx:for="{{caseDetail.feedback}}" wx:key="round" class="history-row">
+            <text class="row-heading">第 {{item.round}} 轮</text>
+            <text wx:if="{{item.publishedLabel}}" class="merchant-block muted">{{item.publishedLabel}}</text>
+            <text wx:if="{{item.summary}}" class="merchant-block detail-copy">{{item.summary}}</text>
+          </view>
+        </view>
+        <view wx:else class="card">
+          <text class="section-title">已发布反馈</text>
+          <text class="merchant-block muted">暂无处理反馈</text>
+        </view>
+        <view class="card">
+          <template wx:if="{{caseReceipt}}" is="own-receipt" data="{{receipt: caseReceipt, receiptKey: 'caseReceipt'}}" />
+          <button class="button-secondary spaced" bindtap="onReadCaseReceipt" disabled="{{receiptBusy}}"
+            loading="{{receiptBusy}}">{{caseReceipt ? '重取本人回执' : '读取本人回执'}}</button>
+          <text wx:if="{{receiptError}}" class="merchant-block warning" aria-role="alert">{{receiptError}}</text>
+        </view>
+
+        <view class="card">
+          <text class="section-title">办理时间线</text>
+          <text wx:if="{{!caseDetail.history.length}}" class="merchant-block muted">暂无办理记录。</text>
+          <view wx:for="{{caseDetail.history}}" wx:key="timeLabel" class="history-row">
+            <text class="row-heading">{{item.statusLabel}}</text>
+            <text class="merchant-block muted">{{item.timeLabel}}</text>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <block wx:else>
+      <button class="text-button back-list" bindtap="onReturnToWorkbench" disabled="{{taskSubmitting}}">返回商户工作台</button>
+      <view wx:if="{{taskBusy || taskError}}" class="card">
+        <text wx:if="{{taskBusy}}" class="merchant-block muted">正在读取协办任务…</text>
+        <text wx:if="{{taskError}}" class="merchant-block warning" aria-role="alert">{{taskError}}</text>
+        <button wx:if="{{taskError}}" class="button-secondary spaced" bindtap="onRetryTask">重试读取</button>
+      </view>
+      <block wx:if="{{taskDetail}}">
+        <view class="card">
+          <view class="section-header">
+            <text class="section-title">协办事项</text>
+            <text class="status-tag">{{taskDetail.statusLabel}}</text>
+          </view>
+          <text class="merchant-block muted case-number">{{taskDetail.taskId}}</text>
+          <text wx:if="{{taskDetail.instructions}}" class="merchant-block detail-copy">{{taskDetail.instructions}}</text>
+          <text wx:if="{{taskDetail.location}}" class="merchant-block">必要地点 {{taskDetail.location}}</text>
+          <text wx:if="{{taskDetail.dueLabel}}" class="merchant-block">办理期限 {{taskDetail.dueLabel}}</text>
+        </view>
+
+        <view wx:if="{{taskDetail.returnReason}}" class="card">
+          <text class="section-title">退回补充说明</text>
+          <text class="merchant-block detail-copy">{{taskDetail.returnReason}}</text>
+        </view>
+
+        <view wx:if="{{taskDetail.latestSubmission}}" class="card">
+          <text class="section-title">最近一次送审说明</text>
+          <text class="merchant-block detail-copy">{{taskDetail.latestSubmission}}</text>
+        </view>
+
+        <view wx:if="{{taskDetail.submissionPhotos.length}}" class="card">
+          <text class="section-title">协办送审原图</text>
+          <text class="merchant-block muted">只显示本商户在本任务送审的原图；点击“查看”后按需读取，不在本机长期保存。</text>
+          <view wx:for="{{taskDetail.submissionPhotos}}" wx:key="key" class="section-header history-row">
+            <text class="muted">送审版本 {{item.submitVersion}} · 第 {{item.position + 1}} 张 · {{item.typeLabel}}</text>
+            <button class="text-button" bindtap="onPreviewTaskPhoto" data-task="{{taskDetail.taskId}}"
+              data-photo="{{item.key}}" disabled="{{taskSubmitting}}">查看</button>
+          </view>
+          <text wx:if="{{taskPreviewBusy}}" class="merchant-block muted">正在读取原图…</text>
+          <text wx:if="{{taskPreviewError}}" class="merchant-block warning" aria-role="alert">{{taskPreviewError}}</text>
+          <image wx:if="{{taskPreviewPath}}" class="merchant-photo-preview" src="{{taskPreviewPath}}" mode="aspectFit"
+            aria-label="当前送审原图" />
+          <button wx:if="{{taskPreviewPath}}" class="button-secondary spaced" bindtap="onCloseTaskPreview">关闭原图</button>
+        </view>
+
+        <view class="card">
+          <text class="section-title">提交协办说明</text>
+          <text wx:if="{{taskDetail.status === 'awaiting_submission' || taskDetail.status === 'returned'}}">
+            <label class="field-label" for="task-summary">协办说明</label>
+            <textarea id="task-summary" class="merchant-input text-area" value="{{taskSummary}}" maxlength="4000"
+              bindinput="onTaskSummaryInput" disabled="{{taskSubmitting}}" placeholder="填写现场情况与处理说明" />
+            <text class="field-label">现场照片（选填，最多 3 张）</text>
+            <view class="picker-row">
+              <button class="button-secondary" bindtap="onChooseTaskPhotos" loading="{{taskPhotoChoosing}}"
+                disabled="{{taskSubmitting || taskPhotoChoosing}}">选择照片</button>
+              <button class="button-secondary" bindtap="onClearTaskPhotos"
+                disabled="{{taskSubmitting || taskPhotoChoosing || !taskPhotoCount}}">清除照片</button>
+            </view>
+            <text class="merchant-block muted">已选 {{taskPhotoCount}} 张，每张不超过 5 MiB，仅 JPEG、PNG 或 WebP，与说明一次提交；不选也可以只交文字。</text>
+            <button class="button-primary spaced" bindtap="onSubmitTask" loading="{{taskSubmitting}}"
+              disabled="{{taskSubmitting}}">提交送审</button>
+          </text>
+          <text wx:else class="merchant-block muted">该任务当前状态不可送审，请刷新查看最新状态。</text>
+          <text wx:if="{{taskSubmitMessage}}" class="merchant-block warning" aria-role="alert">{{taskSubmitMessage}}</text>
+          <text class="merchant-block muted support-note">照片从本机临时文件读取，只在本任务送审时使用。</text>
+        </view>
+      </block>
+    </block>
+  </block>
+</view>

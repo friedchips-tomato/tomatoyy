@@ -1,0 +1,50 @@
+<view class="page">
+  <view class="card">
+    <text class="card-title">我的诉求</text>
+    <text class="muted">本机只保存工单编号、公开查询码与提交时间，用于查看最新公开进度。</text>
+    <view class="actions">
+      <button class="button-primary" bindtap="onScanTap">扫码查询</button>
+      <button class="button-secondary" bindtap="onRefreshTap">刷新</button>
+    </view>
+    <view class="actions">
+      <button class="button-secondary" bindtap="onManualCodeTap">手动输码查询</button>
+    </view>
+    <text wx:if="{{message}}" class="warning-text" aria-role="alert">{{message}}</text>
+  </view>
+
+  <view class="feedback" wx:if="{{loading}}">
+    <text class="muted">正在查询最新进度…</text>
+  </view>
+
+  <view class="card" wx:if="{{!loading && empty}}">
+    <text class="card-title">本机暂无记录</text>
+    <text class="muted">本机只保存工单编号与公开查询码，不保存问题描述、发生地点、联系方式和私密查询凭证。提交诉求后回执会留在本机，也可凭回执扫码，或用「手动输码查询」输入公开查询码查询进度。</text>
+  </view>
+
+  <view class="card entry-card" wx:for="{{entries}}" wx:key="caseNumber">
+    <text class="muted label">工单编号</text>
+    <text class="case-number">{{item.caseNumber}}</text>
+    <text class="muted label spaced">当前状态</text>
+    <text class="status" wx:if="{{item.state === 'success'}}">{{item.statusText}}</text>
+    <text class="warning-text" wx:elif="{{item.state === 'failed'}}" aria-role="alert">{{item.message}}</text>
+    <text class="muted" wx:else>查询中…</text>
+    <text class="muted label spaced">最近节点</text>
+    <text class="muted">{{item.latestText || '暂无公开进度节点'}}</text>
+    <text class="muted label spaced">提交时间</text>
+    <text class="muted">{{item.submittedText}}</text>
+    <view class="actions">
+      <button class="button-secondary" data-code="{{item.publicLookupCode}}" bindtap="onViewTap">查看</button>
+      <button wx:if="{{item.state === 'failed'}}" class="button-secondary"
+        data-code="{{item.publicLookupCode}}" bindtap="onRetryTap">重试</button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{entries.length > 0}}">
+    <text class="muted">本机记录只用于快速查询，可随时清除。清除后需凭回执再次扫码或输码查询。</text>
+    <button class="button-secondary spaced" bindtap="onClearTap">清除本机记录</button>
+  </view>
+
+  <view class="tip">
+    <text class="tip-text">记录仅保存在本机，换手机或清除缓存后不再显示。私密查询凭证不在本机保存，如需查看本人详情，请在公开进度页凭私密凭证核验本人。</text>
+  </view>
+</view>

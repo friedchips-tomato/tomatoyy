@@ -1,0 +1,94 @@
+<view class="page submit-shell">
+  <block wx:if="{{view === 'form'}}">
+    <view class="card">
+      <text class="card-title">提交诉求</text>
+      <text class="muted">游客可匿名提交诉求，提交后获得查询回执；凭回执可查询办理进度，核验本人后可查看反馈与补充材料。</text>
+
+      <text class="field-label">发生时间</text>
+      <view class="picker-row">
+        <picker mode="date" value="{{formDate}}" bindchange="onDateChange" disabled="{{submitBusy || formLocked}}">
+          <view class="select-chip" aria-role="button">{{formDate}} ▾</view>
+        </picker>
+        <picker mode="time" value="{{formTime}}" bindchange="onTimeChange" disabled="{{submitBusy || formLocked}}">
+          <view class="select-chip" aria-role="button">{{formTime}} ▾</view>
+        </picker>
+      </view>
+      <text wx:if="{{errors.occurredAt}}" class="error-text" aria-role="alert">{{errors.occurredAt}}</text>
+
+      <label class="field-label" for="submit-location">发生地点</label>
+      <input id="submit-location" class="submit-input" value="{{formLocation}}" maxlength="300"
+        bindinput="onLocationInput" disabled="{{submitBusy || formLocked}}" placeholder="填写发生地点" />
+      <text wx:if="{{errors.location}}" class="error-text" aria-role="alert">{{errors.location}}</text>
+
+      <text class="field-label">问题类别</text>
+      <picker mode="selector" range="{{categoryOptions}}" range-key="label" value="{{categoryIndex}}"
+        bindchange="onCategoryChange" disabled="{{submitBusy || formLocked}}">
+        <view class="select-chip" aria-role="button">{{categoryText}} ▾</view>
+      </picker>
+      <text wx:if="{{errors.category}}" class="error-text" aria-role="alert">{{errors.category}}</text>
+
+      <label class="field-label" for="submit-description">问题描述</label>
+      <textarea id="submit-description" class="reason-input" value="{{formDescription}}" maxlength="4000"
+        bindinput="onDescriptionInput" disabled="{{submitBusy || formLocked}}" placeholder="填写问题经过与诉求" />
+      <view class="count-row">
+        <text wx:if="{{errors.description}}" class="error-text" aria-role="alert">{{errors.description}}</text>
+        <text class="count-text muted">{{formDescriptionLength}} / 4000</text>
+      </view>
+
+      <label class="field-label" for="submit-department">建议处理部门（选填）</label>
+      <input id="submit-department" class="submit-input" value="{{formSuggestedDepartment}}" maxlength="100"
+        bindinput="onSuggestedDepartmentInput" disabled="{{submitBusy || formLocked}}" placeholder="建议由哪个部门处理" />
+      <view class="count-row">
+        <text wx:if="{{errors.suggestedDepartment}}" class="error-text" aria-role="alert">{{errors.suggestedDepartment}}</text>
+        <text class="count-text muted">{{formSuggestedDepartmentLength}} / 100</text>
+      </view>
+      <text class="muted">仅为建议，最终由管理方分派；最多 100 字，填写后随本次提交一起送出。</text>
+
+      <label class="field-label" for="submit-contact">联系方式（选填）</label>
+      <input id="submit-contact" class="submit-input" value="{{formContact}}" maxlength="300"
+        bindinput="onContactInput" disabled="{{submitBusy || formLocked}}" placeholder="便于回访的联系方式" />
+      <text class="muted">联系方式仅授权处理人员可见，公开查询页不会显示。</text>
+      <text wx:if="{{errors.contact}}" class="error-text" aria-role="alert">{{errors.contact}}</text>
+
+      <text class="field-label">现场照片（选填，最多 3 张）</text>
+      <view class="picker-row">
+        <button class="button-secondary spaced" bindtap="onChoosePhotos" loading="{{photoChoosing}}"
+          disabled="{{submitBusy || formLocked || photoChoosing}}">选择照片</button>
+        <button class="button-secondary spaced" bindtap="onClearPhotos"
+          disabled="{{submitBusy || formLocked || photoChoosing || !photoCount}}">清除照片</button>
+      </view>
+      <text class="muted">已选 {{photoCount}} 张，每张不超过 5 MiB，仅 JPEG、PNG 或 WebP；照片可留空。</text>
+
+      <text wx:if="{{submitMessage}}" class="warning-text" aria-role="alert">{{submitMessage}}</text>
+      <view wx:if="{{formLocked}}" class="card locked-card">
+        <text class="warning-text" aria-role="alert">{{lockNotice}}</text>
+        <button class="button-secondary spaced" bindtap="onAbandonSubmission">放弃本次提交，重新填写</button>
+      </view>
+      <button class="button-primary spaced" bindtap="onSubmit" loading="{{submitBusy}}" disabled="{{submitBusy}}">提交诉求</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="card">
+      <text class="card-title">提交回执</text>
+      <text class="muted">请立即保存以下信息。私密查询凭证仅显示一次，退出本页后无法再次查看。</text>
+      <text class="field-label">工单编号</text>
+      <text class="code-text">{{receipt.caseNumber}}</text>
+      <text class="field-label">公开查询码</text>
+      <text class="code-text">{{receipt.publicLookupCode}}</text>
+      <button class="button-secondary spaced" bindtap="onCopyPublicCode">复制公开查询码</button>
+      <text wx:if="{{copyMessage}}" class="muted" aria-role="alert">{{copyMessage}}</text>
+      <text class="field-label">微信小程序查询码</text>
+      <image wx:if="{{receiptCodeState === 'ready'}}" class="receipt-code" src="{{receiptCodePath}}" mode="aspectFit"
+        binderror="onReceiptCodeError" aria-label="微信小程序查询码，扫码查看公开进度" />
+      <text wx:if="{{receiptCodeState === 'unavailable'}}" class="muted" aria-role="alert">{{receiptCodeMessage}}</text>
+      <text wx:else class="muted">用微信扫一扫上面的码，直接进入公开进度页；查询码里只有公开查询码，不含私密凭证。</text>
+      <text class="field-label">私密查询凭证（仅显示一次）</text>
+      <text class="code-text token-text">{{receipt.privateLookupToken}}</text>
+      <text class="muted">私密凭证用于核验本人查看详情，请勿转发给他人。</text>
+      <text wx:if="{{submitMessage}}" class="warning-text" aria-role="alert">{{submitMessage}}</text>
+      <button class="button-primary spaced" bindtap="onViewProgress">查看进度</button>
+      <button class="button-secondary spaced" bindtap="onNewSubmission">再提交一条</button>
+    </view>
+  </block>
+</view>

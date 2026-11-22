@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_forecast",
+  "description": "预测输出（02 §2.4）。method 显式记录降级链条；point_free 为 null 表示不可用（不是 0）。",
+  "type": "object",
+  "required": [
+    "lot_id",
+    "issued_at",
+    "target_ts",
+    "horizon_minutes",
+    "point_free",
+    "p10",
+    "p90",
+    "free_rate",
+    "method",
+    "degraded",
+    "degrade_reason",
+    "model_version",
+    "data_asof",
+    "source"
+  ],
+  "properties": {
+    "lot_id": { "type": "string" },
+    "issued_at": { "type": "string", "description": "预测生成时刻" },
+    "target_ts": { "type": "string", "description": "被预测的目标时刻" },
+    "horizon_minutes": { "type": "integer", "minimum": 0, "description": "距生成时刻的分钟数" },
+    "point_free": { "type": ["integer", "null"], "description": "点预测余位；不可用时为 null" },
+    "p10": { "type": ["integer", "null"], "description": "区间下界（余位）" },
+    "p90": { "type": ["integer", "null"], "description": "区间上界（余位）" },
+    "free_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "点预测空置率 = point_free / total_spaces" },
+    "method": { "enum": ["last_known", "same_slot_baseline", "same_weekday_baseline", "model", "unavailable"] },
+    "degraded": { "type": "boolean", "description": "是否走了降级路径" },
+    "degrade_reason": { "type": ["string", "null"], "description": "如 missing_observation / stale_observation / no_history" },
+    "model_version": { "type": ["string", "null"], "description": "产出预测的模型版本；unavailable 时为 null" },
+    "data_asof": { "type": ["string", "null"], "description": "预测实际使用的最新观测时刻" },
+    "source": { "enum": ["synthetic", "real"], "description": "页面据此标注 模拟 / 实测" }
+  },
+  "additionalProperties": false
+}

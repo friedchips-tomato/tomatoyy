@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_lot",
+  "description": "车场静态信息（02 §2.1）。字段名 snake_case，时间 UTC 带时区偏移。record 对象 additionalProperties:false，禁止悄悄塞入未定义字段。",
+  "type": "object",
+  "required": ["lot_id", "name", "total_spaces", "fee", "access", "walk_to_street", "source"],
+  "properties": {
+    "lot_id": {
+      "type": "string",
+      "description": "目录代码，大写字母开头，仅大写字母/数字/短横线，≤32 字符（与导览事件 subjectId 规则一致）"
+    },
+    "name": { "type": "string", "description": "展示名" },
+    "total_spaces": { "type": "integer", "minimum": 1, "description": "总车位数（正整数）" },
+    "fee": {
+      "type": "object",
+      "description": "可计算费用结构：{mode: hourly|flat|unknown, amount: number|null, unit: CNY|null, note: string}",
+      "required": ["mode", "amount", "unit", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "enum": ["hourly", "flat", "unknown"] },
+        "amount": { "type": ["number", "null"] },
+        "unit": { "type": ["string", "null"], "enum": ["CNY", null] },
+        "note": { "type": "string" }
+      }
+    },
+    "access": {
+      "type": "object",
+      "description": "进出限制：{open_hours: string|null, one_way: bool, restricted_hours: [{from,to,note}]|null, height_limit_m: number|null, note: string}。restricted_hours 数组元素结构见 02 §2.1 与 04 §6，阶段 3 check.mjs 做深度校验。",
+      "required": ["open_hours", "one_way", "restricted_hours", "height_limit_m", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "open_hours": { "type": ["string", "null"] },
+        "one_way": { "type": "boolean" },
+        "restricted_hours": { "type": ["array", "null"] },
+        "height_limit_m": { "type": ["number", "null"] },
+        "note": { "type": "string" }
+      }
+    },
+    "geometry": {
+      "type": ["object", "null"],
+      "description": "{lat, lon} 真实坐标占位；现阶段填 null，不得编造经纬度",
+      "required": ["lat", "lon"],
+      "additionalProperties": false,
+      "properties": {
+        "lat": { "type": "number" },
+        "lon": { "type": "number" }
+      }
+    },
+    "walk_to_street": {
+      "type": "object",
+      "description": "到街区主入口的步行距离/时间（分钟为估算，需标注）",
+      "required": ["meters", "minutes"],
+      "additionalProperties": false,
+      "properties": {
+        "meters": { "type": "integer", "minimum": 0 },
+        "minutes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "district": { "type": ["string", "null"], "description": "归属街区/片区，真实数据接入后用于分模型" },
+    "source": { "enum": ["synthetic", "manual", "api", "camera"], "description": "数据来源，决定页面标注" },
+    "notes": { "type": ["string", "null"], "description": "备注" }
+  },
+  "additionalProperties": false
+}
