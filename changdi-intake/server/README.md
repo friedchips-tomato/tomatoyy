@@ -134,6 +134,39 @@ Authorization：请求携带凭据时同样按匿名申报处理。请求体与�
   415 表示媒体类型或文件签名不符，429 表示超出限流窗口，503 表示上传并发已满或数据库繁忙。
   收到 503 或超时时保留原 `clientRequestId` 及原内容重试。
 
+## 停车预测与推荐（本地）
+
+停车相关接口使用合成示范数据，`source` 固定为 `synthetic`，不是真实车场余位。页面和运营台必须标注「模拟」，不得把静态信息或合成预测说成实时余位。接口契约以 [OpenAPI](../docs/openapi.yaml) 为准，三个公开接口均匿名、只读，不要求 Bearer；按对端地址做窗口限流，默认每 600 秒 60 次，超限返回 429 `too_many_requests` 和 `Retry-After`（秒），响应统一带 `Cache-Control: no-store`。
+
+| 接口 | 用途 |
+| --- | --- |
+| `GET /api/v1/public/parking/lots` | 车场目录及计费、通行、步行距离等静态信息 |
+| `GET /api/v1/public/parking/recommendations` | 按 `destination_id`、`arrive_at` 等参数推荐车场，含首选、备选、排除原因 |
+| `GET /api/v1/public/parking/lots/{lot_id}/forecast` | 单个车场未来 15、30、45、60 分钟的余位预测 |
+
+运行时数据装载失败时进程照常启动，接口仍返回 200，`available` 为 `false`、`degraded` 为 `true`，并在 `note` 写明原因，静态车场信息照常给出。`arrive_free` 为 `null` 表示预测不可用，不是 0。
+
+| 服务端环境变量 | 值 |
+| --- | --- |
+| `CHANGDI_PARKING_DIR` | 运行时数据目录，覆盖服务内置副本 |
+| `CHANGDI_PARKING_RATE_LIMIT` | 限流窗口 JSON，例如 `{"windowSeconds":600,"limit":60}` |
+
+```powershell
+$env:CHANGDI_PARKING_DIR = 'C:\path\to\parking-runtime'
+$env:CHANGDI_PARKING_RATE_LIMIT = '{"windowSeconds":600,"limit":60}'
+npm.cmd start
+```
+
+浏览器端不直连后端，统一走 [guide-bridge](../guide-bridge/README.md) 的 `/bridge/parking/*` 同源代理：`/bridge/parking/lots`、`/bridge/parking/recommendations`、`/bridge/parking/lots/{lot_id}/forecast`。代理只透传白名单参数与上游状态码和 JSON，不注入 token；上游不可达返回 502 `{"error":"unavailable"}`。
+
+用合成数据复核接口与预测管线，测试以临时目录和随机端口启动服务：
+
+```powershell
+npm.cmd test
+```
+
+将 `CHANGDI_PARKING_DIR` 指向另一份运行时目录即可切换到对应数据，无需改动代码。数据字段、错误码和示例详见 [OpenAPI](../docs/openapi.yaml) 与 [停车接口接入说明](../docs/parking-api.md)。
+
 ## 代码目录
 
 - `src/server.js` 负责监听、路由分派、上传并发总量及统一错误响应。

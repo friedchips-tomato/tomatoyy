@@ -407,6 +407,226 @@ paths:
                   - properties:
                       error:
                         enum: [intake_busy, database_busy, wechat_code_unavailable]
+  /api/v1/public/parking/lots:
+    get:
+      operationId: listParkingLots
+      summary: 读取车场目录及静态信息
+      description: |
+        匿名只读接口，不要求 Authorization，也不校验请求携带的凭据。
+        按对端地址做窗口限流，默认每 600 秒 60 次，超限返回 429 too_many_requests 并带
+        Retry-After（秒）。响应统一使用 Cache-Control: no-store，不缓存。
+
+        数据为合成示范数据（source 固定为 synthetic），不是真实车场余位，页面必须标注「模拟」。
+        运行时数据不可用时仍返回 200 和静态车场信息，available 为 false、degraded 为 true，
+        并在 note 中写明原因；本接口不返回 5xx。
+      security: []
+      responses:
+        '200':
+          description: 车场目录。运行时不可用时 available 为 false，items 仍含静态车场信息。
+          headers:
+            Cache-Control:
+              $ref: '#/components/headers/NoStoreParking'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingLotsResponse'
+        '429':
+          description: 同一对端地址在限流窗口内的请求次数超限。
+          headers:
+            Retry-After:
+              description: 距离当前限流窗口结束还需等待的秒数。
+              schema:
+                type: integer
+                minimum: 1
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [too_many_requests]
+  /api/v1/public/parking/recommendations:
+    get:
+      operationId: getParkingRecommendations
+      summary: 按目的地与到达时间推荐停车场
+      description: |
+        匿名只读接口，不要求 Authorization，限流与 Cache-Control: no-store 规则同车场目录。
+        未列出的查询参数或同名重复参数返回 400 invalid_filter。
+
+        arrive_at 须为带时区的 ISO8601 时间。预测不可用时 arrive_free 为 null，不得按 0 处理。
+        车场运行时数据不可用时仍返回 200，available 为 false、degraded 为 true，
+        静态车场信息照常给出，降级信息原样透传；本接口不返回 5xx。
+      security: []
+      parameters:
+        - name: destination_id
+          in: query
+          required: true
+          description: 导览点位代码。
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+        - name: arrive_at
+          in: query
+          required: true
+          description: 到达时间，带时区的 ISO8601 日期时间。
+          schema:
+            type: string
+            format: date-time
+            example: '2026-11-22T10:30:00.000Z'
+        - name: preference
+          in: query
+          required: false
+          description: 推荐偏好，默认 save_time（省时）；less_walking 为少走路。
+          schema:
+            type: string
+            enum: [save_time, less_walking]
+            default: save_time
+        - name: vehicle_height_m
+          in: query
+          required: false
+          description: 车辆高度（米），须为正数。
+          schema:
+            type: number
+            exclusiveMinimum: true
+            minimum: 0
+        - name: stay_hours
+          in: query
+          required: false
+          description: 预计停留时长（小时），须为正数。
+          schema:
+            type: number
+            exclusiveMinimum: true
+            minimum: 0
+      responses:
+        '200':
+          description: 推荐结果。目的地无可用预测时 items 可为空，excluded 说明排除原因。
+          headers:
+            Cache-Control:
+              $ref: '#/components/headers/NoStoreParking'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingRecommendationsResponse'
+        '400':
+          description: |
+            destination_id 缺失或不匹配 ^[A-Za-z0-9_-]{1,64}$、preference 不在枚举内、
+            vehicle_height_m 或 stay_hours 不是正数（invalid_field）；
+            arrive_at 缺失或不是带时区的 ISO8601 日期时间（invalid_timestamp）；
+            出现未列出的参数或同名重复参数（invalid_filter）。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [invalid_field, invalid_timestamp, invalid_filter]
+        '429':
+          description: 同一对端地址在限流窗口内的请求次数超限。
+          headers:
+            Retry-After:
+              description: 距离当前限流窗口结束还需等待的秒数。
+              schema:
+                type: integer
+                minimum: 1
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [too_many_requests]
+  /api/v1/public/parking/lots/{lot_id}/forecast:
+    get:
+      operationId: getParkingLotForecast
+      summary: 读取单个车场未来 15–60 分钟的余位预测
+      description: |
+        匿名只读接口，不要求 Authorization，限流与 Cache-Control: no-store 规则同车场目录。
+        未登记的 lot_id 返回 404 lot_not_found。
+
+        issued_at 默认取服务器当前时间。horizons 为逗号分隔的分钟数，取值限于 15、30、45、60，
+        省略时返回全部。method 说明预测来源：model 为模型输出，last_known 沿用最近观测，
+        same_slot_baseline 与 same_weekday_baseline 为同槽位或同星期基线，
+        unavailable 表示该时段不可预测。degraded 与 degrade_reason 原样透传，本接口不返回 5xx。
+      security: []
+      parameters:
+        - name: lot_id
+          in: path
+          required: true
+          description: 车场目录代码，例如 P1。
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,32}$'
+        - name: issued_at
+          in: query
+          required: false
+          description: 签发时间，默认服务器当前时间；须为带时区的 ISO8601 日期时间。
+          schema:
+            type: string
+            format: date-time
+        - name: horizons
+          in: query
+          required: false
+          description: 逗号分隔的预测时长（分钟），取值限于 15、30、45、60，省略时返回全部。
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: integer
+              enum: [15, 30, 45, 60]
+      responses:
+        '200':
+          description: 车场预测。数据不可用时 available 为 false，forecasts 中的 method 为 unavailable。
+          headers:
+            Cache-Control:
+              $ref: '#/components/headers/NoStoreParking'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingForecastResponse'
+        '400':
+          description: |
+            horizons 含不允许的取值或为空（invalid_field）；issued_at 不是带时区的 ISO8601
+            日期时间（invalid_timestamp）。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [invalid_field, invalid_timestamp]
+        '404':
+          description: lot_id 未在车场目录中登记。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [lot_not_found]
+              example:
+                error: lot_not_found
+        '429':
+          description: 同一对端地址在限流窗口内的请求次数超限。
+          headers:
+            Retry-After:
+              description: 距离当前限流窗口结束还需等待的秒数。
+              schema:
+                type: integer
+                minimum: 1
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [too_many_requests]
 components:
   securitySchemes:
     IntegrationBearer:
@@ -418,6 +638,11 @@ components:
   headers:
     NoStore:
       description: 回执含私密凭证，请勿缓存。
+      schema:
+        type: string
+        enum: [no-store]
+    NoStoreParking:
+      description: 停车数据随时变化，请勿缓存。
       schema:
         type: string
         enum: [no-store]
@@ -580,3 +805,423 @@ components:
           type: string
           pattern: '^[a-z]+(_[a-z]+)*$'
           description: 应用返回的机器可读错误码。
+    ParkingFee:
+      type: object
+      additionalProperties: false
+      required: [mode, amount, unit, note]
+      description: 计费信息，示范数据。
+      properties:
+        mode:
+          type: string
+          description: 计费方式，例如 hourly（按小时）。
+          example: hourly
+        amount:
+          type: number
+          description: 计费金额。
+          example: 5
+        unit:
+          type: string
+          description: 币种或单位。
+          example: CNY
+        note:
+          type: string
+          description: 面向游客的计费说明。
+          example: 5 元/小时（示范）
+    ParkingAccess:
+      type: object
+      additionalProperties: false
+      required: [open_hours, one_way, restricted_hours, height_limit_m, note]
+      description: 通行限制信息，示范数据。
+      properties:
+        open_hours:
+          type: string
+          description: 开放时段。
+          example: 00:00-24:00
+        one_way:
+          type: boolean
+          description: 是否单行进出。
+        restricted_hours:
+          type: array
+          description: 受限时段列表，无限制时为空数组。
+          items:
+            type: string
+        height_limit_m:
+          type: number
+          nullable: true
+          description: 限高（米），无限制时为 null。
+        note:
+          type: string
+          description: 通行限制说明。
+    ParkingWalk:
+      type: object
+      additionalProperties: false
+      required: [meters, minutes]
+      description: 车场到街区的步行距离。
+      properties:
+        meters:
+          type: integer
+          description: 步行距离（米）。
+          example: 150
+        minutes:
+          type: number
+          description: 步行时间（分钟）。
+          example: 2
+    ParkingLot:
+      type: object
+      additionalProperties: false
+      required: [lot_id, name, total_spaces, fee, access, walk_to_street, district, notes, source]
+      description: 单个车场的静态信息。
+      properties:
+        lot_id:
+          type: string
+          description: 车场目录代码，例如 P1。
+          example: P1
+        name:
+          type: string
+          description: 车场名称。
+          example: 沿江停车场
+        total_spaces:
+          type: integer
+          description: 车位总数。
+          example: 120
+        fee:
+          $ref: '#/components/schemas/ParkingFee'
+        access:
+          $ref: '#/components/schemas/ParkingAccess'
+        walk_to_street:
+          $ref: '#/components/schemas/ParkingWalk'
+        district:
+          type: string
+          description: 所属街区或片区。
+          example: 长堤骑楼街
+        notes:
+          type: string
+          description: 补充说明，合成数据会注明用途。
+          example: 合成数据，仅用于管线验证
+        source:
+          type: string
+          enum: [synthetic]
+          description: 数据来源，固定为合成示范数据。
+    ParkingLotsResponse:
+      type: object
+      additionalProperties: false
+      required: [source, available, degraded, note, generated_at, items]
+      description: 车场目录响应。
+      properties:
+        source:
+          type: string
+          enum: [synthetic]
+          description: 数据来源，固定为合成示范数据。
+        available:
+          type: boolean
+          description: 运行时数据是否可用。false 时 items 仍为静态车场信息。
+        degraded:
+          type: boolean
+          description: 是否处于降级状态。
+        note:
+          type: string
+          nullable: true
+          description: 降级或不可用的原因，正常时为 null。
+        generated_at:
+          type: string
+          format: date-time
+          description: 本次响应的生成时间（UTC）。
+        items:
+          type: array
+          description: 车场列表。
+          items:
+            $ref: '#/components/schemas/ParkingLot'
+    ParkingRecommendationItem:
+      type: object
+      additionalProperties: false
+      required:
+        - lot_id
+        - name
+        - arrive_free
+        - arrive_free_rate
+        - arrive_free_p10
+        - arrive_free_p90
+        - walk_meters
+        - walk_minutes
+        - fee_amount
+        - fee_unit
+        - updated_at
+        - stale
+        - score
+        - score_breakdown
+        - reasons
+        - total_time_minutes
+        - transfer
+        - restrictions
+        - forecast_method
+        - degraded
+      description: 一条停车推荐、备选或偏移项，字段名使用 snake_case。
+      properties:
+        lot_id:
+          type: string
+          description: 车场目录代码。
+          example: P1
+        name:
+          type: string
+          description: 车场名称。
+        arrive_free:
+          type: integer
+          nullable: true
+          description: 到达时的预计空闲车位。null 表示不可用，不是 0。
+        arrive_free_rate:
+          type: number
+          nullable: true
+          description: 到达时空闲车位占比（0–1），不可用时为 null。
+        arrive_free_p10:
+          type: integer
+          nullable: true
+          description: 空闲车位预测下限（P10），不可用时为 null。
+        arrive_free_p90:
+          type: integer
+          nullable: true
+          description: 空闲车位预测上限（P90），不可用时为 null。
+        walk_meters:
+          type: integer
+          description: 车场到目的地的步行距离（米）。
+        walk_minutes:
+          type: number
+          description: 步行时间（分钟）。
+        fee_amount:
+          type: number
+          description: 预计停车费用金额。
+        fee_unit:
+          type: string
+          description: 费用单位或币种，例如 CNY。
+        updated_at:
+          type: string
+          format: date-time
+          description: 该条数据或预测的更新时间（UTC）。
+        stale:
+          type: boolean
+          description: 数据是否已过时。
+        score:
+          type: number
+          description: 综合评分，越高越优先。
+        score_breakdown:
+          type: object
+          additionalProperties: true
+          description: 评分构成明细，键值由实现定义。
+        reasons:
+          type: array
+          description: 推荐理由列表。
+          items:
+            type: string
+        total_time_minutes:
+          type: number
+          description: 含停车与步行的总耗时（分钟）。
+        transfer:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: 换乘或接驳信息，无换乘或不可用时为 null，字段结构由实现定义。
+        restrictions:
+          type: array
+          description: 限制条件说明，例如限高、限时，无限制时为空数组。
+          items:
+            type: string
+        forecast_method:
+          type: string
+          enum: [model, last_known, same_slot_baseline, same_weekday_baseline, unavailable]
+          description: 该条预测的来源方法。
+        degraded:
+          type: boolean
+          description: 该条结果是否来自降级路径。
+    ParkingExcludedLot:
+      type: object
+      additionalProperties: false
+      required: [lot_id, name, reason]
+      description: 被排除的停车场及原因。
+      properties:
+        lot_id:
+          type: string
+          description: 车场目录代码。
+          example: P2
+        name:
+          type: string
+          description: 车场名称。
+          example: 内街停车场
+        reason:
+          type: string
+          description: 排除原因，例如限高不符或已满。
+    ParkingRecommendationsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - destination_id
+        - arrive_at
+        - preference
+        - generated_at
+        - source
+        - available
+        - degraded
+        - note
+        - items
+        - alternates
+        - excluded
+        - offsets
+      description: 停车推荐响应。
+      properties:
+        destination_id:
+          type: string
+          description: 请求中的导览点位代码。
+          example: CD-0001
+        arrive_at:
+          type: string
+          format: date-time
+          description: 请求中的到达时间，回显为 UTC。
+          example: '2026-11-22T10:30:00.000Z'
+        preference:
+          type: string
+          enum: [save_time, less_walking]
+          description: 实际采用的推荐偏好。
+        generated_at:
+          type: string
+          format: date-time
+          description: 本次响应的生成时间（UTC）。
+        source:
+          type: string
+          enum: [synthetic]
+          description: 数据来源，固定为合成示范数据。
+        available:
+          type: boolean
+          description: 运行时数据是否可用。false 时静态车场信息仍照常给出。
+        degraded:
+          type: boolean
+          description: 是否处于降级状态。
+        note:
+          type: string
+          nullable: true
+          description: 降级或不可用的原因，正常时为 null。
+        items:
+          type: array
+          description: 首选推荐列表。
+          items:
+            $ref: '#/components/schemas/ParkingRecommendationItem'
+        alternates:
+          type: array
+          description: 备选推荐列表，字段同 items。
+          items:
+            $ref: '#/components/schemas/ParkingRecommendationItem'
+        excluded:
+          type: array
+          description: 被排除的停车场及原因。
+          items:
+            $ref: '#/components/schemas/ParkingExcludedLot'
+        offsets:
+          type: array
+          description: 偏移或时间调整建议，字段同 items。
+          items:
+            $ref: '#/components/schemas/ParkingRecommendationItem'
+    ParkingForecast:
+      type: object
+      additionalProperties: false
+      required:
+        - lot_id
+        - issued_at
+        - target_ts
+        - horizon_minutes
+        - point_free
+        - p10
+        - p90
+        - free_rate
+        - method
+        - degraded
+        - degrade_reason
+        - model_version
+        - data_asof
+        - source
+      description: 单个车场在某一预测时长上的余位预测。
+      properties:
+        lot_id:
+          type: string
+          description: 车场目录代码。
+          example: P1
+        issued_at:
+          type: string
+          format: date-time
+          description: 预测的签发时间（UTC）。
+        target_ts:
+          type: string
+          format: date-time
+          description: 预测目标时刻（UTC）。
+        horizon_minutes:
+          type: integer
+          enum: [15, 30, 45, 60]
+          description: 预测时长（分钟）。
+        point_free:
+          type: integer
+          description: 目标时刻的预计空闲车位数。
+          example: 41
+        p10:
+          type: integer
+          description: 空闲车位数预测下限（P10）。
+          example: 30
+        p90:
+          type: integer
+          description: 空闲车位数预测上限（P90）。
+          example: 52
+        free_rate:
+          type: number
+          description: 预计空闲车位占比（0–1）。
+          example: 0.34
+        method:
+          type: string
+          enum: [model, last_known, same_slot_baseline, same_weekday_baseline, unavailable]
+          description: 预测来源方法。
+        degraded:
+          type: boolean
+          description: 该条预测是否来自降级路径。
+        degrade_reason:
+          type: string
+          nullable: true
+          description: 降级原因，未降级时为 null。
+        model_version:
+          type: string
+          description: 生成预测的模型版本。
+          example: 2.0.0
+        data_asof:
+          type: string
+          format: date-time
+          description: 预测所依据数据的最新时刻（UTC）。
+        source:
+          type: string
+          enum: [synthetic]
+          description: 数据来源，固定为合成示范数据。
+    ParkingForecastResponse:
+      type: object
+      additionalProperties: false
+      required: [lot_id, issued_at, source, available, degraded, note, forecasts]
+      description: 单场预测响应。
+      properties:
+        lot_id:
+          type: string
+          description: 请求中的车场目录代码。
+          example: P1
+        issued_at:
+          type: string
+          format: date-time
+          description: 请求中的签发时间，回显为 UTC。
+        source:
+          type: string
+          enum: [synthetic]
+          description: 数据来源，固定为合成示范数据。
+        available:
+          type: boolean
+          description: 预测数据是否可用。
+        degraded:
+          type: boolean
+          description: 是否处于降级状态。
+        note:
+          type: string
+          nullable: true
+          description: 降级或不可用的原因，正常时为 null。
+        forecasts:
+          type: array
+          description: 按 horizons 顺序返回的预测列表。
+          items:
+            $ref: '#/components/schemas/ParkingForecast'
