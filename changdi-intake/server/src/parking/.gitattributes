@@ -1,0 +1,3 @@
+vendor/runtime/** -text whitespace=cr-at-eol
+vendor/data/** -text whitespace=cr-at-eol
+vendor/artifacts/** -text whitespace=cr-at-eol

@@ -3,6 +3,9 @@ import {createServer} from 'node:http';
 import {createAuth} from './auth.js';
 import {HttpError, sendJson} from './http.js';
 import {createPublicRateLimiter} from './public-rate-limit.js';
+import {createParkingLimiter} from './parking/limiter.js';
+import {loadParking} from './parking/service.js';
+import {handleParkingRoute} from './routes/parking.js';
 import {handleIntakeRoute} from './routes/intake.js';
 import {handleOwnerRoute} from './routes/owner.js';
 import {handleMerchantRoute} from './routes/merchant.js';
@@ -38,6 +41,7 @@ export function createIntakeServer({
   }
   const auth = createAuth(integrations, staff, merchants, { wechatLogin, now });
   const rateLimiter = createPublicRateLimiter({ ...publicRateLimit, now });
+  const parkingLimit = createParkingLimiter(process.env.CHANGDI_PARKING_RATE_LIMIT, now);
   const wechatClient = wechatCode === undefined ?
       null : createWechatCodeClient(wechatCode, now);
   const store = openStore(dbPath, receiptKey, now, {
@@ -59,7 +63,8 @@ export function createIntakeServer({
     }
   }
 
-  const routeContext = { auth, store, receiptCode, readPhotoUpload, rateLimiter };
+  const routeContext = { auth, store, receiptCode, readPhotoUpload, rateLimiter,
+    parking: loadParking(process.env.CHANGDI_PARKING_DIR), parkingLimit, now, snapshotAt: now().toISOString() };
   const server = createServer({
     headersTimeout: 15_000,
     requestTimeout: 20_000,
@@ -69,6 +74,7 @@ export function createIntakeServer({
     try {
       if (await handleIntakeRoute(request, response, routeContext) ||
           await handlePublicRoute(request, response, routeContext) ||
+          await handleParkingRoute(request, response, routeContext) ||
           await handleOwnerRoute(request, response, routeContext) ||
           await handleMerchantRoute(request, response, routeContext) ||
           await handleStaffRoute(request, response, routeContext)) {
