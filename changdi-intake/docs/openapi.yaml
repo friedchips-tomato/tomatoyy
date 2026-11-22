@@ -911,8 +911,11 @@ components:
     ParkingLot:
       type: object
       additionalProperties: false
-      required: [lot_id, name, total_spaces, fee, access, walk_to_street, district, notes, source]
-      description: 单个车场的静态信息。
+      required: [lot_id, name, total_spaces, current_free, current_observed_at, current_quality, current_stale, fee, access, walk_to_street, district, notes, source]
+      description: |
+        单个车场的信息，含静态字段与观测得到的当前余位。
+        其中 current_free、current_observed_at、current_quality、current_stale 来自观测数据，
+        不依赖模型或运行时可用性，available 为 false 时仍照常给出。
       properties:
         lot_id:
           type: string
@@ -927,6 +930,28 @@ components:
           minimum: 1
           description: 车位总数，不小于 1。
           example: 120
+        current_free:
+          type: integer
+          nullable: true
+          description: |
+            最近一次观测的当前余位，来自观测数据，不依赖模型或运行时可用性。
+            null 表示当前余位未知，前端不得显示为 0 或「已满」。
+          example: 37
+        current_observed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: 该观测的时刻（UTC，带 Z）；没有观测时为 null。
+          example: '2026-11-22T09:55:00.000Z'
+        current_quality:
+          type: string
+          nullable: true
+          enum: [ok, stale, missing, suspect]
+          description: 观测质量；该车场没有任何观测时为 null。
+        current_stale:
+          type: boolean
+          description: |
+            该观测是否过期（age_seconds > 900，与运行时阈值一致）；没有观测时为 false。
         fee:
           $ref: '#/components/schemas/ParkingFee'
         access:

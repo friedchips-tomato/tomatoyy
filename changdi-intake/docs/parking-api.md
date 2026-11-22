@@ -47,12 +47,18 @@
 | `lot_id` | string | 否 | 车场目录代码，例如 `P1` |
 | `name` | string | 否 | 车场名称 |
 | `total_spaces` | integer | 否 | 车位总数，不小于 1 |
+| `current_free` | integer | 是 | 最近一次观测的当前余位；`null` 表示当前余位未知 |
+| `current_observed_at` | string | 是 | 该观测的时刻（UTC，带 Z）；没有观测时为 `null` |
+| `current_quality` | string | 是 | 观测质量：`ok`、`stale`、`missing` 或 `suspect`；没有任何观测时为 `null` |
+| `current_stale` | boolean | 否 | 该观测是否过期（`age_seconds > 900`，与运行时阈值一致）；没有观测时为 `false` |
 | `fee` | object | 否 | 计费信息，见下表 |
 | `access` | object | 否 | 通行限制，见下表 |
 | `walk_to_street` | object | 否 | 到街区步行距离，见下表 |
 | `district` | string | 是 | 所属街区或片区，未知时为 `null` |
 | `notes` | string | 是 | 补充说明，合成数据会注明用途；无说明时为 `null` |
 | `source` | string | 否 | 车场静态数据来源，取自运行时产物：`synthetic`、`manual`、`api` 或 `camera`；当前为 `synthetic` |
+
+以上 `current_*` 四个字段来自观测数据，**不依赖模型或运行时可用性**：即使 `available=false`（模型或运行时不可用），它们仍照常给出，前端此时至少可显示「当前余位（观测值）」，不必退回纯静态示意。`current_free=null` 表示**当前余位未知**，页面显示「当前余位暂不可用」，**不得显示为 0 或「已满」**；`current_stale=true` 时还应标注该观测已过期并显示 `current_observed_at`。
 
 `fee` 对象本身一定存在，其中部分字段的值可能为 `null`：
 
@@ -207,6 +213,7 @@
 - `note`：人类可读原因（降级链名，或运行时不可用的原因）；正常时为 `null`。
 - `stale: true`：该条数据或预测已过时，展示时须给出「数据已过时」提示。
 - `arrive_free: null`：预测不可用，**不是 0**。不得把它渲染成「无空位」或 0 个车位。
+- `current_free: null`：当前余位未知，页面显示「当前余位暂不可用」，**不得显示为 0 或「已满」**；`current_stale=true` 时还应标注该观测已过期并显示 `current_observed_at`。这批观测字段不依赖模型可用性，`available=false` 时仍照常给出。
 - `forecast_method`、`method` 取值：
   - `model`：模型输出，正常使用；
   - `last_known`：沿用最近一次观测；
@@ -227,7 +234,7 @@
 
 以下三条判据分别处理，不得混用：
 
-1. `available=false`（运行时不可用）→ 只使用静态车场信息（名称、总位数、步行距离、费用、开放时段），**余位一律不显示**，标注「实时余位暂不可用」。
+1. `available=false`（模型/运行时不可用）→ 使用静态车场信息（名称、总位数、步行距离、费用、开放时段）和 `current_*` 观测值；预测余位一律不显示，标注「实时余位暂不可用」。观测字段不依赖模型可用性，`current_free` 有值时至少展示「当前余位（观测值）」，为 `null` 时显示「当前余位暂不可用」。
 2. `available=true` 但 `degraded=true` → 可以显示预测值，但必须标注降级方式（如 `forecast_method=last_known` 表示「沿用最近一次观测」），并显示 `updated_at`。
 3. `arrive_free=null`（该时刻不可用）→ 该车场按「暂无余位」处理，**不得显示为 0**。
 
