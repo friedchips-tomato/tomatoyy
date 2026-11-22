@@ -1,5 +1,5 @@
 import {HttpError, readFilters, readText, requireMethod, sendJson, timestamp} from '../http.js';
-import {getForecast, getRecommendations} from '../parking/service.js';
+import {currentLots, getForecast, getRecommendations} from '../parking/service.js';
 
 const prefix = '/api/v1/public/parking/';
 const allowedHorizons = ['15', '30', '45', '60'];
@@ -47,7 +47,7 @@ export async function handleParkingRoute(request, response, {parking, parkingLim
   let body;
   if (path === 'lots') {
     readFilters(url.search, []);
-    body = evaluate({generated_at: state.generatedAt ?? snapshotAt, items: state.lots}, state, () => ({}));
+    body = evaluate({generated_at: state.generatedAt ?? snapshotAt, items: currentLots(state, now())}, state, () => ({}));
   } else if (forecast) {
     const params = readFilters(url.search, ['issued_at', 'horizons']);
     const id = forecast[1];

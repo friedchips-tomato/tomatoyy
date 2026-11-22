@@ -26,3 +26,5 @@
 上游若变更，联系后端设计指挥重新同步；同步时必须逐文件核对 SHA-256 一致后才允许提交。
 
 数据底座对应关系：数据库侧基表使用 `parking_id`、`fee_rule`。兼容视图 `ml_parking_lots`、`ml_parking_observations` 的字段分别与 `lot.schema.json`、`observation.schema.json` 一一对应。接入真实停车数据时，从这两个视图导出 JSONL 供运行时读取；对外接口继续使用由视图映射的 `lot_id`。
+
+车场目录的 `current_free` 来自观测视图中该车场最新记录的 `free_spaces`。视图导出与接口读取均须保留原值：NULL 表示未知，0 表示实测满位。

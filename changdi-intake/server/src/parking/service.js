@@ -10,7 +10,7 @@ const utc = value => value == null ? null : new Date(value).toISOString();
 // 上游以东八区墙钟进行时段匹配，输入必须先转为当地时间。
 const local = value => new Date(Date.parse(value) + 8 * 3600000).toISOString().slice(0, 19) + '+08:00';
 
-export async function loadParking(dir = vendor) {
+async function loadState(dir) {
   const state = {lots: [], note: null};
   try {
     const manifest = JSON.parse(await readFile(resolve(dir, 'artifacts/manifest.json'), 'utf8'));
@@ -38,6 +38,46 @@ export async function loadParking(dir = vendor) {
     state.note = reason;
   }
   return state;
+}
+
+export async function loadParking(dir = vendor) {
+  const state = await loadState(dir);
+  let observations = state.dataset?.observations;
+  if (!observations) {
+    // 模型或运行时装载失败时，独立读取配置目录里的观测，避免混入内置示范值。
+    try {
+      const data = await readFile(resolve(dir, 'data/synthetic/observations.jsonl'), 'utf8');
+      observations = data.split('\n').filter(line => line.trim()).map(line => JSON.parse(line));
+    } catch {
+      observations = [];
+    }
+  }
+  const latest = new Map();
+  for (const row of observations) {
+    const time = Date.parse(row?.ts);
+    if (Number.isFinite(time) && time >= (latest.get(row.lot_id)?.time ?? -Infinity)) {
+      latest.set(row.lot_id, {row, time});
+    }
+  }
+  state.lots = state.lots.map(lot => {
+    const observation = latest.get(lot.lot_id);
+    return {...lot, current_free: observation?.row.free_spaces ?? null,
+      current_observed_at: utc(observation?.time), current_quality: observation?.row.quality ?? null,
+      current_stale: (observation?.row.age_seconds ?? 0) > 900};
+  });
+  // 无显式年龄时只保存过期截点，读取时比较时钟即可，无需重扫观测。
+  state.staleAfter = new Map();
+  for (const [id, {row, time}] of latest) {
+    if (row.age_seconds == null) state.staleAfter.set(id, time + 900_000);
+  }
+  return state;
+}
+
+export function currentLots(state, now) {
+  const time = now.getTime();
+  return state.lots.map(lot => state.staleAfter.has(lot.lot_id)
+    ? {...lot, current_stale: time > state.staleAfter.get(lot.lot_id)}
+    : lot);
 }
 
 // 本接口不承诺预测精度；上游主口径为 MAE_ratio（绝对车位 MAE 见上游 metrics.json），当前数据为合成数据，不构成达标结论。

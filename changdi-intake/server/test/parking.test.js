@@ -127,6 +127,79 @@ test('内置车场采用产物清单的 UTC 生成时刻', async t => {
   assert.equal((await (await get('lots')).json()).generated_at, '2026-04-14T16:00:00.000Z');
 });
 
+test('内置车场返回最近观测的余位、质量与 UTC 时刻', async t => {
+  const path = new URL('../src/parking/vendor/data/synthetic/observations.jsonl', import.meta.url);
+  const rows = (await readFile(path, 'utf8')).trim().split('\n').map(line => JSON.parse(line));
+  const get = await start(t);
+  const {items} = await (await get('lots')).json();
+  for (const id of ['P1', 'P2']) {
+    const latest = rows.filter(row => row.lot_id === id).sort((a, b) => Date.parse(b.ts) - Date.parse(a.ts))[0];
+    const lot = items.find(item => item.lot_id === id);
+    assert.ok(Number.isInteger(lot.current_free));
+    assert.equal(lot.current_free, latest.free_spaces);
+    assert.equal(lot.current_observed_at, new Date(latest.ts).toISOString());
+    assert.match(lot.current_observed_at, /Z$/);
+    assert.equal(lot.current_quality, latest.quality);
+    assert.ok(['ok', 'stale', 'missing', 'suspect'].includes(lot.current_quality));
+    t.diagnostic(id + ' 实际观测 ' + JSON.stringify([lot.current_free, lot.current_observed_at, lot.current_quality]));
+  }
+});
+
+async function observationDirectory(t, rows) {
+  const dir = await mkdtemp(join(tmpdir(), 'parking-observations-'));
+  t.after(() => rm(dir, {recursive: true}));
+  const folder = join(dir, 'data/synthetic');
+  await mkdir(folder, {recursive: true});
+  await writeFile(join(folder, 'observations.jsonl'), rows.map(row => JSON.stringify(row)).join('\n'));
+  return dir;
+}
+
+test('模型缺失时，最新观测 null 与真实零余位分别往返', async t => {
+  const ts = '2026-04-10T08:30:00+08:00';
+  const parkingDir = await observationDirectory(t, [
+    {lot_id: 'P1', ts, free_spaces: null, quality: 'missing'},
+    {lot_id: 'P2', ts, free_spaces: 0, quality: 'ok'},
+    {lot_id: 'P1', ts: '2026-04-10T08:00:00+08:00', free_spaces: 12, quality: 'ok'},
+  ]);
+  const get = await start(t, {parkingDir});
+  const {available, items} = await (await get('lots')).json();
+  assert.equal(available, false);
+  const p1 = items.find(lot => lot.lot_id === 'P1');
+  const p2 = items.find(lot => lot.lot_id === 'P2');
+  assert.equal(p1.current_free, null);
+  assert.equal(p1.current_quality, 'missing');
+  assert.equal(p2.current_free, 0);
+  assert.equal(p2.current_quality, 'ok');
+  t.diagnostic('available=' + available + ' P1.current_free=' + JSON.stringify(p1.current_free) +
+    ' P1.current_quality=' + p1.current_quality + ' P2.current_free=' + JSON.stringify(p2.current_free) +
+    ' P2.current_quality=' + p2.current_quality);
+});
+
+test('过期时间严格超过 900 秒，优先采用观测显式年龄', async t => {
+  const ts = '2026-04-10T08:00:00+08:00';
+  const parkingDir = await observationDirectory(t, [
+    {lot_id: 'P1', ts, free_spaces: 3, quality: 'ok'},
+    {lot_id: 'P2', ts, free_spaces: null, quality: 'stale', age_seconds: 900},
+  ]);
+  let clock = Date.parse(ts) + 900_000;
+  const get = await start(t, {parkingDir, now: () => new Date(clock)});
+  const stale = async () => Object.fromEntries((await (await get('lots')).json()).items.map(l => [l.lot_id, l.current_stale]));
+  assert.deepEqual(await stale(), {P1: false, P2: false});
+  clock += 1000;
+  assert.deepEqual(await stale(), {P1: true, P2: false});
+});
+
+test('没有该车场观测时返回三个空值且未标过期', async t => {
+  const parkingDir = await observationDirectory(t, [
+    {lot_id: 'P2', ts: loaded, free_spaces: 4, quality: 'suspect', age_seconds: 901},
+  ]);
+  const get = await start(t, {parkingDir, now});
+  const {items} = await (await get('lots')).json();
+  const p1 = items.find(lot => lot.lot_id === 'P1');
+  assert.deepEqual([p1.current_free, p1.current_observed_at, p1.current_quality, p1.current_stale], [null, null, null, false]);
+  assert.equal(items.find(lot => lot.lot_id === 'P2').current_stale, true);
+});
+
 for (const [label, manifest, expected] of [
   ['缺失', undefined, loaded], ['损坏', '{', loaded],
   ['无时区', '{"generated_at":"2020-01-01T00:00:00"}', loaded],
