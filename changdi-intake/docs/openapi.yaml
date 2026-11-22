@@ -1,12 +1,14 @@
 openapi: 3.0.3
 info:
   title: 长堤风貌街接诉即办合作方接单接口
-  version: 1.2.0
+  version: 1.3.0
   description: |
     合作方通过服务端提交游客和居民的申报及照片，并向原提交人展示回执。
     POST /api/v1/integrations/intake/cases 是唯一合作方接口。办件查询、补材料、评价和补办由小程序办理。
     POST /api/v1/public/cases 是小程序游客诉求页使用的第一方公开接口，不要求接入凭据，
     去重键由小程序生成。两者的请求和响应契约各自独立。
+    POST /api/v1/metrics/tourism/events 是导览来源上报行为事件的接口。每条来源使用自己的
+    Bearer 凭据，来源身份和证据类别由服务端配置决定，请求不能选择来源。
     本文的地址、工单信息和回执值均为测试占位数据。正式接入基址和凭据由项目方另行交付。
 servers:
   - url: https://intake-api.example-integration.test
@@ -236,6 +238,9 @@ paths:
         首次保存工单及全部照片后返回 201；同一 clientRequestId 及相同规范化内容返回 200 和原回执；
         同一 clientRequestId 及不同的合法内容返回 409，原单保持不变。项目方启用微信小程序码时，
         201 和 200 均含 wechatCode，同一工单在同一小程序账号及版本环境下复用已生成的图片。
+        微信小程序码暂不可用或生成队列已满时，工单和申报附件照常保存，201 和 200 仍返回上述三个标识字段
+        并省略 wechatCode：游客据此拿到公开查询码与私密凭证，微信上游恢复后用同一 clientRequestId
+        及相同内容重试即取到含 wechatCode 的回执。
 
         按对端地址做窗口限流，默认每 600 秒只统计 10 次新建建单。只有新建建单受上限约束：
         已成功单号的重放（内容一致返回 200，内容不同返回 409）不消耗额度，也不受当前窗口上限影响，
@@ -391,8 +396,9 @@ paths:
         '503':
           description: |
             服务当前已有 4 个上传请求在途（intake_busy），或数据库繁忙／锁定（database_busy）。
-            已启用的小程序码暂不可用或生成队列已满（wechat_code_unavailable）时，
-            工单和申报附件已保存，仍可用同一 clientRequestId 及相同内容重试。
+            这两种情况下本次请求未落库，仍可用同一 clientRequestId 及相同内容重试。
+            微信小程序码暂不可用（wechat_code_unavailable）不在此返回：工单和申报附件已保存时，
+            仍返回 201 或 200 与 caseNumber、publicLookupCode、privateLookupToken 三个标识，只是省略 wechatCode。
           headers:
             Retry-After:
               description: 等待秒数。
@@ -406,7 +412,150 @@ paths:
                   - $ref: '#/components/schemas/Error'
                   - properties:
                       error:
-                        enum: [intake_busy, database_busy, wechat_code_unavailable]
+                        enum: [intake_busy, database_busy]
+  /api/v1/metrics/tourism/events:
+    post:
+      operationId: submitTourismEvent
+      summary: 上报一条导览行为事件
+      description: |
+        导览来源（演示 H5、运营 H5、真实预约服务、车场核验）通过服务端上报行为事件。
+        每条来源持有独立的服务端凭据和受限事件目录，凭据不进入 SQLite、浏览器或日志。
+        接入凭据、接单凭据、商户会话和管理会话都不能写入本接口；未配置导览来源时同样不能写入。
+        来源身份和证据类别由服务端配置决定，请求不能选择来源、证据或目录代码。
+
+        使用完整路径，省略查询参数和末尾斜杠。对该路径使用其他方法时返回 405、
+        Allow 响应头（值为 POST）及 {"error":"method_not_allowed"}。
+
+        请求体是单个 JSON 对象，上限 512 字节。字段固定为 eventId、type、subjectId、flowId、
+        occurredAt，仅 guide_played 另带必填的 durationSeconds。服务端拒绝多余字段、重复键
+        （含转义后同名的键）和无效 UTF-8。
+
+        首次记录返回 201 且响应体为空；同一来源内相同 eventId 且规范化内容相同返回 200 且响应体为空；
+        同一 eventId 内容不同返回 409。新的 eventId 命中相同来源、类型、对象和流程时沿用首次记录并返回 200。
+        事件类型是否属于该来源，由服务端配置和来源证据类别决定。
+
+        occurredAt 允许最多领先服务端时间五分钟。覆盖范围和统计口径由服务端配置，
+        客户端不能指定统计截点。
+      security:
+        - TourismSourceBearer: []
+      requestBody:
+        required: true
+        description: |
+          一个 JSON 对象。Content-Type 须为 application/json，可带 charset=utf-8。
+          正文上限 512 字节。
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TourismEvent'
+      responses:
+        '201':
+          description: 事件已记录。
+          headers:
+            NoStore:
+              $ref: '#/components/headers/NoStore'
+        '200':
+          description: 同一事件的重放，或同一流程的重复上报。
+          headers:
+            NoStore:
+              $ref: '#/components/headers/NoStore'
+        '400':
+          description: |
+            正文不是合法 JSON、不是合法 UTF-8、含重复键、字段不符、对象代码不在来源目录内、
+            时间无效或早于允许的领先范围（future_tourism_event），或正文超过 512 字节（body_too_large）。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [invalid_json, invalid_utf8, duplicate_field, invalid_tourism_fields,
+                          invalid_tourism_id, invalid_tourism_type, invalid_tourism_subject,
+                          invalid_tourism_duration, invalid_timestamp, future_tourism_event, body_too_large]
+        '401':
+          description: 缺少凭据或凭据无效。
+          headers:
+            WWW-Authenticate:
+              description: 固定为 Bearer。
+              schema:
+                type: string
+                enum: [Bearer]
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [unauthorized]
+        '403':
+          description: |
+            凭据不属于导览来源（forbidden），来源未配置（tourism_source_forbidden），
+            或该来源无权上报此事件类型（tourism_type_forbidden）。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [forbidden, tourism_source_forbidden, tourism_type_forbidden]
+        '404':
+          description: 路径不存在。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [route_not_found]
+        '405':
+          description: 方法不允许。
+          headers:
+            Allow:
+              description: 固定为 POST。
+              schema:
+                type: string
+                enum: [POST]
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [method_not_allowed]
+        '409':
+          description: 同一 eventId 已记录了不同的内容。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [tourism_event_conflict]
+        '413':
+          description: 正文超过 512 字节。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [body_too_large]
+        '415':
+          description: Content-Type 不是 application/json。
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      error:
+                        enum: [expected_json]
 components:
   securitySchemes:
     IntegrationBearer:
@@ -415,6 +564,13 @@ components:
       description: |
         Authorization 头使用 Bearer <ACCESS_TOKEN>。接入令牌为 32–256 位，
         字符限 A–Z、a–z、0–9、下划线和连字符。由项目方签发、轮换或撤换。
+    TourismSourceBearer:
+      type: http
+      scheme: bearer
+      description: |
+        Authorization 头使用 Bearer <SOURCE_TOKEN>。导览来源令牌为 32–256 位，
+        字符限 A–Z、a–z、0–9、下划线和连字符。每条来源单独签发，与接单令牌、
+        商户会话和管理会话互不通用；相同令牌出现在两处时服务端启动失败。
   headers:
     NoStore:
       description: 回执含私密凭证，请勿缓存。
@@ -571,6 +727,55 @@ components:
           minLength: 4
           maxLength: 1398104
           description: 标准 Base64 图片字节，没有 data URL 前缀。解码后最多 1 MiB。
+    TourismEvent:
+      type: object
+      additionalProperties: false
+      required: [eventId, type, subjectId, flowId, occurredAt]
+      description: |
+        一个导览行为事件。字段固定，多余字段一律拒绝。
+        该标识与预约原号、账号、联系方式、坐标、工单号、回执和原始文本无关。
+      properties:
+        eventId:
+          type: string
+          pattern: '^[0-9a-f]{24}$'
+          description: |
+            事件标识，24 位小写十六进制。每次上报生成一个，重试时复用同一个。
+        type:
+          type: string
+          enum: [route_exposed, route_adopted, route_completed_self_reported, guide_played,
+            booking_demo_submitted, parking_advice_adopted, parking_navigation_clicked,
+            booking_requested, booking_confirmed, booking_cancelled, parking_arrival_verified]
+          description: |
+            事件类型。可上报的类型由来源配置和证据类别决定：
+            演示 H5 可报路线曝光、采纳、游客自报完成、语音实播、预约演示提交、停车建议采纳和停车导航点击；
+            运营 H5 可报前六项中的可核实部分；
+            真实预约服务可报预约发起、确认和取消；
+            车场核验可报停车核验到达。
+        subjectId:
+          type: string
+          pattern: '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$'
+          maxLength: 32
+          description: |
+            目录代码，必须在该来源配置的事件目录内。路线用 R1 至 R3，
+            讲解点位用 CD- 开头的点位代码，讲解员用 G1 至 G3，车场用 P1、P2。
+        flowId:
+          type: string
+          pattern: '^[0-9a-f]{24}$'
+          description: |
+            流程标识，24 位小写十六进制。同一次推荐或一次预约生命周期复用同一个流程标识，
+            每个状态各自使用独立的事件标识。
+        occurredAt:
+          type: string
+          maxLength: 40
+          pattern: '^\s*[0-9]{4}-[0-9]{2}-[0-9]{2}T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,3})?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9])\s*$'
+          description: |
+            发生时间，使用 YYYY-MM-DDTHH:mm:ss、可选 1–3 位秒小数，并带 Z 或 ±HH:MM。
+            设备时钟允许最多领先服务端五分钟。
+          example: '2026-11-22T09:42:00+08:00'
+        durationSeconds:
+          type: integer
+          minimum: 1
+          description: 仅 guide_played 必填，为实际播放秒数，暂停和准备时间不计入。
     Error:
       type: object
       additionalProperties: false

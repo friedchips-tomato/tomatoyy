@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import { backup, DatabaseSync } from 'node:sqlite';
 import test from 'node:test';
 import { createIntakeServer } from '../src/server.js';
+import { SCHEMA_VERSION } from '../src/store.js';
 
 const publicCasesPath = '/api/v1/public/cases';
 const token = () => randomBytes(32).toString('base64url');
@@ -376,7 +377,7 @@ test('v9 库升级后保留原工单并接受 public 事件身份', async t => {
       ALTER TABLE case_events_v9 RENAME TO case_events;
     `);
     downgrade.exec('PRAGMA legacy_alter_table=OFF');
-    downgrade.exec('PRAGMA user_version = 9');
+    downgrade.exec('DROP TABLE representative_report_releases; DROP TABLE tourism_event_ids; DROP TABLE tourism_events; DROP VIEW current_case_supervision; DROP TABLE case_supervision_events; DROP TABLE remediation_reviews; DROP TABLE remediation_entries; DROP TABLE case_contact_access_audit; PRAGMA user_version = 9');
   } finally {
     downgrade.close();
   }
@@ -395,7 +396,7 @@ test('v9 库升级后保留原工单并接受 public 事件身份', async t => {
     assert.equal(fresh.status, 201);
     const db = new DatabaseSync(legacy.dbPath);
     try {
-      assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+      assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
       assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
       assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
       assert.equal(db.prepare('SELECT count(*) AS n FROM cases').get().n, 2);

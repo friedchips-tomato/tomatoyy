@@ -19,6 +19,7 @@ const merchantLimits = {
   location: limits.location,
   category: limits.category,
   description: limits.description,
+  suggestedDepartment: limits.suggestedDepartment,
   contact: limits.contact,
 };
 const publicLimits = {

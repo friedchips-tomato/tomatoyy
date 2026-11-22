@@ -1,3 +1,18 @@
+<template name="own-receipt">
+  <text class="section-title">本人申报回执</text>
+  <text class="merchant-block case-number">{{receipt.caseNumber}}</text>
+  <text wx:if="{{receipt.submittedLabel}}" class="merchant-block muted">提交时间 {{receipt.submittedLabel}}</text>
+  <text wx:if="{{receipt.publicLookupCode}}" class="merchant-block">公开查询码 {{receipt.publicLookupCode}}</text>
+  <image wx:if="{{receipt.qrSource}}" src="{{receipt.qrSource}}" mode="aspectFit" class="receipt-image"
+    data-receipt="{{receiptKey}}" data-revision="{{receipt.qrRevision}}" binderror="onReceiptImageError" />
+  <button wx:if="{{receipt.qrSource}}" class="text-button spaced" data-receipt="{{receiptKey}}"
+    data-revision="{{receipt.qrRevision}}" bindtap="onClearReceiptImage">隐藏微信码图片</button>
+  <text wx:elif="{{receipt.publicLookupCode}}" class="merchant-block muted">可用公开查询码查看办理状态。</text>
+  <button wx:if="{{receipt.publicLookupCode}}" class="button-secondary spaced"
+    data-code="{{receipt.publicLookupCode}}" bindtap="onOpenPublicReceipt">公开查询进度</button>
+  <button class="button-secondary spaced" data-case="{{receipt.caseNumber}}" bindtap="onOpenClaimant">本人反馈、评价与补办</button>
+</template>
+
 <view class="page merchant-shell">
   <view wx:if="{{view === 'login'}}" class="card">
     <text class="merchant-title">商户核验</text>
@@ -20,7 +35,7 @@
   <block wx:else>
     <view class="merchant-header">
       <view>
-        <text class="merchant-title">{{view === 'case' ? '商户工单详情' : view === 'task' ? '协办任务详情' : '商户工作台'}}</text>
+        <text class="merchant-title">{{view === 'case' ? '商户工单详情' : view === 'task' ? '协办任务详情' : view === 'claimant' ? '本人办理' : view === 'representativeReport' ? '商户代表月报' : '商户工作台'}}</text>
         <text class="merchant-block muted">绑定商户 {{merchant}}</text>
         <text wx:if="{{permissionText}}" class="merchant-block muted">授权 {{permissionText}}</text>
       </view>
@@ -29,6 +44,8 @@
     <text wx:if="{{notice}}" class="merchant-notice" aria-role="alert">{{notice}}</text>
 
     <block wx:if="{{view === 'workbench'}}">
+      <button wx:if="{{canViewRepresentativeReport}}" class="button-secondary spaced"
+        bindtap="onOpenRepresentativeReport">查看商户代表月报</button>
       <block wx:if="{{permissions.length === 0}}">
         <view class="card">
           <text class="section-title">当前账号没有可用的商户授权</text>
@@ -109,6 +126,9 @@
             <label class="field-label" for="form-description">诉求说明</label>
             <textarea id="form-description" class="merchant-input text-area" value="{{formDescription}}" maxlength="4000"
               bindinput="onFormDescriptionInput" disabled="{{submitBusy || submitPending}}" placeholder="填写问题经过与诉求" />
+            <label class="field-label" for="form-department">建议处理部门（选填）</label>
+            <input id="form-department" class="merchant-input" value="{{formSuggestedDepartment}}" maxlength="100"
+              bindinput="onFormSuggestedDepartmentInput" disabled="{{submitBusy || submitPending}}" />
             <label class="field-label" for="form-contact">联系方式（选填）</label>
             <input id="form-contact" class="merchant-input" value="{{formContact}}" maxlength="300"
               bindinput="onFormContactInput" disabled="{{submitBusy || submitPending}}" placeholder="便于回访的联系方式" />
@@ -129,17 +149,89 @@
             <text wx:if="{{submitMessage}}" class="merchant-block warning" aria-role="alert">{{submitMessage}}</text>
           </block>
 
-          <block wx:if="{{submitReceipt}}">
-            <view class="section-header">
-              <text class="section-title">提交回执</text>
-              <text class="status-tag">{{submitReceipt.statusLabel}}</text>
-            </view>
-            <text class="merchant-block muted case-number">{{submitReceipt.caseNumber}}</text>
-            <text wx:if="{{submitReceipt.submittedLabel}}" class="merchant-block muted">提交时间 {{submitReceipt.submittedLabel}}</text>
-            <text class="merchant-block muted">回执只含编号与状态，工单内容需具备查看权限后在工单列表中查看。</text>
-          </block>
         </view>
       </block>
+      <view wx:if="{{canReadCases || canSubmitCases}}" class="card">
+        <view wx:if="{{submitReceipt}}">
+          <template is="own-receipt" data="{{receipt: submitReceipt, receiptKey: 'submitReceipt'}}" />
+        </view>
+        <label class="field-label" for="receipt-lookup">按工单号重取本人回执</label>
+        <input id="receipt-lookup" class="merchant-input" value="{{receiptLookup}}" maxlength="35"
+          disabled="{{receiptBusy || submitBusy}}" bindinput="onReceiptLookupInput" placeholder="输入完整工单号" />
+        <button class="button-secondary spaced" disabled="{{receiptBusy || submitBusy}}" loading="{{receiptBusy}}"
+          bindtap="onFindReceipt">读取本人回执</button>
+        <text wx:if="{{receiptError}}" class="merchant-block warning">{{receiptError}}</text>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'representativeReport'}}">
+      <button class="text-button back-list" bindtap="onCloseRepresentativeReport">返回商户工作台</button>
+      <view class="card">
+        <picker mode="date" fields="month" value="{{reportMonth + '-01'}}" end="{{reportMaxMonth + '-01'}}"
+          bindchange="onRepresentativeMonthChange">
+          <view class="select-chip" aria-role="button">{{reportMonth}} ▾</view>
+        </picker>
+        <text wx:if="{{extraBusy}}" class="merchant-block muted">正在读取月报…</text>
+        <text wx:if="{{extraError}}" class="merchant-block warning" aria-role="alert">{{extraError}}</text>
+        <view wx:for="{{reportRows}}" wx:key="label" class="history-row">
+          <text class="row-heading">{{item.label}}</text>
+          <text class="merchant-block">{{item.value}}</text>
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{view === 'claimant'}}">
+      <view class="section-header back-list">
+        <button class="text-button" bindtap="onCloseClaimant" disabled="{{extraBusy}}">返回本人回执</button>
+        <button class="text-button" bindtap="onReadClaimant" disabled="{{extraBusy}}">刷新本人办理</button>
+      </view>
+      <view class="card">
+        <text class="section-title">工单 {{extraCase}}</text>
+        <text wx:if="{{extraBusy}}" class="merchant-block muted">正在读取或保存…</text>
+        <text wx:if="{{extraError}}" class="merchant-block warning" aria-role="alert">{{extraError}}</text>
+        <block wx:if="{{claimant}}">
+          <text wx:if="{{claimant.evaluationDeadline}}" class="merchant-block muted">评价截止 {{claimant.evaluationDeadline}}</text>
+          <text wx:if="{{claimant.reopenDeadline}}" class="merchant-block muted">补办截止 {{claimant.reopenDeadline}}</text>
+          <text wx:if="{{!claimant.rounds.length}}" class="merchant-block muted">暂无发布反馈。</text>
+          <view wx:for="{{claimant.rounds}}" wx:key="round" class="history-row">
+            <text class="row-heading">第 {{item.round}} 轮</text>
+            <text wx:if="{{item.summary}}" class="merchant-block detail-copy">{{item.summary}}</text>
+            <text wx:if="{{item.evaluation}}" class="merchant-block">已评价（速度、效果、态度） {{item.evaluation}}</text>
+            <button wx:for="{{item.photos}}" wx:for-item="photo" wx:key="key" class="text-button"
+              bindtap="onPreviewClaimPhoto" data-photo="{{photo.key}}" disabled="{{claimPhotoBusy || extraBusy}}">查看反馈图片 {{photo.position + 1}}</button>
+          </view>
+          <text wx:if="{{claimPhotoBusy}}" class="merchant-block muted">正在读取反馈图片…</text>
+          <text wx:if="{{claimPhotoError}}" class="merchant-block warning">{{claimPhotoError}}</text>
+          <view wx:if="{{claimPhotoPath || claimPhotoBusy}}" class="history-row">
+            <image wx:if="{{claimPhotoPath}}" src="{{claimPhotoPath}}" mode="widthFix" class="receipt-image" />
+            <button class="text-button" bindtap="onCloseClaimPhoto">关闭图片</button>
+          </view>
+          <view wx:for="{{claimant.reopen}}" wx:key="id" class="history-row">
+            <text class="row-heading">补办 {{item.status}}</text>
+            <text class="merchant-block">{{item.reason}}</text>
+            <text wx:if="{{item.decisionReason}}" class="merchant-block">{{item.decisionReason}}</text>
+          </view>
+          <button wx:for="{{claimant.actions}}" wx:key="id" class="button-secondary spaced"
+            data-action="{{item.id}}" bindtap="onChooseClaimAction" disabled="{{extraBusy || claimRefresh}}">{{item.label}}</button>
+          <view wx:if="{{claimForm}}" class="history-row">
+            <text class="row-heading">{{claimForm.label}}</text>
+            <block wx:if="{{claimForm.action === 'evaluate'}}">
+              <picker range="{{ratings}}" data-field="speed" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">速度 {{claimForm.speed || '请选择'}} ▾</view>
+              </picker>
+              <picker range="{{ratings}}" data-field="effectiveness" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">效果 {{claimForm.effectiveness || '请选择'}} ▾</view>
+              </picker>
+              <picker range="{{ratings}}" data-field="attitude" bindchange="onClaimInput">
+                <view class="select-chip" aria-role="button">态度 {{claimForm.attitude || '请选择'}} ▾</view>
+              </picker>
+            </block>
+            <textarea wx:if="{{claimForm.action === 'request_reopen'}}" class="merchant-input text-area"
+              maxlength="1000" placeholder="填写补办理由" value="{{claimForm.reason}}" data-field="reason" bindinput="onClaimInput" />
+            <button class="button-primary spaced" bindtap="onSaveClaimAction" disabled="{{extraBusy || claimRefresh}}">确认提交</button>
+          </view>
+        </block>
+      </view>
     </block>
 
     <block wx:elif="{{view === 'case'}}">
@@ -173,6 +265,12 @@
         <view wx:else class="card">
           <text class="section-title">已发布反馈</text>
           <text class="merchant-block muted">暂无处理反馈</text>
+        </view>
+        <view class="card">
+          <template wx:if="{{caseReceipt}}" is="own-receipt" data="{{receipt: caseReceipt, receiptKey: 'caseReceipt'}}" />
+          <button class="button-secondary spaced" bindtap="onReadCaseReceipt" disabled="{{receiptBusy}}"
+            loading="{{receiptBusy}}">{{caseReceipt ? '重取本人回执' : '读取本人回执'}}</button>
+          <text wx:if="{{receiptError}}" class="merchant-block warning" aria-role="alert">{{receiptError}}</text>
         </view>
 
         <view class="card">

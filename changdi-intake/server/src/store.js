@@ -9,11 +9,18 @@ import { createOwnerAuth, privateTokenForCode } from './owner-auth.js';
 import { createSupplementPhotos } from './owner-supplement-photos.js';
 import { ownerChange } from './owner-workflow.js';
 import { createPublishedFeedbackPhotos } from './published-feedback-photos.js';
+import { createRepresentativeReports } from './representative-report.js';
 import { createStaffWorkbench } from './staff-workbench.js';
 import { canReadSubmissionPhotos, createStaffSubmissionPhotos } from './staff-submission-photos.js';
+import { createSupervision } from './supervision.js';
+import { createTourismCore } from './tourism/index.js';
 import { applyAction } from './workflow.js';
 
 const publicSource = 'miniprogram';
+
+// The newest migration number. Production code and its regressions read this value
+// instead of repeating the number, so the migration framework has one source of truth.
+export const SCHEMA_VERSION = 14;
 
 const initialSchema = readFileSync(new URL('../migrations/001-initial.sql', import.meta.url), 'utf8');
 const ownerSchema = readFileSync(new URL('../migrations/002-owner-workflow.sql', import.meta.url), 'utf8');
@@ -25,6 +32,10 @@ const collaborationPhotoSchema = readFileSync(new URL('../migrations/007-collabo
 const supplementPhotoSchema = readFileSync(new URL('../migrations/008-owner-supplement-photos.sql', import.meta.url), 'utf8');
 const wechatReceiptSchema = readFileSync(new URL('../migrations/009-wechat-receipt-codes.sql', import.meta.url), 'utf8');
 const publicSubmissionSchema = readFileSync(new URL('../migrations/010-public-submissions.sql', import.meta.url), 'utf8');
+const contactAuditSchema = readFileSync(new URL('../migrations/011-contact-access-audit.sql', import.meta.url), 'utf8');
+const supervisionSchema = readFileSync(new URL('../migrations/012-supervision.sql', import.meta.url), 'utf8');
+const representativeSchema = readFileSync(new URL('../migrations/013-representative-reports.sql', import.meta.url), 'utf8');
+const tourismSchema = readFileSync(new URL('../migrations/014-tourism-events.sql', import.meta.url), 'utf8');
 
 export function openStore(dbPath, receiptKey, now, periods) {
   const db = new DatabaseSync(dbPath);
@@ -43,6 +54,7 @@ export function openStore(dbPath, receiptKey, now, periods) {
   const read = operation => transaction(operation, 'BEGIN');
 
   const sign = value => createHmac('sha256', receiptKey).update(value).digest('base64url');
+  let tourism;
   try {
     // Table rebuilds preserve IDs and validate all references before commit.
     db.exec('PRAGMA busy_timeout = 5000; PRAGMA foreign_keys = OFF; PRAGMA synchronous = FULL;');
@@ -52,7 +64,7 @@ export function openStore(dbPath, receiptKey, now, periods) {
       if (version === 0) {
         db.exec(initialSchema);
         db.prepare('INSERT INTO settings VALUES (?, ?)').run('receipt_key_check', keyCheck);
-      } else if (version < 1 || version > 10) {
+      } else if (version < 1 || version > SCHEMA_VERSION) {
         throw new Error('Unsupported database schema version');
       } else if (db.prepare('SELECT value FROM settings WHERE key = ?').get('receipt_key_check')?.value !== keyCheck) {
         throw new Error('Receipt key does not match database');
@@ -94,6 +106,27 @@ export function openStore(dbPath, receiptKey, now, periods) {
         if (db.prepare('PRAGMA foreign_key_check').get()) throw new Error('Invalid case references after migration');
         db.exec('PRAGMA user_version = 10');
       }
+      if (version < 11) {
+        db.exec(contactAuditSchema);
+        if (db.prepare('PRAGMA foreign_key_check').get()) throw new Error('Invalid case references after migration');
+        db.exec('PRAGMA user_version = 11');
+      }
+      if (version < 12) {
+        db.exec(supervisionSchema);
+        if (db.prepare('PRAGMA foreign_key_check').get()) throw new Error('Invalid case references after migration');
+        db.exec('PRAGMA user_version = 12');
+      }
+      if (version < 13) {
+        db.exec(representativeSchema);
+        if (db.prepare('PRAGMA foreign_key_check').get()) throw new Error('Invalid case references after migration');
+        db.exec('PRAGMA user_version = 13');
+      }
+      if (version < SCHEMA_VERSION) {
+        db.exec(tourismSchema);
+        if (db.prepare('PRAGMA foreign_key_check').get()) throw new Error('Invalid case references after migration');
+        db.exec(`PRAGMA user_version = ${SCHEMA_VERSION}`);
+      }
+      tourism = createTourismCore(db, {...periods.tourism, now});
     });
     db.exec('PRAGMA foreign_keys = ON');
   } catch (error) {
@@ -120,7 +153,16 @@ export function openStore(dbPath, receiptKey, now, periods) {
   const details = createCaseDetails(db, feedbackPhotos);
   const ownerAuth = createOwnerAuth(db, sign, now);
   const staffWorkbench = createStaffWorkbench(db, now, read);
-  const monthlyReport = createMonthlyReport(db, now, read);
+  const supervision = createSupervision(db, now, read, write, staffWorkbench, periods.supervision);
+  const summarizeMonth = createMonthlyReport(db, now, supervision.duplicateStats);
+  const monthlyReport = (month, options) => read(() => {
+    const asOf = now().valueOf();
+    return {
+      ...summarizeMonth(month, {...options, asOf: Math.floor(asOf / 1000) * 1000}),
+      tourism: tourism.summarizeAt(month, asOf)
+    };
+  });
+  const representativeReports = createRepresentativeReports(db, now, write, summarizeMonth, periods.representativeReports);
   const staffPhotos = createStaffSubmissionPhotos(db);
   const supplementPhotos = createSupplementPhotos(db);
   const receiptCode = db.prepare(`
@@ -194,11 +236,25 @@ export function openStore(dbPath, receiptKey, now, periods) {
     },
   });
 
-  return {
+  const store = {
     close: () => db.close(),
     merchant,
     staffWorkbench,
     monthlyReport,
+    tourism,
+    supervision,
+    representativeReports,
+    merchantClaimant: {
+      case(principal, number) {
+        return store.ownerCase(number, () => merchant.ownReceipt(principal, number));
+      },
+      action(principal, number, input) {
+        return store.ownerAction(number, input, [], () => merchant.ownReceipt(principal, number));
+      },
+      feedbackPhoto(principal, number, version, position) {
+        return read(() => feedbackPhotos.read(merchant.ownReceipt(principal, number).caseId, version, position));
+      },
+    },
     submit(source, submission) {
       return write(() => {
         const { created, item } = createCase(source, submission.payload.externalCaseId, 'integration', source, submission);
@@ -243,6 +299,19 @@ export function openStore(dbPath, receiptKey, now, periods) {
     staffCase(caseNumber, principal) {
       return read(() => staffDetails(scopedCase(caseNumber, principal), principal));
     },
+    staffContact(caseNumber, principal) {
+      if (principal.type !== 'staff' || principal.readContact !== true) throw new HttpError(403, 'forbidden');
+      // Lock the write snapshot so reassignment cannot race the scope check and audit.
+      return write(() => {
+        const { id } = scopedCase(caseNumber, principal);
+        const row = db.prepare('SELECT contact FROM case_contacts WHERE case_id = ?').get(id);
+        const audit = db.prepare(
+          'INSERT INTO case_contact_access_audit (case_id, staff_id, accessed_at) VALUES (?, ?, ?)'
+        ).run(id, principal.id, now().toISOString());
+        if (audit.changes !== 1) throw new Error('Contact access audit was not written');
+        return { contact: row?.contact ?? null };
+      });
+    },
     staffSubmissionPhoto(caseNumber, principal, version, position) {
       if (!canReadSubmissionPhotos(principal)) throw new HttpError(403, 'forbidden');
       return read(() => staffPhotos.read(scopedCase(caseNumber, principal).id, version, position));
@@ -284,8 +353,11 @@ export function openStore(dbPath, receiptKey, now, periods) {
       return write(() => ownerAuth.verify(input, address));
     },
     authenticateOwner: ownerAuth.authenticate,
-    ownerCase(caseNumber) {
-      return read(() => ownerDetails(getCase(caseNumber), now().toISOString()));
+    ownerCase(caseNumber, authorize) {
+      return read(() => {
+        authorize?.();
+        return ownerDetails(getCase(caseNumber), now().toISOString());
+      });
     },
     ownerFeedbackPhoto(caseNumber, version, position) {
       return read(() => feedbackPhotos.read(getCase(caseNumber).id, version, position));
@@ -293,8 +365,9 @@ export function openStore(dbPath, receiptKey, now, periods) {
     ownerSupplementPhoto(caseNumber, version, position) {
       return read(() => supplementPhotos.read(getCase(caseNumber).id, version, position));
     },
-    ownerAction(caseNumber, input, photos = []) {
+    ownerAction(caseNumber, input, photos = [], authorize) {
       return write(() => {
+        authorize?.();
         if (photos.length && input.action !== 'submit_supplement') throw new HttpError(400, 'invalid_action');
         const item = getCase(caseNumber);
         const time = now().toISOString();
@@ -322,4 +395,5 @@ export function openStore(dbPath, receiptKey, now, periods) {
       });
     },
   };
+  return store;
 }

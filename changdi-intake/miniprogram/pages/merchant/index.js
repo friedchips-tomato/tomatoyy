@@ -1,6 +1,8 @@
 const config = require('../../config.js');
 const { apiEnvironment, requestConfigured } = require('../../api-environment');
 const { invalidEnvironment, clearWechatSession, activeSession, loginWithWechat } = require('../../wechat-session');
+const { emptyExtra, methods: claimantMethods } = require('./claimant');
+const { createReceiptArtwork } = require('./receipt-artwork');
 const {
   isValidToken,
   statusOptions,
@@ -50,6 +52,8 @@ function initialData() {
     canReadCases: false,
     canCollaborate: false,
     canSubmitCases: false,
+    canViewRepresentativeReport: false,
+    ...emptyExtra(),
     notice: '',
     // 工单列表
     statusOptions,
@@ -93,6 +97,7 @@ function initialData() {
     formLocation: '',
     formCategory: '',
     formDescription: '',
+    formSuggestedDepartment: '',
     formContact: '',
     submitBusy: false,
     submitMessage: '',
@@ -111,6 +116,7 @@ const dataset = event => event.currentTarget.dataset;
 
 Page({
   data: initialData(),
+  ...claimantMethods,
 
   onLoad() {
     this._alive = true;
@@ -124,6 +130,7 @@ Page({
     this._taskPhotoRequest = 0;
     this._previewRequest = 0;
     this._requestSeq = 0;
+    this._extraRequest = 0;
     // 当前申报的草稿：请求号与内容绑定，网络中断重试时保持不变。
     this._draft = null;
     // 已选但尚未发送的照片（只有本机临时文件路径）。
@@ -134,6 +141,8 @@ Page({
     this._taskPickedFiles = [];
     // 协办原图预览文件：逐个登记，逐个清理。
     this._previewFiles = createPreviewFiles();
+    this._receiptArtwork = createReceiptArtwork();
+    this._receiptArtwork.cleanupPrevious();
     // 商户令牌只放在页面内存，不写本页数据、不进网址、不写持久缓存。
     this._token = '';
     this.setData(initialData());
@@ -176,6 +185,8 @@ Page({
     this._photoRequest += 1;
     this._taskPhotoRequest += 1;
     this._previewRequest += 1;
+    this._extraRequest += 1;
+    this._claimFrom = '';
     this._token = '';
     clearWechatSession(this);
     this._draft = null;
@@ -185,6 +196,7 @@ Page({
     this._taskPickedFiles = [];
     // 预览文件逐个清理，不留在本机。
     this._previewFiles.clear();
+    this._receiptArtwork.clearAll();
     this.setData({
       ...initialData(),
       loginKeys: [this.data.loginKeys[0] + 1],
@@ -255,6 +267,7 @@ Page({
         permissionText: result.permissions.map(item => permissionLabels[item]).join(' · '),
         canReadCases: result.permissions.includes('readCases'),
         canSubmitCases: result.permissions.includes('submitCases'),
+        canViewRepresentativeReport: result.permissions.includes('representativeReport'),
         canCollaborate: result.permissions.includes('collaborate')
       });
       return this.refreshAll();
@@ -401,8 +414,9 @@ Page({
 
   onOpenCase(event) {
     const caseNumber = dataset(event).case;
-    if (!this.can('readCases') || this.data.caseBusy || typeof caseNumber !== 'string') return;
-    this.setData({ view: 'case', activeCase: caseNumber, notice: '' });
+    if (!this.can('readCases') || this.data.submitBusy || this.data.caseBusy || typeof caseNumber !== 'string') return;
+    this._receiptArtwork.clear('submitReceipt');
+    this.setData({ view: 'case', activeCase: caseNumber, notice: '', submitReceipt: null });
     return this.loadCase(caseNumber);
   },
 
@@ -410,6 +424,7 @@ Page({
     if (!this.can('readCases')) return;
     const session = this._session;
     const request = ++this._detailRequest;
+    this.resetExtra();
     this.setData({ caseDetail: null, caseBusy: true, caseError: '' });
     try {
       const result = await fetchMerchantCase({
@@ -444,6 +459,7 @@ Page({
     if (this.data.taskSubmitting) return;
     this._detailRequest += 1;
     this._submitRequest += 1;
+    this.resetExtra();
     // 离开任务详情：清掉预览文件与已选照片。
     this.closeTaskPreview();
     this._taskPickedFiles = [];
@@ -465,13 +481,16 @@ Page({
 
   onOpenTask(event) {
     const taskId = dataset(event).task;
-    if (!this.can('collaborate') || this.data.taskBusy || this.data.taskSubmitting ||
+    if (!this.can('collaborate') || this.data.submitBusy || this.data.taskBusy || this.data.taskSubmitting ||
         typeof taskId !== 'string') return;
     // 切换任务：清掉上一个任务的已选照片与预览，不把旧图带到新任务。
     this._taskPickedFiles = [];
     this.closeTaskPreview();
+    this._receiptArtwork.clear('submitReceipt');
+    this.resetExtra();
     this.setData({
       view: 'task',
+      submitReceipt: null,
       activeTask: taskId,
       notice: '',
       taskPhotoCount: 0,
@@ -699,16 +718,17 @@ Page({
       this.setData({ showForm: true });
       return;
     }
+    this.clearReceiptImage('submitReceipt');
     this.setData({
       showForm: true,
       submitMessage: '',
-      submitReceipt: null,
       submitButtonText: this.submitLabel(false, this.data.submitRequestId)
     });
   },
 
   onCloseForm() {
     if (this.data.submitBusy) return;
+    this.clearReceiptImage('submitReceipt');
     this.setData({ showForm: false });
   },
 
@@ -737,6 +757,11 @@ Page({
     this.setData({ formDescription: event.detail.value });
   },
 
+  onFormSuggestedDepartmentInput(event) {
+    if (this.data.submitPending) return;
+    this.setData({ formSuggestedDepartment: event.detail.value });
+  },
+
   onFormContactInput(event) {
     if (this.data.submitPending) return;
     this.setData({ formContact: event.detail.value });
@@ -753,13 +778,14 @@ Page({
     this._draft = null;
     // 一并清掉已选照片，重新开始时不带旧的图片。
     this._pickedFiles = [];
+    this.clearReceiptImage('submitReceipt');
     this.setData({
       formLocation: '',
       formCategory: '',
       formDescription: '',
+      formSuggestedDepartment: '',
       formContact: '',
       submitMessage: '',
-      submitReceipt: null,
       submitRequestId: '',
       submitButtonText: '提交诉求',
       photoCount: 0
@@ -778,6 +804,7 @@ Page({
       current.location === probe.content.location &&
       current.category === probe.content.category &&
       current.description === probe.content.description &&
+      (current.suggestedDepartment || '') === (probe.content.suggestedDepartment || '') &&
       (current.contact || '') === (probe.content.contact || '') &&
       (current.photoKey || '') === (photoKey || '');
     if (same) return { draft: current };
@@ -832,7 +859,7 @@ Page({
 
   // 提交一条新的商户诉求。照片为可选，与正文一次提交。
   async onSubmitNewCase() {
-    if (this.data.submitBusy) return;
+    if (this.data.view !== 'workbench' || this.data.submitBusy || this.data.receiptBusy) return;
     if (!this.can('submitCases')) {
       this.setData({ submitMessage: '当前账号没有提交诉求的权限。' });
       return;
@@ -844,6 +871,7 @@ Page({
     const session = this._session;
     // 新诉求与协办送审各自计数，互不作废对方的在途请求。
     const request = ++this._submitCaseRequest;
+    this._receiptArtwork.clear('submitReceipt');
     this.setData({ submitBusy: true, submitMessage: '', submitReceipt: null });
 
     // 结果未确认后的重试：原样重发首次实际发出的字节，不重读文件、不换请求号。
@@ -884,6 +912,7 @@ Page({
       location: this.data.formLocation,
       category: this.data.formCategory,
       description: this.data.formDescription,
+      suggestedDepartment: this.data.formSuggestedDepartment,
       contact: this.data.formContact
     }, photoFingerprint(photos));
     if (prepared.error) {
@@ -910,13 +939,14 @@ Page({
         submitBusy: false,
         submitPending: false,
         submitMessage: result.created ? '诉求已提交。' : '该请求号此前已提交，已返回原工单。',
-        submitReceipt: result.receipt,
+        submitReceipt: this._receiptArtwork.present('submitReceipt', result.receipt, result.wechatCode),
         submitRequestId: '',
         submitButtonText: '提交诉求',
         photoCount: 0,
         formLocation: '',
         formCategory: '',
         formDescription: '',
+        formSuggestedDepartment: '',
         formContact: ''
       });
       if (this.can('readCases')) return this.loadCases();

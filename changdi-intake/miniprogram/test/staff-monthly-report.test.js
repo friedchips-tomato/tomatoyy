@@ -89,6 +89,21 @@ test('北京时间月边界、汇总投影和 0／空值显示', () => {
   assert.equal(reportView(sample('2026-11', { final: false, rate: null }), '2026-11').snapshotLabel, '截至当前');
 });
 
+test('重复投诉区分已覆盖零、部分覆盖与缺少来源', () => {
+  const view = fields => reportView({ ...sample('2026-11'), duplicateComplaints: fields }, '2026-11');
+  const aggregate = { submitted: 3, covered: 3, unclassified: 0, confirmed: 0, notConfirmed: 3 };
+  const group = rendered => rendered.groups.find(item => item.title === '重复投诉');
+  assert.equal(group(view({ status: 'available', ...aggregate })).rows.find(row => row.label === '已确认重复').value, '0');
+  const partial = group(view({ status: 'partial', ...aggregate, covered: 2, unclassified: 1, confirmed: 1, notConfirmed: 1 }));
+  assert.match(partial.note, /仅部分/);
+  assert.equal(partial.rows.find(row => row.label === '已确认重复').value, '1');
+  const unavailable = group(view({ status: 'unavailable', submitted: 3, covered: 0, unclassified: 3 }));
+  assert.match(unavailable.note, /无法统计/);
+  assert.equal(unavailable.rows.some(row => row.label === '已确认重复'), false);
+  assert.equal(view(absent).duplicateMissing, true);
+  assert.equal(group(view(absent)), undefined);
+});
+
 test('仅值班进入，月切换作废旧响应，失败后重读当前月', async t => {
   const { page, calls } = fixture(t);
   await signIn(page, supervisor);

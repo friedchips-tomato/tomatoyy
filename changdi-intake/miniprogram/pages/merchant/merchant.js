@@ -50,7 +50,8 @@ const statusOptions = [
 const permissionLabels = {
   readCases: '查看本商户工单',
   submitCases: '提交商户诉求',
-  collaborate: '协办任务'
+  collaborate: '协办任务',
+  representativeReport: '查看商户代表月报'
 };
 
 function isValidToken(token) {
@@ -478,6 +479,7 @@ const submissionLimits = {
   location: 300,
   category: 80,
   description: 4000,
+  suggestedDepartment: 100,
   contact: 300
 };
 
@@ -503,6 +505,7 @@ function normalizeSubmission(input) {
   const location = typeof content.location === 'string' ? content.location.trim() : '';
   const category = typeof content.category === 'string' ? content.category.trim() : '';
   const description = typeof content.description === 'string' ? content.description.trim() : '';
+  const suggestedDepartment = typeof content.suggestedDepartment === 'string' ? content.suggestedDepartment.trim() : '';
   const contact = typeof content.contact === 'string' ? content.contact.trim() : '';
   if (!clientRequestId || Array.from(clientRequestId).length > submissionLimits.clientRequestId) {
     return { error: '请求号无效，请重新提交。' };
@@ -522,8 +525,12 @@ function normalizeSubmission(input) {
   if (contact && Array.from(contact).length > submissionLimits.contact) {
     return { error: '联系方式最多 300 字。' };
   }
+  if (Array.from(suggestedDepartment).length > submissionLimits.suggestedDepartment) {
+    return { error: '建议处理部门最多 100 字。' };
+  }
   return {
-    content: { clientRequestId, occurredAt, location, category, description, ...(contact ? { contact } : {}) }
+    content: { clientRequestId, occurredAt, location, category, description,
+      ...(suggestedDepartment ? { suggestedDepartment } : {}), ...(contact ? { contact } : {}) }
   };
 }
 
@@ -547,6 +554,7 @@ function buildMerchantSubmission(input) {
     location: payload.location,
     category: payload.category,
     description: payload.description,
+    ...(payload.suggestedDepartment === undefined ? {} : { suggestedDepartment: payload.suggestedDepartment }),
     ...(payload.contact === undefined ? {} : { contact: payload.contact })
   };
   const boundary = '----ChangdiMerchantBoundary' + payload.clientRequestId.replace(/[^A-Za-z0-9]/g, '');
@@ -625,13 +633,52 @@ async function submitMerchantCase({ request, baseUrl: origin, token, submission,
   return {
     kind: 'success',
     created: response.statusCode === 201,
-    receipt: {
-      caseNumber: data.caseNumber,
-      status: typeof data.status === 'string' ? data.status : '',
-      statusLabel: caseStatusLabels[data.status] || '状态更新中',
-      submittedLabel: timeLabel(data.submittedAt)
-    }
+    receipt: receiptView(data),
+    wechatCode: data.wechatCode
   };
+}
+
+function receiptView(data) {
+  if (!data || typeof data.caseNumber !== 'string' || !CASE_NUMBER_PATTERN.test(data.caseNumber)) return null;
+  const publicLookupCode = typeof data.publicLookupCode === 'string' && /^[A-Za-z0-9_-]{24}$/.test(data.publicLookupCode)
+    ? data.publicLookupCode : '';
+  return {
+    caseNumber: data.caseNumber,
+    status: typeof data.status === 'string' ? data.status : '',
+    statusLabel: caseStatusLabels[data.status] || '状态更新中',
+    submittedLabel: timeLabel(data.submittedAt),
+    ...(publicLookupCode ? { publicLookupCode, qrSource: '' } : {})
+  };
+}
+
+async function requestExtra({ request, baseUrl: origin, token, timeout }, path, input) {
+  if (!token) return { kind: 'unauthorized', message: '请先核验商户身份。' };
+  try {
+    const response = await requestJson({
+      request, url: baseUrl(origin) + '/api/v1/merchant/' + path,
+      method: input ? 'POST' : 'GET', data: input, timeout,
+      header: input ? { ...authHeader(token), 'Content-Type': 'application/json' } : authHeader(token)
+    });
+    if (response.statusCode !== 200) return statusFailure(response);
+    return { kind: 'success', value: response.data };
+  } catch (error) {
+    return networkFailure(error);
+  }
+}
+
+async function fetchClaimPhoto({ request, baseUrl: origin, token, timeout }, caseNumber, { publishVersion, position }) {
+  try {
+    const response = await requestBinary({
+      request, url: baseUrl(origin) + '/api/v1/merchant/cases/' + caseNumber +
+        '/claimant/feedback-photos/' + publishVersion + '/' + position,
+      header: authHeader(token), timeout
+    });
+    if (response.statusCode !== 200) return statusFailure(response);
+    if (!(response.data instanceof ArrayBuffer)) return { kind: 'error' };
+    return { kind: 'success', bytes: response.data, header: response.header };
+  } catch (error) {
+    return networkFailure(error);
+  }
 }
 
 module.exports = {
@@ -648,6 +695,9 @@ module.exports = {
   caseDetailView,
   taskDetailView,
   canSubmitTask,
+  requestExtra,
+  receiptView,
+  fetchClaimPhoto,
   newClientRequestId,
   normalizeSubmission,
   buildMerchantSubmission,

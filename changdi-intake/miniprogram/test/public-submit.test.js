@@ -29,6 +29,17 @@ function fakePng(size = 64) {
   return bytes;
 }
 
+// 造一张签名合法的 JPEG，供图片格式校验使用。
+function fakeJpeg(size = 64) {
+  const bytes = Buffer.alloc(size);
+  bytes[0] = 0xff;
+  bytes[1] = 0xd8;
+  bytes[2] = 0xff;
+  bytes[size - 2] = 0xff;
+  bytes[size - 1] = 0xd9;
+  return bytes;
+}
+
 function toArrayBuffer(buffer) {
   return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
 }
@@ -42,11 +53,19 @@ function createHarness(handlers = {}) {
     navigations: [],
     storageWrites: [],
     storage: new Map(),
-    chooseResult: null
+    chooseResult: null,
+    // 本机文件：键是文件路径，值是文件内容。
+    files: new Map(),
+    // 本机照片读取次数与是否失效：用来验证重试是否复用已发出的字节。
+    readCalls: 0,
+    readFails: false,
+    clipboard: [],
+    modals: []
   };
   let page = null;
   global.Page = definition => { page = definition; };
   global.wx = {
+    env: { USER_DATA_PATH: 'wxfile://user' },
     request: options => {
       state.calls.push(options);
       (handlers.request || (value => value.success({ statusCode: 201, data: receipt() })))(options);
@@ -58,7 +77,18 @@ function createHarness(handlers = {}) {
       state.storage.set(key, value);
     },
     setStorage: options => state.storageWrites.push([options.key, options.data]),
-    removeStorageSync: key => state.storageWrites.push(['remove', key]),
+    removeStorageSync: key => {
+      state.storageWrites.push(['remove', key]);
+      state.storage.delete(key);
+    },
+    setClipboardData: options => {
+      state.clipboard.push(options.data);
+      (handlers.clipboard || (value => value.success({})))(options);
+    },
+    showModal: options => {
+      state.modals.push(options);
+      (handlers.modal || (() => {}))(options);
+    },
     chooseMedia: options => {
       const files = state.chooseResult;
       if (!files) {
@@ -69,8 +99,25 @@ function createHarness(handlers = {}) {
     },
     getFileSystemManager: () => ({
       readFile: options => {
+        state.readCalls += 1;
+        if (state.readFails) {
+          options.fail({ errMsg: 'readFile:fail no such file' });
+          return;
+        }
         const file = (state.chooseResult || []).find(item => item.path === options.filePath);
         options.success({ data: toArrayBuffer(file ? file.bytes : fakePng()) });
+      },
+      writeFileSync: (path, buffer) => {
+        state.files.set(path, Buffer.from(buffer));
+      },
+      readdirSync: () => [...state.files.keys()].map(item => item.split('/').pop()),
+      unlinkSync: path => {
+        if (!state.files.has(path)) {
+          const error = new Error('no such file');
+          error.errMsg = 'unlinkSync:fail no such file';
+          throw error;
+        }
+        state.files.delete(path);
       }
     })
   };
@@ -502,4 +549,445 @@ test('校验与请求号生成是纯逻辑，可在 Node 里直接检查', () =>
 
   assert.equal(submitModule.progressUrl(PUBLIC_CODE), '/pages/public/index?code=' + PUBLIC_CODE);
   assert.equal(submitModule.progressUrl(PRIVATE_TOKEN), '', '私密凭证不能作为跳转参数');
+});
+
+test('建议处理部门：填了随提交送出，未填不带字段，超长就地提示不发请求', async () => {
+  const filled = createHarness();
+  try {
+    fillForm(filled.page, { formSuggestedDepartment: '市政管理单位' });
+    await filled.page.onSubmit();
+    await tick();
+    const payload = await readPayload(posts(filled.state)[0]);
+    assert.equal(payload.suggestedDepartment, '市政管理单位', '填了就随提交送出');
+  } finally {
+    restoreGlobals();
+  }
+
+  const empty = createHarness();
+  try {
+    fillForm(empty.page);
+    await empty.page.onSubmit();
+    await tick();
+    const payload = await readPayload(posts(empty.state)[0]);
+    assert.ok(!('suggestedDepartment' in payload), '没填就不带这个字段');
+  } finally {
+    restoreGlobals();
+  }
+
+  const tooLong = createHarness();
+  try {
+    fillForm(tooLong.page, { formSuggestedDepartment: '部'.repeat(101) });
+    await tooLong.page.onSubmit();
+    await tick();
+    assert.ok(tooLong.page.data.errors.suggestedDepartment, '超长就地提示');
+    assert.match(tooLong.page.data.errors.suggestedDepartment, /100/);
+    assert.equal(posts(tooLong.state).length, 0, '超长不发请求');
+    assert.equal(tooLong.page.data.formSuggestedDepartment, '部'.repeat(101), '输入保留');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('结果未知后重试沿用原快照：改动表单与照片都不影响重试内容，快照不落盘', async () => {
+  let attempt = 0;
+  const { page, state } = createHarness({
+    request: options => {
+      attempt += 1;
+      if (attempt === 1) {
+        options.fail({ errMsg: 'request:fail timeout' });
+        return;
+      }
+      options.success({ statusCode: 201, data: receipt() });
+    }
+  });
+  try {
+    state.chooseResult = [{ path: 'wxfile://one.png', bytes: fakePng() }];
+    await page.onChoosePhotos();
+    await tick();
+    fillForm(page, { formSuggestedDepartment: '市政管理单位' });
+    const requestId = page.data.requestId;
+
+    await page.onSubmit();
+    await tick();
+    assert.match(page.data.submitMessage, /结果未知/, '结果未知时如实说明');
+    assert.equal(page.data.formLocked, true, '结果未知时锁定表单');
+    assert.match(page.data.lockNotice, /沿用原请求号/, '提示重试沿用原请求号与原内容');
+    assert.equal(state.storageWrites.length, 0, '快照不写本机存储');
+
+    // 锁定后不接受改动：换照片与改输入都不生效。
+    state.chooseResult = [{ path: 'wxfile://two.png', bytes: fakeJpeg(80) }];
+    await page.onChoosePhotos();
+    await tick();
+    assert.equal(page.data.photoCount, 1, '锁定后不能再换照片');
+    assert.equal(page.data.formDescription, '合成游客诉求正文', '锁定后输入不变');
+
+    // 即便表单被绕过锁定改动，重试仍按快照原样发出。
+    page.setData({ formDescription: '被改动后的正文', formLocation: '被改动后的地点' });
+    page._pickedFiles = [];
+    await page.onSubmit();
+    await tick();
+
+    const sent = posts(state);
+    assert.equal(sent.length, 2, '重试确实发出一次请求');
+    const first = await readPayload(sent[0]);
+    const second = await readPayload(sent[1]);
+    assert.equal(second.clientRequestId, requestId, '重试沿用同一请求号');
+    assert.equal(second.clientRequestId, first.clientRequestId, '两次请求号一致');
+    assert.deepEqual(second, first, '重试内容与首次完全一致');
+    assert.equal(second.description, '合成游客诉求正文', '改动没有进入重试');
+    assert.equal(second.suggestedDepartment, '市政管理单位', '建议部门原样重发');
+    const photos = await readPhotos(sent[1]);
+    assert.deepEqual(photos.map(item => item.name), ['photo-1.png'], '重试带上原照片');
+    assert.equal(page.data.receipt.caseNumber, CASE_NUMBER, '重试后拿到回执');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('结果未知时可放弃本次提交：换新请求号重填，原内容保留', async () => {
+  const { page, state } = createHarness({
+    request: options => options.fail({ errMsg: 'request:fail timeout' }),
+    modal: options => options.success({ confirm: true, cancel: false })
+  });
+  try {
+    fillForm(page);
+    await page.onSubmit();
+    await tick();
+    assert.equal(page.data.formLocked, true);
+    const before = page.data.requestId;
+
+    page.onAbandonSubmission();
+    assert.equal(state.modals.length, 1, '放弃前先二次确认');
+    assert.notEqual(page.data.requestId, before, '放弃后换新请求号');
+    assert.equal(page.data.formLocked, false, '放弃后解锁表单');
+    assert.equal(page.data.formDescription, '合成游客诉求正文', '放弃后保留已填内容');
+    assert.equal(page.data.receipt, null, '放弃后没有回执');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('回执查询码：合法 wechatCode 落盘展示，退出页面时释放临时文件', async () => {
+  const png = fakePng();
+  const { page, state } = createHarness({
+    request: options => options.success({
+      statusCode: 201,
+      data: { ...receipt(), wechatCode: { envVersion: 'release', mediaType: 'image/png', base64: png.toString('base64') } }
+    })
+  });
+  try {
+    fillForm(page);
+    await page.onSubmit();
+    await tick();
+
+    assert.equal(page.data.receiptCodeState, 'ready', '查询码可用');
+    const path = page.data.receiptCodePath;
+    assert.ok(path, '给出可展示的临时文件路径');
+    assert.ok(path.startsWith('wxfile://user/'), '写在用户目录下');
+    assert.ok(path.includes(PUBLIC_CODE), '文件名只用公开查询码');
+    assert.ok(!path.includes(PRIVATE_TOKEN), '文件名不含私密凭证');
+    assert.deepEqual(state.files.get(path), png, '写出的就是服务端下发的图片字节');
+    assert.ok(!state.files.get(path).toString('utf8').includes(PRIVATE_TOKEN), '图片里没有私密凭证');
+
+    page.onUnload();
+    assert.equal(state.files.size, 0, '退出页面时释放临时文件');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('回执查询码降级：未配置、编码非法、图像格式不符时仍能看到公开码与私密凭证', async () => {
+  const cases = [
+    ['未下发查询码', undefined],
+    ['编码不是 Base64', { envVersion: 'release', mediaType: 'image/png', base64: '这不是 base64!!' }],
+    ['编码长度不对', { envVersion: 'release', mediaType: 'image/png', base64: 'AAA' }],
+    ['类型不被接受', { envVersion: 'release', mediaType: 'image/gif', base64: fakePng().toString('base64') }],
+    ['版本不被接受', { envVersion: 'staging', mediaType: 'image/png', base64: fakePng().toString('base64') }],
+    ['图像与声明的类型不符', { envVersion: 'release', mediaType: 'image/png', base64: fakeJpeg().toString('base64') }],
+    ['不是对象', 'png']
+  ];
+  for (const [label, wechatCode] of cases) {
+    const { page, state } = createHarness({
+      request: options => options.success({ statusCode: 201, data: { ...receipt(), wechatCode } })
+    });
+    try {
+      fillForm(page);
+      await page.onSubmit();
+      await tick();
+      assert.equal(page.data.receiptCodeState, 'unavailable', label + '：不展示查询码');
+      assert.equal(page.data.receiptCodePath, '', label + '：没有图片路径');
+      assert.match(page.data.receiptCodeMessage, /公开查询码/, label + '：提示仍可手动查询');
+      assert.equal(state.files.size, 0, label + '：不落盘无效图片');
+      assert.equal(page.data.receipt.publicLookupCode, PUBLIC_CODE, label + '：公开码照常展示');
+      assert.equal(page.data.receipt.privateLookupToken, PRIVATE_TOKEN, label + '：私密凭证照常展示');
+    } finally {
+      restoreGlobals();
+    }
+  }
+});
+
+test('查询码图片加载失败时释放文件并降级，公开码与私密凭证仍可见', async () => {
+  const { page, state } = createHarness({
+    request: options => options.success({
+      statusCode: 201,
+      data: { ...receipt(), wechatCode: { envVersion: 'trial', mediaType: 'image/png', base64: fakePng().toString('base64') } }
+    })
+  });
+  try {
+    fillForm(page);
+    await page.onSubmit();
+    await tick();
+    assert.equal(page.data.receiptCodeState, 'ready');
+    assert.equal(state.files.size, 1, '图片已写入本机');
+
+    page.onReceiptCodeError();
+    await tick();
+    assert.equal(page.data.receiptCodeState, 'unavailable', '加载失败后降级');
+    assert.equal(page.data.receiptCodePath, '', '不再展示坏掉的图片');
+    assert.equal(state.files.size, 0, '坏掉的临时文件被释放');
+    assert.match(page.data.receiptCodeMessage, /公开查询码/);
+    assert.equal(page.data.receipt.publicLookupCode, PUBLIC_CODE, '公开码仍可见');
+    assert.equal(page.data.receipt.privateLookupToken, PRIVATE_TOKEN, '私密凭证仍可见');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('公开查询码可复制：只复制公开码，不复制私密凭证', async () => {
+  const { page, state } = createHarness();
+  try {
+    fillForm(page);
+    await page.onSubmit();
+    await tick();
+    page.onCopyPublicCode();
+    assert.deepEqual(state.clipboard, [PUBLIC_CODE], '只复制公开查询码');
+    assert.match(page.data.copyMessage, /已复制/);
+    assert.ok(!state.clipboard.join('').includes(PRIVATE_TOKEN), '不复制私密凭证');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('选照片进行中不提交；照片选定后提交带上所选照片', async () => {
+  const { page, state } = createHarness();
+  try {
+    state.chooseResult = [{ path: 'wxfile://one.png', bytes: fakePng() }];
+    let pending = null;
+    global.wx.chooseMedia = options => { pending = options; };
+    const choosing = page.onChoosePhotos();
+    await tick();
+    assert.equal(page.data.photoChoosing, true, '选照片进行中');
+    assert.ok(pending, '选照片回调已挂起');
+
+    // 选照片进行中点提交：不发请求，避免发出的照片与页面上看到的不一致。
+    await page.onSubmit();
+    await tick();
+    assert.equal(posts(state).length, 0, '选照片进行中不发请求');
+    assert.match(page.data.submitMessage, /照片选择中/);
+
+    // 照片选定后再提交：重复点击只发一次请求。
+    pending.success({ tempFiles: [{ tempFilePath: 'wxfile://one.png', size: 64 }] });
+    await choosing;
+    await tick();
+    assert.equal(page.data.photoCount, 1, '照片已选定');
+    assert.equal(page.data.photoChoosing, false, '选照片结束');
+
+    fillForm(page);
+    const first = page.onSubmit();
+    const second = page.onSubmit();
+    await tick();
+    assert.equal(posts(state).length, 1, '重复点击只发一次请求');
+
+    await first;
+    await second;
+    await tick();
+    const photos = await readPhotos(posts(state)[0]);
+    assert.equal(photos.length, 1, '提交带上所选照片');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('服务端提示微信查询码暂不可用时，按同一请求重试取回回执', async () => {
+  let attempt = 0;
+  const { page, state } = createHarness({
+    request: options => {
+      attempt += 1;
+      if (attempt === 1) {
+        options.success({ statusCode: 503, data: { error: 'wechat_code_unavailable' } });
+        return;
+      }
+      options.success({ statusCode: 200, data: receipt() });
+    }
+  });
+  try {
+    fillForm(page);
+    const requestId = page.data.requestId;
+    await page.onSubmit();
+    await tick();
+    assert.match(page.data.submitMessage, /查询码暂不可用/, '如实说明查询码不可用');
+    assert.equal(page.data.formLocked, true, '结果未知时锁定表单');
+
+    await page.onSubmit();
+    await tick();
+    const sent = posts(state);
+    assert.equal(sent.length, 2);
+    const first = await readPayload(sent[0]);
+    const second = await readPayload(sent[1]);
+    assert.equal(second.clientRequestId, requestId, '重试沿用同一请求号');
+    assert.deepEqual(second, first, '重试内容保持不变');
+    assert.equal(page.data.receipt.caseNumber, CASE_NUMBER, '重试取回回执');
+    assert.equal(page.data.receiptCodeState, 'unavailable', '回执里没有查询码时降级');
+    assert.equal(page.data.receipt.publicLookupCode, PUBLIC_CODE, '公开码照常展示');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('回执页模板：展示查询码与复制入口，表单页不展示内部请求号', () => {
+  const template = fs.readFileSync(path.join(miniprogramRoot, 'pages/submit/index.wxml'), 'utf8');
+  assert.ok(template.includes('bindtap="onCopyPublicCode"'), '有复制公开码入口');
+  assert.ok(template.includes('receiptCodePath'), '有查询码图片展示位');
+  assert.ok(template.includes('binderror="onReceiptCodeError"'), '查询码加载失败有兜底');
+  assert.ok(template.includes('建议处理部门'), '表单里有建议处理部门');
+  assert.ok(template.includes('最终由管理方分派'), '说明最终由管理方分派');
+  assert.ok(template.includes('{{receipt.privateLookupToken}}'), '回执上展示私密凭证');
+  assert.ok(!template.includes('请求号 {{requestId}}'), '不向游客展示内部请求号');
+});
+
+test('先已发送超时、再让本机读图失败，仍能按原字节重试并拿到同一回执', async () => {
+  let attempt = 0;
+  const { page, state } = createHarness({
+    request: options => {
+      attempt += 1;
+      if (attempt === 1) {
+        options.fail({ errMsg: 'request:fail timeout' });
+        return;
+      }
+      options.success({ statusCode: 200, data: receipt() });
+    }
+  });
+  try {
+    state.chooseResult = [{ path: 'wxfile://one.png', bytes: fakePng() }];
+    await page.onChoosePhotos();
+    await tick();
+    fillForm(page);
+    const requestId = page.data.requestId;
+
+    await page.onSubmit();
+    await tick();
+    assert.equal(page.data.formLocked, true, '结果未知时锁定表单');
+    assert.equal(state.readCalls, 1, '首次提交读了一次本机照片');
+    const firstBody = Buffer.from(new Uint8Array(posts(state)[0].data));
+
+    // 本机照片临时文件失效：重试必须按已发出的字节原样重发。
+    state.readFails = true;
+    await page.onSubmit();
+    await tick();
+
+    const sent = posts(state);
+    assert.equal(sent.length, 2, '重试确实发出一次请求');
+    assert.equal(state.readCalls, 1, '重试没有再读本机照片');
+    const secondBody = Buffer.from(new Uint8Array(sent[1].data));
+    assert.deepEqual(secondBody, firstBody, '重试按原字节原样发出');
+    const secondPayload = await readPayload(sent[1]);
+    assert.equal(secondPayload.clientRequestId, requestId, '重试沿用同一请求号');
+    const photos = await readPhotos(sent[1]);
+    assert.equal(photos.length, 1, '重试仍带上原照片');
+    assert.equal(page.data.receipt.caseNumber, CASE_NUMBER, '同一次提交拿到回执');
+    assert.equal(page.data.formLocked, false, '成功后解锁');
+
+    // 照片与凭证都不落盘：回执夹里只有工单编号、公开查询码与提交时间。
+    assert.equal(state.storageWrites.length, 1, '只写回执夹一次');
+    const stored = JSON.parse(state.storageWrites[0][1]);
+    assert.deepEqual(
+      Object.keys(stored[0]).sort(),
+      ['caseNumber', 'publicLookupCode', 'submittedAt'],
+      '存储只含允许的三个字段'
+    );
+    assert.ok(!state.storageWrites[0][1].includes(PRIVATE_TOKEN), '存储不含私密凭证');
+    assert.ok(!state.storageWrites[0][1].includes('合成游客诉求正文'), '存储不含问题描述');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('曾有结果未知后，本地制包失败不当成明确拒绝：不解锁、快照与请求号仍保留', async () => {
+  const { page, state } = createHarness({
+    request: options => options.fail({ errMsg: 'request:fail timeout' })
+  });
+  try {
+    state.chooseResult = [{ path: 'wxfile://one.png', bytes: fakePng() }];
+    await page.onChoosePhotos();
+    await tick();
+    fillForm(page);
+    const requestId = page.data.requestId;
+
+    await page.onSubmit();
+    await tick();
+    assert.equal(page.data.formLocked, true, '结果未知时锁定表单');
+    assert.ok(page._snapshot, '结果未知时保留快照');
+
+    // 丢掉已发出的字节并让本机读图失败：这次重试在本地就失败。
+    page._snapshot.body = null;
+    state.readFails = true;
+    await page.onSubmit();
+    await tick();
+
+    assert.equal(page.data.formLocked, true, '本地失败不当成明确拒绝解锁');
+    assert.ok(page._snapshot, '快照仍保留');
+    assert.equal(page._snapshot.payload.clientRequestId, requestId, '请求号不变');
+    assert.match(page.data.submitMessage, /图片/, '如实说明本地没能发出请求');
+    assert.equal(page.data.receipt, null, '还没有回执');
+
+    // 本地失败后仍能再试一次：这次照片恢复可读，按原请求号重发。
+    state.readFails = false;
+    await page.onSubmit();
+    await tick();
+    const sent = posts(state);
+    assert.equal(sent.length, 2, '第三次确实发出请求（第二次本地失败没有发出去）');
+    const last = await readPayload(sent[1]);
+    assert.equal(last.clientRequestId, requestId, '仍用同一请求号');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('已发出的请求字节在成功、放弃或离开页面后释放', async () => {
+  const done = createHarness();
+  try {
+    fillForm(done.page);
+    await done.page.onSubmit();
+    await tick();
+    assert.equal(done.page._snapshot, null, '成功后释放快照与字节');
+  } finally {
+    restoreGlobals();
+  }
+
+  const abandoned = createHarness({
+    request: options => options.fail({ errMsg: 'request:fail timeout' }),
+    modal: options => options.success({ confirm: true, cancel: false })
+  });
+  try {
+    fillForm(abandoned.page);
+    await abandoned.page.onSubmit();
+    await tick();
+    assert.ok(abandoned.page._snapshot, '结果未知时保留快照');
+    abandoned.page.onAbandonSubmission();
+    assert.equal(abandoned.page._snapshot, null, '放弃后释放快照与字节');
+  } finally {
+    restoreGlobals();
+  }
+
+  const left = createHarness({ request: options => options.fail({ errMsg: 'request:fail timeout' }) });
+  try {
+    fillForm(left.page);
+    await left.page.onSubmit();
+    await tick();
+    assert.ok(left.page._snapshot, '结果未知时保留快照');
+    left.page.onUnload();
+    assert.equal(left.page._snapshot, null, '离开页面后释放快照与字节');
+  } finally {
+    restoreGlobals();
+  }
 });

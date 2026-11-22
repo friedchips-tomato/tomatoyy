@@ -30,6 +30,10 @@ const actionIds = page => page.data.availableActions.map(action => action.id);
 const ok = (request, data) => request.success({ statusCode: 200, data });
 const reject = (request, statusCode) => request.success({ statusCode, data: { error: 'synthetic error' } });
 const requestPath = request => new URL(request.url).pathname;
+const supervisionCatalog = {
+  points: [{ code: 'east', label: '东点' }], categories: [{ code: 'surface', label: '路面' }],
+  candidates: [], candidateLimit: 20, windowHours: 72
+};
 
 function record(caseNumber, state = 'submitted', version = 1, extra = {}) {
   return {
@@ -87,12 +91,220 @@ async function finishOverview(f, records = [], nextBefore = null) {
   ok(f.take('/cases'), list(records, nextBefore));
 }
 
-async function signIn(f, role, records = [], nextBefore = null) {
+async function signIn(f, role, records = [], nextBefore = null, profile = profiles[role]) {
   const pending = login(f.page, role);
-  ok(f.take('/me'), profiles[role]);
+  ok(f.take('/me'), profile);
   await finishOverview(f, records, nextBefore);
   await pending;
 }
+
+test('联系方式仅按需获取并在隐藏、离开或超时后清除，且不写本机存储', async t => {
+  const f = fixture(t);
+  const { page } = f;
+  const path = '/cases/' + first + '/contact';
+  const synthetic = 'synthetic-staff-private-contact';
+  const template = readFileSync(require.resolve('../pages/staff/index.wxml'), 'utf8');
+  assert.match(template, /wx:if="{{staff.readContact}}"/);
+  assert.match(template, /bindtap="onReadContact"/);
+  assert.match(template, /wx:if="{{contactReady}}"[\s\S]*{{contact \|\|/);
+  async function openFirst() {
+    const pending = open(page, first);
+    ok(f.take('/cases/' + first), record(first, 'submitted', 1, { contact: synthetic }));
+    await pending;
+    assert.equal(JSON.stringify(page.data).includes(synthetic), false);
+    assert.equal(f.calls.length, 0, '工单详情不自动请求联系方式');
+  }
+  await signIn(f, 'duty');
+  await openFirst();
+  await page.onReadContact();
+  assert.equal(f.calls.length, 0);
+  page.onLogout();
+  await signIn(f, 'duty', [], null, { ...profiles.duty, readContact: true });
+  await openFirst();
+  t.mock.timers.enable({ apis: ['setTimeout', 'Date'] });
+  const lookup = page.onReadContact();
+  const req = f.take(path);
+  assert.equal(req.url, config.apiBaseUrl + paths + path);
+  assert.equal(req.data, undefined);
+  assert.equal(req.header.Authorization, 'Bearer ' + credentials.duty);
+  assert.equal(page.data.contact, null);
+  ok(req, { contact: synthetic });
+  await lookup;
+  assert.equal(page.data.contact, synthetic);
+  assert.equal(page.data.contactReady, true);
+  t.mock.timers.tick(30_000);
+  assert.equal(page.data.contact, null);
+  assert.equal(page.data.contactReady, false);
+
+  const pending = page.onReadContact();
+  const slow = f.take(path);
+  t.mock.timers.tick(30_000);
+  ok(slow, { contact: synthetic });
+  await pending;
+  assert.equal(page.data.contactReady, false);
+  assert.equal(page.data.contactBusy, false);
+
+  const emptyLookup = page.onReadContact();
+  ok(f.take(path), { contact: null });
+  await emptyLookup;
+  assert.equal(page.data.contactReady, true);
+  assert.equal(page.data.contact, null);
+  page.onHideContact();
+  assert.equal(page.data.contactReady, false);
+
+  const leaving = page.onReadContact();
+  const left = f.take(path);
+  page.onReturnToList();
+  ok(left, { contact: synthetic });
+  await leaving;
+  assert.equal(page.data.view, 'workbench');
+  assert.equal(JSON.stringify(page.data).includes(synthetic), false);
+});
+
+test('切换工单、拒绝查阅和页面隐藏使在途联系方式失效', async t => {
+  const f = fixture(t);
+  const { page } = f;
+  const synthetic = 'synthetic-stale-contact';
+  await signIn(f, 'duty', [], null, { ...profiles.duty, readContact: true });
+  async function openDetail(id) {
+    const pending = open(page, id);
+    ok(f.take('/cases/' + id), record(id));
+    await pending;
+  }
+  await openDetail(first);
+  const stale = page.onReadContact();
+  const oldRequest = f.take('/cases/' + first + '/contact');
+  await openDetail(second);
+  const fresh = page.onReadContact();
+  const currentRequest = f.take('/cases/' + second + '/contact');
+  ok(oldRequest, { contact: synthetic });
+  await stale;
+  assert.equal(page.data.contact, null);
+  assert.equal(page.data.contactBusy, true);
+  reject(currentRequest, 403);
+  await fresh;
+  assert.equal(page.data.view, 'login');
+  assert.equal(page.data.contactBusy, false);
+  assert.equal(page.data.contact, null);
+  assert.equal(page.data.staff, null);
+
+  await signIn(f, 'duty', [], null, { ...profiles.duty, readContact: true });
+  await openDetail(first);
+  const hiding = page.onReadContact();
+  const hidden = f.take('/cases/' + first + '/contact');
+  page.onHide();
+  ok(hidden, { contact: synthetic });
+  await hiding;
+  assert.equal(page.data.view, 'login');
+  assert.equal(JSON.stringify(page.data).includes(synthetic), false);
+});
+
+test('监督入口按授权开放，标注写入独立版本，冲突后重读且失权清除', async t => {
+  const f = fixture(t);
+  const { page } = f;
+  const path = '/cases/' + first + '/supervision';
+  const template = readFileSync(require.resolve('../pages/staff/index.wxml'), 'utf8');
+  assert.match(template, /wx:if="{{staff.supervision}}"[\s\S]*bindtap="onOpenSupervision"/);
+  async function openFirst() {
+    const pending = open(page, first);
+    ok(f.take('/cases/' + first), record(first));
+    await pending;
+  }
+  await signIn(f, 'duty');
+  await page.onOpenRemediation();
+  assert.equal(page.data.view, 'workbench');
+  await openFirst();
+  await page.onOpenSupervision();
+  assert.equal(f.calls.length, 0);
+
+  page.onLogout();
+  await signIn(f, 'duty', [], null, { ...profiles.duty, supervision: true });
+  await openFirst();
+  assert.equal(page.data.supervisionPanel, null);
+  const initial = page.onOpenSupervision();
+  assert.equal(page.data.supervisionPanel.busy, true);
+  ok(f.take(path), { ...supervisionCatalog, revision: 0, classification: null });
+  await initial;
+  assert.equal(page.data.supervisionPanel.classification, null);
+  page.onEditSupervision(event({ action: 'classify' }));
+  page.onSupervisionInput(input('pointIndex', '0'));
+  page.onSupervisionInput(input('categoryIndex', '0'));
+  page.onSupervisionInput(input('reason', '合成核对'));
+  const saved = page.onSaveSupervision();
+  const request = f.take(path, 'POST');
+  assert.deepEqual(request.data, {
+    action: 'classify', expectedRevision: 0, reason: '合成核对', pointCode: 'east', categoryCode: 'surface'
+  });
+  const classified = {
+    ...supervisionCatalog, revision: 1, classification: { pointCode: 'east', categoryCode: 'surface' },
+    candidates: [{ caseNumber: second, occurredAt: '2026-11-19T02:00:00Z' }]
+  };
+  ok(request, classified);
+  await saved;
+  assert.equal(page.data.supervisionPanel.pointLabel, '东点');
+  assert.equal(page.data.detail.version, 1);
+  page.onEditSupervision(event({ action: 'confirm', target: second }));
+  page.onSupervisionInput(input('reason', '合成确认'));
+  const confirmed = page.onSaveSupervision();
+  const confirmation = f.take(path, 'POST');
+  assert.deepEqual(confirmation.data, { action: 'confirm', expectedRevision: 1, reason: '合成确认', targetCaseNumber: second });
+  reject(confirmation, 409);
+  await confirmed;
+  assert.equal(page.data.supervisionPanel.mustRefresh, true);
+  await page.onSaveSupervision();
+  assert.equal(f.calls.length, 0);
+  const reloaded = page.onOpenSupervision();
+  reject(f.take(path), 403);
+  await reloaded;
+  assert.equal(page.data.view, 'login');
+  assert.equal(page.data.supervisionPanel, null);
+});
+
+test('台账仅向获授权值班显示，登记、复查和失权后清理', async t => {
+  const f = fixture(t);
+  const { page } = f;
+  const template = readFileSync(require.resolve('../pages/staff/index.wxml'), 'utf8');
+  assert.match(template, /wx:if="{{staff.role === 'duty' && staff.supervision}}"[\s\S]*bindtap="onOpenRemediation"/);
+  await signIn(f, 'handler', [], null, { ...profiles.handler, supervision: true });
+  await page.onOpenRemediation();
+  assert.equal(page.data.view, 'workbench');
+  assert.equal(f.calls.length, 0);
+  page.onLogout();
+  await signIn(f, 'duty', [], null, { ...profiles.duty, supervision: true });
+  const opening = page.onOpenRemediation();
+  assert.equal(page.data.ledger.busy, true);
+  ok(f.take('/remediation'), { items: [], nextBefore: null });
+  await opening;
+  assert.deepEqual(page.data.ledger.items, []);
+  page.onNewLedgerEntry();
+  page.onSaveLedgerEntry();
+  assert.match(page.data.ledger.error, /请填写/);
+  const date = new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 10);
+  const values = { topic: '合成主题', minutes: '合成纪要', responsibleUnit: '合成责任单位', date, time: '18:00' };
+  for (const [key, value] of Object.entries(values)) page.onLedgerInput(input(key, value));
+  const saving = page.onSaveLedgerEntry();
+  const create = f.take('/remediation', 'POST');
+  assert.deepEqual(create.data, { topic: values.topic, minutes: values.minutes,
+    responsibleUnit: values.responsibleUnit, dueAt: date + 'T18:00:00+08:00' });
+  const entry = { id: 12, revision: 1, status: 'open', reviews: [], ...create.data };
+  create.success({ statusCode: 201, data: entry });
+  await saving;
+  assert.equal(page.data.ledger.entry.statusLabel, '待复查');
+  page.onLedgerInput(input('notes', '合成复查情况'));
+  page.onLedgerInput(input('conclusionIndex', '1'));
+  const reviewing = page.onReviewLedgerEntry();
+  const review = f.take('/remediation/12/reviews', 'POST');
+  assert.deepEqual(review.data, { expectedRevision: 1, notes: '合成复查情况', conclusion: 'resolved' });
+  ok(review, { ...entry, revision: 2, status: 'resolved', reviews: [{ revision: 2, ...review.data }] });
+  await reviewing;
+  assert.equal(page.data.ledger.entry.reviews[0].statusLabel, '复查通过');
+  const refreshing = page.onLedgerList();
+  reject(f.take('/remediation'), 401);
+  await refreshing;
+  assert.equal(page.data.view, 'login');
+  assert.equal(page.data.ledger, null);
+  assert.doesNotMatch(JSON.stringify(page.data), /合成纪要|合成复查情况/);
+});
 
 test('本地登录允许回环基址并清空密码输入，退出和失权清理页面数据', async t => {
   const f = fixture(t);

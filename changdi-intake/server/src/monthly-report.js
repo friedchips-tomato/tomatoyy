@@ -5,6 +5,12 @@ const beijingTime = ms => new Date(ms + beijingOffset).toISOString().slice(0, 19
 const utcTime = ms => new Date(ms).toISOString();
 const ratio = (count, total) => total ? count / total : null;
 
+export function responseDurationBand(minutes) {
+  if (minutes <= 60) return 0;
+  if (minutes <= 1440) return 1;
+  return 2;
+}
+
 function monthBounds(month, asOf) {
   const match = /^([1-9][0-9]{3})-(0[1-9]|1[0-2])$/.exec(month ?? '');
   if (!match || match[0] !== month || Number(match[1]) === 9999) throw new HttpError(400, 'invalid_report_month');
@@ -22,11 +28,8 @@ function firstResponseStats(minutes, submitted) {
   const medianMinutes = !sorted.length ? null : sorted.length % 2
     ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
   const distribution = { atMostOneHour: 0, upTo24Hours: 0, over24Hours: 0 };
-  for (const duration of sorted) {
-    if (duration <= 60) distribution.atMostOneHour++;
-    else if (duration <= 1440) distribution.upTo24Hours++;
-    else distribution.over24Hours++;
-  }
+  const durationKeys = ['atMostOneHour', 'upTo24Hours', 'over24Hours'];
+  for (const duration of sorted) distribution[durationKeys[responseDurationBand(duration)]]++;
   return { submitted, responded: sorted.length, pending: submitted - sorted.length, medianMinutes, distribution };
 }
 
@@ -51,7 +54,7 @@ function isResponse(event) {
       typeof event.response_reason === 'string' && event.response_reason.trim().length > 0));
 }
 
-export function createMonthlyReport(db, now, read) {
+export function createMonthlyReport(db, now, duplicateStats) {
   const history = db.prepare(`
     WITH candidates AS (
       SELECT DISTINCT case_id FROM case_events
@@ -66,18 +69,18 @@ export function createMonthlyReport(db, now, read) {
     ORDER BY e.case_id, e.occurred_at, e.version
   `);
   const applications = db.prepare(`
-    SELECT COUNT(*) AS total FROM reopen_requests WHERE requested_at >= ? AND requested_at < ?
+    SELECT case_id FROM reopen_requests WHERE requested_at >= ? AND requested_at < ?
   `);
   const evaluations = db.prepare(`
-    SELECT v.speed, v.effectiveness, v.attitude FROM case_evaluations v
+    SELECT v.case_id, v.speed, v.effectiveness, v.attitude FROM case_evaluations v
     WHERE v.created_at < ? AND EXISTS (
       SELECT 1 FROM case_events e WHERE e.case_id = v.case_id AND e.round = v.round AND
       e.action = 'publish' AND e.actor_type = 'staff' AND e.occurred_at >= ? AND e.occurred_at < ?
     )
   `);
 
-  return month => read(() => {
-    const asOf = Math.floor(now().valueOf() / 1000) * 1000;
+  return (month, { includeDuplicates = false, includeCase = () => true, asOf: fixedAsOf, contributions } = {}) => {
+    const asOf = fixedAsOf ?? Math.floor(now().valueOf() / 1000) * 1000;
     const { start, end, snapshot } = monthBounds(month, asOf);
     const startUtc = utcTime(start);
     const snapshotUtc = utcTime(snapshot);
@@ -85,7 +88,7 @@ export function createMonthlyReport(db, now, read) {
     const isInMonth = event => event.occurred_at >= startUtc && event.occurred_at < snapshotUtc;
     const histories = new Map();
     const responseMinutes = [];
-    let submitted = 0;
+    const submittedCaseIds = new Set();
     let accepted = 0;
     let completed = 0;
     let unfinished = 0;
@@ -96,27 +99,36 @@ export function createMonthlyReport(db, now, read) {
     let approved = 0;
     let rejected = 0;
     for (const event of history.iterate(startUtc, snapshotUtc, cutoffUtc)) {
-      if (!histories.has(event.case_id)) histories.set(event.case_id, []);
+      if (!histories.has(event.case_id)) {
+        if (!includeCase(event.case_id)) continue;
+        histories.set(event.case_id, []);
+      }
       histories.get(event.case_id).push(event);
       if (isInMonth(event) && event.actor_type === 'staff') {
         if (event.action === 'approve_reopen') approved++;
         if (event.action === 'reject_reopen') rejected++;
       }
     }
-    for (const events of histories.values()) {
+    for (const [caseId, events] of histories) {
       const submitIndex = events.findIndex(event => event.action === 'submit');
       const submit = events[submitIndex];
       if (submit && isInMonth(submit)) {
-        submitted++;
+        submittedCaseIds.add(caseId);
         const response = events.slice(submitIndex + 1).find(isResponse);
-        if (response) responseMinutes.push((Date.parse(response.occurred_at) - Date.parse(submit.occurred_at)) / 60000);
+        if (response) {
+          const minutes = (Date.parse(response.occurred_at) - Date.parse(submit.occurred_at)) / 60000;
+          responseMinutes.push(minutes);
+          if (contributions) contributions.get(caseId).responseMinutes = minutes;
+        }
       }
       const publications = events.filter(event => event.action === 'publish' && event.actor_type === 'staff');
       publishedRounds += new Set(publications.filter(isInMonth).map(event => event.round)).size;
       const firstAccept = events.find(event => event.action === 'accept' && event.actor_type === 'staff');
       if (!firstAccept || !isInMonth(firstAccept)) continue;
       accepted++;
-      if (publications.some(event => event.round === events.at(-1).round)) completed++;
+      const finished = publications.some(event => event.round === events.at(-1).round);
+      if (contributions) contributions.get(caseId).completion = finished;
+      if (finished) completed++;
 
       const atSnapshot = events.filter(event => event.occurred_at < snapshotUtc);
       const last = atSnapshot.at(-1);
@@ -131,21 +143,31 @@ export function createMonthlyReport(db, now, read) {
         if (active) missingDeadlineEvidence++;
       } else if (active && deadline < snapshot) overdue++;
     }
+    const evaluationRows = evaluations.all(cutoffUtc, startUtc, snapshotUtc).filter(row => includeCase(row.case_id));
+    if (contributions) {
+      for (const { case_id, speed, effectiveness, attitude } of evaluationRows) {
+        contributions.get(case_id).ratings.push([speed, effectiveness, attitude]);
+      }
+    }
     return {
       month, timeZone: 'Asia/Shanghai',
       period: { start: beijingTime(start), endExclusive: beijingTime(end) },
       asOf: beijingTime(asOf),
-      firstResponse: firstResponseStats(responseMinutes, submitted),
+      firstResponse: firstResponseStats(responseMinutes, submittedCaseIds.size),
       completion: { accepted, completed, rate: ratio(completed, accepted) },
       monthEnd: {
         cutoff: beijingTime(snapshot), state: snapshot === end ? 'final' : 'provisional',
         unfinished, overdue, withoutDeadline, missingDeadlineEvidence,
         deadlineData: missingDeadlineEvidence ? 'insufficient' : 'available',
       },
-      reopen: { applications: applications.get(startUtc, snapshotUtc).total, approved, rejected, newRounds: approved },
-      evaluation: evaluationStats(evaluations.all(cutoffUtc, startUtc, snapshotUtc), publishedRounds),
-      duplicateComplaints: { status: 'unavailable', reason: 'structured_location_and_confirmation_missing' },
-      tourism: { status: 'unavailable', reason: 'source_data_missing' },
+      reopen: {
+        applications: applications.all(startUtc, snapshotUtc).filter(row => includeCase(row.case_id)).length,
+        approved, rejected, newRounds: approved,
+      },
+      evaluation: evaluationStats(evaluationRows, publishedRounds),
+      duplicateComplaints: duplicateStats({
+        includeDuplicates, includeCase, submittedCaseIds, start: startUtc, cutoff: snapshotUtc, contributions,
+      }),
     };
-  });
+  };
 }

@@ -35,6 +35,8 @@
   const mapPath = "assets/map.jpg";
   const spotElements = new Map();
   const picStyles = ["mount", "crop", "stamp"];
+  let routeObserver;
+  let recommendation;
   const picParam = new URLSearchParams(location.search).get("pic");
   app.dataset.pic = picStyles.includes(picParam) ? picParam : "mount";
 
@@ -353,6 +355,7 @@
 
   function closeSheet(restore = true) {
     if (!state.sheet) return;
+    routeObserver?.disconnect();
     if (state.sheet.kind === "route") {
       clearTimeout(state.routeTimer);
       state.routeTimer = 0;
@@ -408,7 +411,38 @@
     sheetBody.innerHTML = `<div class="stack">${sheetContents(kind, id)}</div>`;
     mountArt(sheetBody);
     sheetBody.scrollTop = resetScroll ? 0 : previousScroll;
+    observeRouteCards(kind);
   }
+
+  function exposeRoute(batch, id) {
+    if (batch.exposed.has(id)) return;
+    batch.exposed.add(id);
+    window.CD_TOURISM.record("route_exposed", id, batch.flowId);
+  }
+
+  function observeRouteCards(kind) {
+    routeObserver?.disconnect();
+    routeObserver = null;
+    if (kind !== "route-results" || !recommendation || !window.IntersectionObserver) return;
+    const batch = recommendation;
+    const observer = new IntersectionObserver(entries => {
+      if (routeObserver !== observer || state.sheet?.kind !== "route-results" || recommendation !== batch
+          || document.visibilityState !== "visible") return;
+      for (const entry of entries) {
+        if (entry.intersectionRatio <= 0 || !entry.target.isConnected) continue;
+        exposeRoute(batch, entry.target.dataset.routeId);
+        observer.unobserve(entry.target);
+      }
+    });
+    routeObserver = observer;
+    for (const card of sheetBody.querySelectorAll("[data-route-id]")) {
+      if (!batch.exposed.has(card.dataset.routeId)) observer.observe(card);
+    }
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && state.sheet?.kind === "route-results") observeRouteCards("route-results");
+  });
 
   function sheetContents(kind, id) {
     switch (kind) {
@@ -558,6 +592,9 @@
         });
       state.story = null;
       state.route = null;
+      recommendation = window.CD_TOURISM
+        ? { flowId: window.CD_TOURISM.newId(), exposed: new Set() }
+        : null;
       renderNavigation();
       showSheet("route-results");
     }, 800);
@@ -571,7 +608,7 @@
     const start = state.routePreview.find(route => route.start)?.start;
     return `
       ${start ? `<p class="small">路线起点：${escape(start.name)}${data.points.some(point => point.parking === start.id) ? "" : "（地图暂无此停车点位）"}</p>` : ""}
-      ${state.routePreview.map((route, index) => `<article class="card route-card" style="--route-color:${escape(route.color)}">
+      ${state.routePreview.map((route, index) => `<article class="card route-card" data-route-id="${escape(route.id)}" style="--route-color:${escape(route.color)}">
         <div class="row"><span class="route-no">第${numerals[index]}条</span><span class="small"><i class="route-swatch"></i>地图上的${index ? "另一条" : "这条"}虚线</span></div>
         <div class="row"><h3>${escape(route.name)}</h3>${action("按这条走", "adopt", route.id, "button primary")}</div>
         <p class="small">${route.minutes} 分钟 · ${route.meters} 米 · ${route.points.length} 站</p>
@@ -596,7 +633,13 @@
 
   function adoptRoute(id) {
     const route = state.routePreview.find(item => item.id === id);
-    state.route = { route, index: 0 };
+    const flowId = recommendation?.flowId;
+    if (recommendation) {
+      exposeRoute(recommendation, id);
+      window.CD_TOURISM.record("route_adopted", id, flowId);
+    }
+    state.route = { route, index: 0, flowId };
+    recommendation = null;
     state.routePreview = [];
     closeSheet();
     renderNavigation();
@@ -868,6 +911,7 @@
     state.audio = {
       point, locale: langInfo[lang].locale, sentences: splitSentences(text, langInfo[lang].locale),
       index: 0, voice, utterance: null, timer: 0,
+      telemetry: window.CD_TOURISM ? { startedAt: null, playedMs: 0 } : null,
       status: paused ? "paused" : "preparing"
     };
     if (!voice || typeof window.SpeechSynthesisUtterance !== "function") state.audio.status = "unavailable";
@@ -887,12 +931,14 @@
       clearTimeout(audio.timer);
       audio.utterance = null;
       audio.status = "unavailable";
+      finishPlayback(audio);
       synth.cancel();
       renderAudio();
     };
     utterance.onstart = () => {
       if (!isCurrent()) return;
       clearTimeout(audio.timer);
+      if (audio.telemetry && audio.telemetry.startedAt === null) audio.telemetry.startedAt = performance.now();
       audio.status = "playing";
       renderAudio();
     };
@@ -900,9 +946,11 @@
     utterance.onend = () => {
       if (!isCurrent()) return;
       clearTimeout(audio.timer);
+      endPlaybackSegment(audio);
       audio.utterance = null;
       if (audio.index + 1 === audio.sentences.length) {
         audio.status = "ended";
+        finishPlayback(audio);
       } else {
         audio.index += 1;
         speakSentence(audio);
@@ -918,9 +966,25 @@
     }
   }
 
+  function endPlaybackSegment(audio) {
+    const telemetry = audio.telemetry;
+    if (!telemetry || telemetry.startedAt === null) return;
+    telemetry.playedMs += performance.now() - telemetry.startedAt;
+    telemetry.startedAt = null;
+  }
+
+  function finishPlayback(audio) {
+    if (!audio.telemetry) return;
+    endPlaybackSegment(audio);
+    const durationSeconds = Math.floor(audio.telemetry.playedMs / 1000);
+    audio.telemetry = null;
+    if (durationSeconds > 0) window.CD_TOURISM.record("guide_played", audio.point.id, undefined, durationSeconds);
+  }
+
   function stopGuide(update = true) {
     if (!state.audio) return;
     clearTimeout(state.audio.timer);
+    finishPlayback(state.audio);
     state.audio = null;
     synth?.cancel();
     if (update) renderAudio();
@@ -933,6 +997,7 @@
       speakSentence(audio);
     } else {
       clearTimeout(audio.timer);
+      endPlaybackSegment(audio);
       audio.utterance = null;
       audio.status = "paused";
       synth.cancel();
@@ -1071,11 +1136,13 @@
 
   function arrive() {
     if (state.visitTimer || !state.route) return;
-    const { route, index } = state.route;
+    const { route, index, flowId } = state.route;
     const point = points.get(route.points[index]);
     const last = index + 1 === route.points.length;
-    if (last) state.route = null;
-    else state.route.index += 1;
+    if (last) {
+      state.route = null;
+      if (flowId) window.CD_TOURISM.record("route_completed_self_reported", route.id, flowId);
+    } else state.route.index += 1;
     renderNavigation();
     visitPoint(point, {
       speak: Boolean(point.guide), complete: last ? route.name : "",
@@ -1232,7 +1299,10 @@
       case "service": service(id); break;
       case "service-tab": state.serviceTab = id; refreshSheet(button); break;
       case "book": showSheet("booking", id); break;
-      case "parking-start": openRoute(parking.get(id)); break;
+      case "parking-start":
+        openRoute(parking.get(id));
+        window.CD_TOURISM?.record("parking_advice_adopted", id);
+        break;
       case "reset": reset(); break;
     }
   });
@@ -1272,6 +1342,7 @@
       state.bookings.unshift({ id, guide: guide.id, name: guide.name, slot: fields.get("slot"), people: Number(fields.get("people")), at: now.toISOString() });
       save();
       showSheet("booking-success");
+      window.CD_TOURISM?.record("booking_demo_submitted", guide.id);
     } else {
       submitFeedback(form, fields);
     }

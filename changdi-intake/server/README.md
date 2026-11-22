@@ -31,6 +31,8 @@ npm.cmd start
 
 服务监听 `127.0.0.1:3400`，用 Ctrl+C 退出。可用 `CHANGDI_PORT` 改端口。评价和补办窗口均从该轮发布反馈时起算。评价窗口默认七天，`CHANGDI_EVALUATION_SECONDS` 范围为 1 秒至 90 天。补办窗口默认 30 天，`CHANGDI_REOPEN_SECONDS` 范围为 1 秒至 365 天。工单保存在 Git 忽略的 `.local/intake.sqlite`。同一数据库使用新的回执密钥会导致启动失败。回执密钥与数据库需要分开保管。
 
+导览来源是独立配置，缺省不启用。启用时设置 `CHANGDI_TOURISM_JSON`，见[导览来源与行为上报](#导览来源与行为上报)。
+
 ## 合作方联调
 
 [OpenAPI](../docs/openapi.yaml) 是唯一的合作方契约，接口为 `POST /api/v1/integrations/intake/cases`。接入方服务端使用独立的 Bearer 凭据。接入来源由后端从凭据解析。
@@ -124,6 +126,9 @@ Authorization：请求携带凭据时同样按匿名申报处理。请求体与�
 - 工单来源固定为 `miniprogram`，建单事件记为 `actor_type='public'`、`actor_id='miniprogram'`。
 - 回执为 `caseNumber`、`publicLookupCode`、`privateLookupToken` 三个字段，启用微信小程序码时同接单接口
   一样附 `wechatCode`。`privateLookupToken` 只在提交成功的会话中展示，不得写入 URL、二维码、日志或埋点。
+  微信小程序码暂不可用或生成队列已满时，工单与附件照常保存，接口仍返回 201 或 200 与上述三个标识字段，
+  只是省略 `wechatCode`：游客据此拿到公开查询码与私密凭证；上游恢复后用同一 `clientRequestId`
+  及相同内容重试即取到含 `wechatCode` 的回执，库内仍只有一单一份附件。
 - 按对端地址做窗口限流，默认每 600 秒只统计 10 次新建建单。只有新建建单受上限约束：
   已成功单号的重放（内容一致返回 200，内容不同返回 409）不消耗额度，也不受当前窗口上限影响，
   用户始终能拿回自己的回执。超限的新建请求返回 429 `too_many_requests` 和 `Retry-After`（秒）；
@@ -131,7 +136,8 @@ Authorization：请求携带凭据时同样按匿名申报处理。请求体与�
   限流窗口长度和上限通过 `createIntakeServer` 的 `publicRateLimit: { windowSeconds, limit }` 注入，
   计时复用注入的 `now`。
 - 400 表示字段、JSON 或 multipart 结构错误，409 表示同一键内容冲突，413 表示照片或整包超限，
-  415 表示媒体类型或文件签名不符，429 表示超出限流窗口，503 表示上传并发已满或数据库繁忙。
+  415 表示媒体类型或文件签名不符，429 表示超出限流窗口，503 表示上传并发已满或数据库繁忙，
+  这三种情况本次请求均未落库。微信小程序码不可用不再返回 503，见上一条。
   收到 503 或超时时保留原 `clientRequestId` 及原内容重试。
 
 ## 代码目录
@@ -302,8 +308,57 @@ A09 从管理明细读取 `reopenRequests` 中 `decision: null` 的申请和 `ro
 ## 本地存储和下一批
 
 - `cases` 以来源与外部单号做唯一约束；`case_contacts` 对工单是一对一关系；`attachments` 和 `case_events` 是一对多。照片字节和附件索引同表存储。SQLite 事务同时提交工单、联系方式、附件和初始事件，状态变化与事件同样原子提交。数据库没有静态文件或图片访问路由。
-- 本地启动按版本自动应用迁移。v1 升 v2 时保留工单主键、回执、附件和事件，旧反馈作为第一轮，补办截止时间根据原反馈发布时间回填。v3 新增商户归属、协办任务和任务事件三张表。v4 扩展工单状态约束。v5 增加关联到送审事件的照片表。v6 新增独立的发布图片表。v7 增加协办原图表。v8 增加关联到本人补件事件的原图表，原回执及文字补件保留。v9 增加可选的小程序码图片表，保存工单关联、AppID 的摘要、版本环境、图片 MIME 与字节。SQLite 在线备份可同时包含工单与附件，测试已用合成数据升级及恢复检查。正式存储、系统访问控制、监测、留存和恢复手册留待部署批次。
+- 本地启动按版本自动应用迁移，当前版本为 14，由 `src/store.js` 的 `SCHEMA_VERSION` 声明。v1 升 v2 时保留工单主键、回执、附件和事件，旧反馈作为第一轮，补办截止时间根据原反馈发布时间回填。v3 新增商户归属、协办任务和任务事件三张表。v4 扩展工单状态约束。v5 增加关联到送审事件的照片表。v6 新增独立的发布图片表。v7 增加协办原图表。v8 增加关联到本人补件事件的原图表，原回执及文字补件保留。v9 增加可选的小程序码图片表，保存工单关联、AppID 的摘要、版本环境、图片 MIME 与字节。v10 增加游客公开申报表。v11 增加联系方式查阅审计表。v12 增加协商整改台账和工单标注表。v13 增加商户代表月报发布表。v14 增加导览事件表 `tourism_events` 和幂等索引表 `tourism_event_ids`，只新增两张独立表，现有业务表无需回填，迁移后开启外键校验。SQLite 在线备份可同时包含工单与附件，测试已用合成数据升级及恢复检查。正式存储、系统访问控制、监测、留存和恢复手册留待部署批次。
 - 后续办理批次接入真实的工作人员与商户审核、商户原提交人的本人授权、微信身份绑定和跨会话的「我的诉求」、小程序补件照片、超时提醒。小程序扫码、外部平台联调和生产发布需真实环境验收。
+
+## 导览来源与行为上报
+
+`CHANGDI_TOURISM_JSON` 是一个对象，含 `sources` 和 `coverage` 两个数组。缺省为 `{}`，即不启用任何导览来源；此时任何凭据都不能写入行为事件，写入返回 403。
+
+每条 `sources` 项形如 `{ id, kind, evidence, token, subjects }`：
+
+| 字段 | 说明 |
+| --- | --- |
+| `id` | 来源代码，小写字母开头，最长 48 字符。含义改变时另配新 ID，不复用旧 ID。 |
+| `kind` | `guide_h5` 导览 H5、`booking_service` 真实预约服务、`parking_verifier` 车场核验。 |
+| `evidence` | `demo` 演示证据或 `operational` 运营证据。 |
+| `token` | 该来源独立的服务端凭据，32–256 位。 |
+| `subjects` | 该来源可上报的事件目录，按事件类型列出允许的目录代码。 |
+
+`kind` 与 `evidence` 共同决定该来源可上报的事件类型。`guide_h5` 与 `demo` 可报路线曝光、路线采纳、路线完成（游客自报）、语音实播、预约演示提交、停车建议采纳和停车导航点击；`guide_h5` 与 `operational` 只报其中可核实为已运营的部分；`booking_service` 与 `operational` 报预约发起、预约确认和预约取消，`subjectId` 为讲解员目录代码；`parking_verifier` 与 `operational` 报停车核验到达，`subjectId` 为车场目录代码。
+
+每条来源的凭据只属于该来源。凭据与接单凭据、工作人员凭据或商户凭据重复时服务端启动失败，相同令牌出现在两条来源之间同样启动失败。凭据不写入 SQLite、浏览器或日志，请求不能选择来源、证据或目录代码。
+
+`coverage` 每项为 `{ evidence, type, from, to, status }`，声明该证据和类型的统计覆盖范围。`from` 和 `to` 带时区，`to` 省略表示持续覆盖，`status` 为 `complete` 或 `partial`。声明某类型覆盖要求至少一条来源拥有该类型。完整覆盖表示配置方确认整个统计范围都已接入，凭据存在本身不足以证明完整。
+
+```powershell
+$env:CHANGDI_METRICS_DEMO_TOKEN = New-LocalToken
+$env:CHANGDI_TOURISM_JSON = ConvertTo-Json -Compress -Depth 6 -InputObject @{
+    sources = @(
+        @{ id = 'guide-demo'; kind = 'guide_h5'; evidence = 'demo'; token = $env:CHANGDI_METRICS_DEMO_TOKEN
+           subjects = @{
+               route_exposed = @('R1', 'R2', 'R3')
+               route_adopted = @('R1', 'R2', 'R3')
+               route_completed_self_reported = @('R1', 'R2', 'R3')
+               guide_played = @('CD-A01', 'CD-S01')
+               booking_demo_submitted = @('G1', 'G2', 'G3')
+               parking_advice_adopted = @('P1', 'P2')
+               parking_navigation_clicked = @('P1', 'P2')
+           } }
+    )
+    coverage = @(
+        @{ evidence = 'demo'; type = 'route_exposed'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'route_adopted'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'route_completed_self_reported'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'guide_played'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'booking_demo_submitted'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'parking_advice_adopted'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+        @{ evidence = 'demo'; type = 'parking_navigation_clicked'; from = '2026-01-01T00:00:00Z'; status = 'complete' }
+    )
+}
+```
+
+行为上报接口为 `POST /api/v1/metrics/tourism/events`，契约见 [OpenAPI](../docs/openapi.yaml)。新事件返回 201，重放和同一流程的重复上报返回 200，响应体均为空；同一 `eventId` 内容不同返回 409。请求正文上限 512 字节。
 
 ## 内部月报
 
@@ -319,5 +374,7 @@ A09 从管理明细读取 `reopenRequests` 中 `decision: null` 的申请和 `ro
 | `reopen` | 申请按申请时间归月，通过、驳回及新轮按决定事件时间归月。只有通过补办开启新轮。 |
 | `evaluation` | 当月已发布的去重工单轮次为分母。匹配取数前的评价，分别输出速度、效果、态度的 1–5 分分布、均分、有效评价数、覆盖率和未评价轮次。 |
 | `duplicateComplaints`、`tourism` | 分别在缺结构化点位及确认记录、缺导览来源时返回 `unavailable` 及原因。 |
+
+月报的 `tourism` 字段含 `demo` 和 `operational` 两组逐项聚合：路线曝光、路线采纳、路线完成（游客自报）、语音实播次数与累计秒数、预约演示提交、预约发起／确认／取消及其状态笔数、停车建议采纳、停车导航点击、停车核验到达。每项带覆盖状态 `complete`、`partial` 或 `unavailable`：无相交覆盖时为 `unavailable` 且不计数，有相交覆盖但未填满统计区间时为 `partial` 并只统计已接入区间，填满时为 `complete` 且计数为零表示完整覆盖下没有可计事件。演示证据和运营证据分列，商户代表报告不含导览数据。投诉指标的取数时钟向下取整到秒，导览列的截点保留毫秒，两者在页面同时说明口径。截点由服务端时钟给出，接口不接受客户端指定的 `asOf`。
 
 比例为 0–1 数值。分母为零时比例为 `null`，无适用样本的均值和中位数为 `null`，计数仍为 0。已用验收清单的六单合成样例核对首响中位数 60 分钟、受理完成率 2/3、月末未完成 2 单且超时 1 单及评价覆盖率 1/2。正式汇总授权、细分范围、小样本展示规则及外部数据源待试点确认。

@@ -1,4 +1,5 @@
 import {
+  HttpError,
   requireMethod,
   sendJson,
 } from '../http.js';
@@ -21,7 +22,17 @@ export async function handlePublicRoute(request, response, {
     const { created, receipt, caseId } = store.submitPublic(upload, () => rateLimiter.check(address));
     if (created) rateLimiter.record(address);
     if (receiptCode) {
-      receipt.wechatCode = await receiptCode(caseId, receipt.publicLookupCode);
+      try {
+        receipt.wechatCode = await receiptCode(caseId, receipt.publicLookupCode);
+      } catch (error) {
+        // The case and its photos are already saved; only the mini-program code is missing.
+        // The first-party public receipt is delivered anyway with the three identifiers and
+        // without wechatCode, so the visitor keeps the public code and the private credential.
+        // Any other failure still fails the request, and the partner intake keeps its 503.
+        if (!(error instanceof HttpError) || error.status !== 503 || error.message !== 'wechat_code_unavailable') {
+          throw error;
+        }
+      }
     }
     if (response.destroyed) {
       return true;

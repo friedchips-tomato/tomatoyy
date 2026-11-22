@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import test from 'node:test';
 import { createIntakeServer } from '../src/server.js';
+import { SCHEMA_VERSION } from '../src/store.js';
 
 const intakePath = '/api/v1/integrations/intake/cases';
 const integration = 'i'.repeat(43);
@@ -280,7 +281,7 @@ test('token API errors stay opaque and a v8 upgrade preserves the receipt across
   const prior = await start();
   const original = await prior.submit('synthetic-v8');
   await prior.stop();
-  inspect(db => db.exec('DROP TABLE wechat_receipt_codes; PRAGMA user_version = 8;'));
+  inspect(db => db.exec('DROP TABLE representative_report_releases; DROP TABLE tourism_event_ids; DROP TABLE tourism_events; DROP VIEW current_case_supervision; DROP TABLE case_supervision_events; DROP TABLE remediation_reviews; DROP TABLE remediation_entries; DROP TABLE case_contact_access_audit; DROP TABLE wechat_receipt_codes; PRAGMA user_version = 8;'));
   const fallback = upstream({ envVersion: 'trial', token: () => Response.json({ errcode: 40013, errmsg: appSecret }) });
   const failedTrial = await start(fallback.config);
   const failure = await failedTrial.submit('synthetic-v8');
@@ -303,7 +304,7 @@ test('token API errors stay opaque and a v8 upgrade preserves the receipt across
   inspect(db => {
     assert.equal(db.prepare('SELECT count(*) AS count FROM cases').get().count, 1);
     assert.equal(db.prepare('SELECT count(*) AS count FROM wechat_receipt_codes').get().count, 3);
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   });
 });

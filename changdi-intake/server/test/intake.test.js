@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { isMainThread, parentPort, Worker, workerData } from 'node:worker_threads';
 import { crc32, deflateSync } from 'node:zlib';
 import { createIntakeServer } from '../src/server.js';
+import { SCHEMA_VERSION } from '../src/store.js';
 
 const intakePath = '/api/v1/integrations/intake/cases';
 const verifyPath = '/api/v1/owner/verify';
@@ -211,7 +212,7 @@ if (isMainThread) test('intake receipt is stable across source credential rotati
     assert.deepEqual(Buffer.from(stored[0].bytes), png);
     assert.equal(stored[0].size, png.length);
     assert.equal(db.prepare('SELECT count(*) AS n FROM attachments').get().n, 3);
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   });
@@ -622,7 +623,7 @@ if (isMainThread) test('v1 database upgrades with attachment, old receipt and pu
   assert.doesNotMatch(JSON.stringify(oldCase), /旧版未发布草稿/);
   assert.equal((await act({ get }, privatePath, auth, 'request_reopen', 6, { reason: '旧单可补办' })).status, 200);
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
     assert.deepEqual(Buffer.from(db.prepare('SELECT bytes FROM attachments').get().bytes), png);
@@ -654,12 +655,14 @@ if (isMainThread) test('merchant submission and read permissions are bound to it
   const { caseNumber } = first.body;
   assert.notEqual(caseNumber, second.body.caseNumber);
   assert.notEqual(caseNumber, partner.body.caseNumber);
-  assert.deepEqual(Object.keys(first.body), ['caseNumber', 'status', 'submittedAt']);
+  assert.deepEqual(Object.keys(first.body), ['caseNumber', 'status', 'submittedAt', 'publicLookupCode']);
   const retry = await submit(f.shopA);
   assert.deepEqual([retry.status, retry.body], [200, first.body]);
   assert.equal((await submit(f.shopA, { ...content, description: '不同正文' })).status, 409);
   const list = await f.get(merchantCases, { auth: f.shopAReader });
-  assert.deepEqual(list.body, { items: [first.body], nextBefore: null });
+  assert.deepEqual(list.body, {
+    items: [{ caseNumber, status: first.body.status, submittedAt: first.body.submittedAt }], nextBefore: null,
+  });
   assert.deepEqual((await f.get(merchantCases + '?status=accepted', { auth: f.shopA })).body.items, []);
   assert.equal((await f.get(merchantCases + '?before=' + second.body.caseNumber, { auth: f.shopA })).status, 400);
   for (const number of [second.body.caseNumber, partner.body.caseNumber]) {
@@ -802,6 +805,14 @@ if (isMainThread) test('upgrade from v2 preserves existing cases, ratings, recei
     DROP TABLE collaboration_events;
     DROP TABLE collaboration_tasks;
     DROP TABLE merchant_cases;
+    DROP TABLE representative_report_releases;
+    DROP TABLE tourism_event_ids;
+    DROP TABLE tourism_events;
+    DROP VIEW current_case_supervision;
+    DROP TABLE case_supervision_events;
+    DROP TABLE remediation_reviews;
+    DROP TABLE remediation_entries;
+    DROP TABLE case_contact_access_audit;
     PRAGMA user_version = 2;
   `));
   const migrated = createIntakeServer({ ...legacy, now: f.now });
@@ -812,7 +823,7 @@ if (isMainThread) test('upgrade from v2 preserves existing cases, ratings, recei
   assert.deepEqual([replay.status, replay.body], [200, receipt]);
   assert.deepEqual((await get(merchantCases, { auth: f.shopA })).body, { items: [], nextBefore: null });
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
     assert.deepEqual(Buffer.from(db.prepare('SELECT bytes FROM attachments').get().bytes), png);
@@ -1166,7 +1177,7 @@ if (isMainThread) test('v3 schema upgrades with merchant bindings, attachments a
   assert.equal(reviewed.status, 200);
   assert.equal(reviewed.body.history.at(-1).action, 'approve');
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
     assert.deepEqual(Buffer.from(db.prepare('SELECT bytes FROM attachments').get().bytes), png);
@@ -1325,6 +1336,14 @@ if (isMainThread) test('v4 upgrade preserves legacy text result and original rec
     DROP TABLE collaboration_submission_photos;
     DROP TABLE published_feedback_photos;
     DROP TABLE staff_submission_photos;
+    DROP TABLE representative_report_releases;
+    DROP TABLE tourism_event_ids;
+    DROP TABLE tourism_events;
+    DROP VIEW current_case_supervision;
+    DROP TABLE case_supervision_events;
+    DROP TABLE remediation_reviews;
+    DROP TABLE remediation_entries;
+    DROP TABLE case_contact_access_audit;
     PRAGMA user_version = 4;
   `));
   const migrated = createIntakeServer({ ...legacy, now: f.now });
@@ -1346,7 +1365,7 @@ if (isMainThread) test('v4 upgrade preserves legacy text result and original rec
   assert.equal(refreshed.body.submissionPhotos[0].submitVersion, 7);
   assert.deepEqual((await getPhoto(base, resultPhotoPath(caseNumber, 7), f.supervisor)).body, png);
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
     assert.deepEqual(Buffer.from(db.prepare('SELECT bytes FROM attachments').get().bytes), png);
   });
@@ -1506,6 +1525,14 @@ if (isMainThread) test('v5 upgrade preserves text feedback, original receipt and
     DROP TABLE owner_supplement_photos;
     DROP TABLE collaboration_submission_photos;
     DROP TABLE published_feedback_photos;
+    DROP TABLE representative_report_releases;
+    DROP TABLE tourism_event_ids;
+    DROP TABLE tourism_events;
+    DROP VIEW current_case_supervision;
+    DROP TABLE case_supervision_events;
+    DROP TABLE remediation_reviews;
+    DROP TABLE remediation_entries;
+    DROP TABLE case_contact_access_audit;
     PRAGMA user_version = 5;
   `));
   const migrated = createIntakeServer({ ...legacy, now: f.now });
@@ -1525,7 +1552,7 @@ if (isMainThread) test('v5 upgrade preserves text feedback, original receipt and
   assert.equal((await getPhoto(base, ownerPhotoPath(caseNumber, 5), owner)).status, 404);
   assert.equal((await getPhoto(base, ownerPhotoPath(caseNumber, 6), owner)).status, 404);
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
     assert.equal(db.prepare('SELECT count(*) AS n FROM published_feedback_photos').get().n, 0);
@@ -1661,6 +1688,14 @@ if (isMainThread) test('v6 upgrade keeps an existing text-only collaboration and
     DROP TABLE wechat_receipt_codes;
     DROP TABLE owner_supplement_photos;
     DROP TABLE collaboration_submission_photos;
+    DROP TABLE representative_report_releases;
+    DROP TABLE tourism_event_ids;
+    DROP TABLE tourism_events;
+    DROP VIEW current_case_supervision;
+    DROP TABLE case_supervision_events;
+    DROP TABLE remediation_reviews;
+    DROP TABLE remediation_entries;
+    DROP TABLE case_contact_access_audit;
     PRAGMA user_version = 6;
   `));
   const migrated = createIntakeServer({ ...legacy, now: f.now });
@@ -1678,7 +1713,7 @@ if (isMainThread) test('v6 upgrade keeps an existing text-only collaboration and
   assert.deepEqual((await getPhoto(base, manage + '/submission-photos/4/0', f.supervisor)).body, png);
   assert.equal((await getPhoto(base, manage + '/submission-photos/2/0', f.supervisor)).status, 404);
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   });
@@ -1975,7 +2010,7 @@ if (isMainThread) test('v7 upgrade preserves old receipt and text supplement bef
   } finally {
     source.close();
   }
-  inspect(legacy, db => db.exec('DROP TABLE wechat_receipt_codes; DROP TABLE owner_supplement_photos; PRAGMA user_version = 7;'));
+  inspect(legacy, db => db.exec('DROP TABLE representative_report_releases; DROP TABLE tourism_event_ids; DROP TABLE tourism_events; DROP VIEW current_case_supervision; DROP TABLE case_supervision_events; DROP TABLE remediation_reviews; DROP TABLE remediation_entries; DROP TABLE case_contact_access_audit; DROP TABLE wechat_receipt_codes; DROP TABLE owner_supplement_photos; PRAGMA user_version = 7;'));
   const migrated = createIntakeServer({ ...legacy, now: f.now });
   f.cleanup.push(() => stop(migrated));
   const base = await listen(migrated);
@@ -1990,7 +2025,7 @@ if (isMainThread) test('v7 upgrade preserves old receipt and text supplement bef
   assert.equal(next.body.supplementPhotos[0].submitVersion, 5);
   assert.deepEqual((await getPhoto(base, privatePath + '/supplement-photos/5/0', ownerSessionToken)).body, png);
   inspect(legacy, db => {
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 10);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, SCHEMA_VERSION);
     assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check, 'ok');
     assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
   });

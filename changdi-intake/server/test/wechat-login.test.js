@@ -115,6 +115,32 @@ test('WeChat login is disabled by default and the existing loopback credentials 
   assert.deepEqual(Object.keys(receipt.body).sort(), ['caseNumber', 'privateLookupToken', 'publicLookupCode']);
 });
 
+test('WeChat contact access uses the server-side staff grant and current session', async t => {
+  const { start, advance } = fixture(t);
+  const local = await start(mockWechat().config, {
+    staff: [{ ...staff[0], readContact: true }, ...staff.slice(1)],
+  });
+  const synthetic = 'synthetic-WeChat-session-contact';
+  const body = form('integration', 'wechat-contact');
+  body.set('payload', JSON.stringify({ ...JSON.parse(body.get('payload')), contact: synthetic }));
+  const receipt = await local.call(intakePath, { auth: integration, body });
+  assert.equal(receipt.status, 201);
+  const path = '/api/v1/staff/cases/' + receipt.body.caseNumber + '/contact';
+  const deskSession = (await local.login('login-desk')).body.sessionToken;
+  const handlerSession = (await local.login('login-handler-a')).body.sessionToken;
+  const merchantSession = (await local.login('login-shop-a-member')).body.sessionToken;
+  assert.equal((await local.call(staffMe, { auth: deskSession })).body.readContact, true);
+  assert.equal((await local.call(path, { auth: staff[0].token })).status, 401);
+  assert.equal((await local.call(path, { auth: handlerSession })).status, 403);
+  assert.equal((await local.call(path, { auth: merchantSession })).status, 403);
+  const authorized = await local.call(path, { auth: deskSession });
+  assert.equal(authorized.status, 200);
+  assert.deepEqual(authorized.body, { contact: synthetic });
+  assert.equal(authorized.headers.get('cache-control'), 'no-store');
+  advance(15 * 60 * 1000);
+  assert.equal((await local.call(path, { auth: deskSession })).status, 401);
+});
+
 test('formal login grants only the bound staff or merchant identity and no WeChat material', async t => {
   const { start, logs } = fixture(t);
   const wx = mockWechat();

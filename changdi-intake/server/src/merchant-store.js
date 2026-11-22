@@ -41,6 +41,12 @@ export function createMerchantStore(db, { now, write, read, createCase, scopedCa
     SELECT t.* FROM collaboration_tasks t JOIN cases c ON c.id = t.case_id
     WHERE t.merchant_id = ? AND t.task_id = ? AND ${visibleToMerchant} AND t.status != 'withdrawn'
   `);
+  const ownedCase = db.prepare(`
+    SELECT c.id, c.case_number, c.public_lookup_code, s.occurred_at AS submitted_at
+    FROM merchant_cases m JOIN cases c ON c.id = m.case_id
+    JOIN case_events s ON s.case_id = c.id AND s.version = 1
+    WHERE m.merchant_id = ? AND m.submitted_by = ? AND c.case_number = ?
+  `);
   const taskByCase = db.prepare('SELECT * FROM collaboration_tasks WHERE case_id = ? AND task_id = ?');
   const insertPhoto = db.prepare('INSERT INTO collaboration_submission_photos VALUES (?, ?, ?, ?, ?, ?, ?)');
   const scopedPhotos = `
@@ -73,6 +79,16 @@ export function createMerchantStore(db, { now, write, read, createCase, scopedCa
     return photo;
   }
 
+  function ownReceipt(principal, caseNumber) {
+    const row = ownedCase.get(principal.merchantId, principal.id, caseNumber);
+    if (!row) throw new HttpError(404, 'case_not_found');
+    return {
+      caseId: row.id,
+      summary: { caseNumber: row.case_number, status: 'submitted', submittedAt: row.submitted_at,
+        publicLookupCode: row.public_lookup_code },
+    };
+  }
+
   function staffTask(task, item, principal) {
     return {
       ...taskDetails(task),
@@ -94,13 +110,10 @@ export function createMerchantStore(db, { now, write, read, createCase, scopedCa
         if (created) {
           db.prepare('INSERT INTO merchant_cases VALUES (?, ?, ?)').run(item.id, principal.merchantId, principal.id);
         }
-        const record = merchantCase.get(principal.merchantId, item.case_number);
-        return {
-          created,
-          summary: { caseNumber: record.case_number, status: 'submitted', submittedAt: record.submitted_at },
-        };
+        return { created, ...ownReceipt(principal, item.case_number) };
       });
     },
+    ownReceipt,
     cases(principal, { status, before }) {
       if (status !== null && !caseStatuses.has(status)) throw new HttpError(400, 'invalid_status');
       return read(() => {

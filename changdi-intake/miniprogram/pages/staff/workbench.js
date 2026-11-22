@@ -61,7 +61,11 @@ function identity(value) {
     return null;
   }
   const { id, role } = value;
-  return { id, role, roleLabel: roleLabels[role], department: role === 'duty' ? '' : value.department };
+  return {
+    id, role, roleLabel: roleLabels[role], department: role === 'duty' ? '' : value.department,
+    ...(value.readContact === true ? { readContact: true } : {}),
+    ...(value.supervision === true ? { supervision: true } : {})
+  };
 }
 
 function canView(staff, item) {

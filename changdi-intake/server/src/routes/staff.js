@@ -11,6 +11,10 @@ import {readStaffActionWithPhotos} from '../intake.js';
 import {canAssignHandler} from '../workflow.js';
 
 const staffPath = /^\/api\/v1\/staff\/cases\/(CD-[0-9A-F]{32})(\/actions)?$/;
+const staffContactPath = /^\/api\/v1\/staff\/cases\/(CD-[0-9A-F]{32})\/contact$/;
+const staffSupervisionPath = /^\/api\/v1\/staff\/cases\/(CD-[0-9A-F]{32})\/supervision$/;
+const remediationListPath = /^\/api\/v1\/staff\/remediation(?:\?(.*))?$/;
+const remediationEntryPath = /^\/api\/v1\/staff\/remediation\/([1-9][0-9]{0,14})(\/reviews)?$/;
 const staffPhotoPath = /^\/api\/v1\/staff\/cases\/(CD-[0-9A-F]{32})\/submission-photos\/([1-9][0-9]{0,15})\/([0-2])$/;
 const staffCaseList = /^\/api\/v1\/staff\/cases(?:\?(.*))?$/;
 const staffTasksPath = /^\/api\/v1\/staff\/cases\/(CD-[0-9A-F]{32})\/collaborations(?:\/(CT-[0-9A-F]{32})\/actions)?$/;
@@ -27,6 +31,8 @@ export async function handleStaffRoute(request, response, {
       id: principal.id,
       role: principal.role,
       department: principal.role === 'duty' ? null : principal.department,
+      ...(principal.readContact ? { readContact: true } : {}),
+      ...(store.supervision.enabled(principal) ? { supervision: true } : {}),
     });
     return true;
   }
@@ -43,7 +49,32 @@ export async function handleStaffRoute(request, response, {
     if (principal.role !== 'duty') {
       throw new HttpError(403, 'forbidden');
     }
-    sendJson(response, 200, store.monthlyReport(readFilters(monthlyReport[1], ['month']).get('month')));
+    sendJson(response, 200, store.monthlyReport(readFilters(monthlyReport[1], ['month']).get('month'), {
+      includeDuplicates: store.supervision.enabled(principal),
+    }));
+    return true;
+  }
+  const remediationList = remediationListPath.exec(request.url);
+  const remediationEntry = remediationEntryPath.exec(request.url);
+  if (remediationList || remediationEntry) {
+    const principal = auth.authenticate(request, 'staff');
+    if (!store.supervision.ledgerEnabled(principal)) throw new HttpError(403, 'forbidden');
+    if (remediationList && request.method === 'POST' && remediationList[1] === undefined) {
+      const input = await readAction(request);
+      sendJson(response, 201, store.supervision.createEntry(auth.authenticate(request, 'staff'), input));
+    } else if (remediationList) {
+      requireMethod(request, response, 'GET');
+      sendJson(response, 200, store.supervision.list(principal, readFilters(remediationList[1], ['before']).get('before')));
+    } else {
+      const id = Number(remediationEntry[1]);
+      requireMethod(request, response, remediationEntry[2] ? 'POST' : 'GET');
+      if (remediationEntry[2]) {
+        const input = await readAction(request);
+        sendJson(response, 200, store.supervision.reviewEntry(auth.authenticate(request, 'staff'), id, input));
+      } else {
+        sendJson(response, 200, store.supervision.entry(principal, id));
+      }
+    }
     return true;
   }
   if (request.url === '/api/v1/staff/assignees') {
@@ -105,6 +136,26 @@ export async function handleStaffRoute(request, response, {
       throw new HttpError(404, 'submission_photo_not_found');
     }
     sendPhoto(response, store.staffSubmissionPhoto(caseNumber, principal, Number(version), Number(position)));
+    return true;
+  }
+  const staffSupervision = staffSupervisionPath.exec(request.url);
+  if (staffSupervision) {
+    const principal = auth.authenticate(request, 'staff');
+    if (!store.supervision.enabled(principal)) throw new HttpError(403, 'forbidden');
+    if (request.method === 'POST') {
+      const input = await readAction(request);
+      sendJson(response, 200, store.supervision.change(auth.authenticate(request, 'staff'), staffSupervision[1], input));
+    } else {
+      requireMethod(request, response, 'GET');
+      sendJson(response, 200, store.supervision.case(principal, staffSupervision[1]));
+    }
+    return true;
+  }
+  const staffContact = staffContactPath.exec(request.url);
+  if (staffContact) {
+    requireMethod(request, response, 'GET');
+    const principal = auth.authenticate(request, 'staff');
+    sendJson(response, 200, store.staffContact(staffContact[1], principal));
     return true;
   }
   const staffMatch = staffPath.exec(request.url);

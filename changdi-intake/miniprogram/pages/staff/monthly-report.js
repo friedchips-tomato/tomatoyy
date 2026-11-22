@@ -1,3 +1,5 @@
+const { tourismReportGroups } = require('./tourism-report');
+
 const noSample = '无适用样本';
 
 function beijingMonth(now = Date.now()) {
@@ -30,6 +32,25 @@ function time(value) {
 
 const row = (label, value) => ({ label, value });
 
+function duplicateGroup(value) {
+  if (!value || !['available', 'partial', 'unavailable'].includes(value.status)) return null;
+  if (value.submitted === undefined) return null;
+  const rows = [
+    row('当月首次提交', count(value.submitted)),
+    row('已标注点位和分类', count(value.covered)),
+    row('未标注', count(value.unclassified))
+  ];
+  if (value.status !== 'unavailable') {
+    rows.push(row('已确认重复', count(value.confirmed)), row('已标注、未计入重复', count(value.notConfirmed)));
+  }
+  const notes = {
+    available: value.submitted === 0 ? '当月没有首次提交工单。' : '',
+    partial: '仅部分工单完成结构化标注，重复数仅反映已确认记录。',
+    unavailable: '当月尚无结构化标注，无法统计重复投诉。'
+  };
+  return { title: '重复投诉', rows, note: notes[value.status] };
+}
+
 function reportView(result, requestedMonth) {
   if (result.month !== requestedMonth || result.timeZone !== 'Asia/Shanghai' ||
       !['final', 'provisional'].includes(result.monthEnd.state) ||
@@ -37,6 +58,9 @@ function reportView(result, requestedMonth) {
     throw new Error('Invalid report response');
   }
   const { firstResponse, completion, monthEnd, reopen, evaluation } = result;
+  const duplicate = duplicateGroup(result.duplicateComplaints);
+  const tourism = ['partial', 'complete'].includes(result.tourism?.status)
+    ? tourismReportGroups(result.tourism) : [];
   return {
     asOf: time(result.asOf),
     start: time(result.period.start),
@@ -70,14 +94,16 @@ function reportView(result, requestedMonth) {
       { title: '评价覆盖', rows: [
         row('已发布轮次', count(evaluation.publishedRounds)), row('有效评价', count(evaluation.validEvaluations)),
         row('未评价轮次', count(evaluation.unevaluatedRounds)), row('覆盖率', metric(evaluation.coverage, '%', 1, 100))
-      ] }
+      ] },
+      ...(duplicate ? [duplicate] : []),
+      ...tourism
     ],
     ratings: [['speed', '处理速度'], ['effectiveness', '处理效果'], ['attitude', '服务态度']].map(([id, label]) => {
       const { mean, distribution } = evaluation.dimensions[id];
       return { label, mean: metric(mean, ' 分'), bins: [1, 2, 3, 4, 5].map(score => ({ score, count: count(distribution[score]) })) };
     }),
-    duplicateMissing: result.duplicateComplaints?.status === 'unavailable',
-    tourismMissing: result.tourism?.status === 'unavailable'
+    duplicateMissing: !duplicate && result.duplicateComplaints?.status === 'unavailable',
+    tourismMissing: tourism.length === 0
   };
 }
 

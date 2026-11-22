@@ -198,6 +198,11 @@ function createHarness(options = {}) {
       state.storage.set(key, value);
     },
     removeStorageSync: key => {
+      if (options.removeFails) {
+        // 模拟本机存储清除失败：写入不发生，接口照常抛错。
+        state.storageWrites.push(['remove-failed', key]);
+        throw new Error('remove failed');
+      }
       state.storageWrites.push(['remove', key]);
       state.storage.delete(key);
     }
@@ -406,4 +411,165 @@ test('页面文案说明本机只存编号与公开码，私密凭证不入本�
   assert.ok(script.includes('查询失败，可重试'), '单条失败提示可重试');
   assert.ok(template.includes('bindtap="onScanTap"'), '有扫码入口');
   assert.ok(template.includes('bindtap="onClearTap"'), '有清除入口');
+});
+
+test('「游客与居民 → 我的诉求」可直接进入手动输码查询（旧入口回归）', async () => {
+  const { page, state } = createHarness();
+  try {
+    await page.onLoad({});
+    await tick();
+    page.onManualCodeTap();
+    assert.deepEqual(state.navigations, ['/pages/public/index'], '进到公开查询页手动输码');
+    assert.ok(!state.navigations[0].includes(PRIVATE_TOKEN), '网址不含私密凭证');
+  } finally {
+    restoreGlobals();
+  }
+
+  // 首页的「游客与居民」仍进到我的诉求，公开查询页确实有手动输码入口。
+  const home = fs.readFileSync(path.join(miniprogramRoot, 'pages/home/index.js'), 'utf8');
+  assert.ok(home.includes("title: '游客与居民'"), '首页有游客与居民入口');
+  assert.ok(home.includes("path: '/pages/mine/index'"), '游客与居民进到我的诉求');
+  const publicTemplate = fs.readFileSync(path.join(miniprogramRoot, 'pages/public/index.wxml'), 'utf8');
+  assert.ok(publicTemplate.includes('24 位公开查询码'), '公开查询页有手动输码输入');
+  assert.ok(publicTemplate.includes('bindtap="onSubmit"'), '公开查询页有查询按钮');
+  const mineTemplate = fs.readFileSync(path.join(miniprogramRoot, 'pages/mine/index.wxml'), 'utf8');
+  assert.ok(mineTemplate.includes('bindtap="onManualCodeTap"'), '我的诉求页有手动输码入口');
+});
+
+test('清除本机记录时在途刷新不会把旧记录重新画出来', async () => {
+  const pending = [];
+  const { page, state } = createHarness({
+    request: options => pending.push(options),
+    modal: opts => opts.success({ confirm: true, cancel: false })
+  });
+  try {
+    seed(state, [entry(CASE_A, CODE_A), entry(CASE_B, CODE_B)]);
+    const loading = page.onLoad({});
+    await tick();
+    assert.equal(pending.length, 2, '刷新请求在途');
+    assert.equal(page.data.entries.length, 2, '列表先显示出来');
+
+    // 刷新还没回来就清除了本机记录。
+    page.onClearTap();
+    assert.equal(page.data.entries.length, 0, '确认后清空列表');
+    assert.equal(page.data.empty, true, '清空后是空列表');
+    assert.deepEqual(state.storageWrites, [['remove', receipts.STORAGE_KEY]], '清除回执夹这一处存储');
+
+    // 旧的刷新这时才回来。
+    for (const call of pending) call.success({ statusCode: 200, data: publicCase(call) });
+    await loading;
+    await tick();
+    assert.equal(page.data.entries.length, 0, '清除后旧响应不把记录画回来');
+    assert.equal(page.data.empty, true, '仍是空列表');
+    assert.equal(page.data.loading, false, '不残留加载中');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('同时重试两条失败记录：各自独立，谁先回来都写回自己的那一条', async () => {
+  const pending = [];
+  const { page, state } = createHarness({ request: options => pending.push(options) });
+  try {
+    seed(state, [entry(CASE_A, CODE_A), entry(CASE_B, CODE_B)]);
+    const loading = page.onLoad({});
+    await tick();
+    assert.equal(pending.length, 2, '首轮逐条查询在途');
+
+    // 首轮两条都失败。
+    pending[0].fail({ errMsg: 'request:fail timeout' });
+    pending[1].fail({ errMsg: 'request:fail timeout' });
+    await loading;
+    await tick();
+    assert.equal(page.data.entries.filter(item => item.state === 'failed').length, 2, '两条都是失败态');
+
+    // 同时重试两条。
+    const retryA = page.onRetryTap({ currentTarget: { dataset: { code: CODE_A } } });
+    await tick();
+    const retryB = page.onRetryTap({ currentTarget: { dataset: { code: CODE_B } } });
+    await tick();
+    assert.equal(pending.length, 4, '两条各自发出一次重试');
+
+    // 先回 B，再回 A：后发起的 B 不该被先发起的 A 顶掉。
+    pending[3].success({ statusCode: 200, data: publicCase(pending[3]) });
+    await retryB;
+    await tick();
+    pending[2].success({ statusCode: 200, data: publicCase(pending[2]) });
+    await retryA;
+    await tick();
+
+    const first = page.data.entries.find(item => item.publicLookupCode === CODE_A);
+    const second = page.data.entries.find(item => item.publicLookupCode === CODE_B);
+    assert.equal(first.state, 'success', 'A 的重试结果写回 A');
+    assert.equal(first.statusText, '处理中');
+    assert.equal(second.state, 'success', 'B 的重试结果写回 B');
+    assert.equal(second.statusText, '已办结');
+    assert.equal(page.data.entries.length, 2, '条目数量不变');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('清除本机记录失败时不取消在途查询，列表也不停在查询中', async () => {
+  const pending = [];
+  const { page, state } = createHarness({
+    request: options => pending.push(options),
+    modal: opts => opts.success({ confirm: true, cancel: false }),
+    removeFails: true
+  });
+  try {
+    seed(state, [entry(CASE_A, CODE_A)]);
+    const loading = page.onLoad({});
+    await tick();
+    assert.equal(pending.length, 1, '查询在途');
+    assert.equal(page.data.loading, true, '列表在查询中');
+
+    // 清除失败：如实提示，不取消在途查询，也不作废这一轮。
+    page.onClearTap();
+    assert.equal(page.data.message, '清除失败，请稍后重试。', '如实提示清除失败');
+    assert.equal(page.data.entries.length, 1, '记录仍在列表里');
+    assert.deepEqual(state.storageWrites, [['remove-failed', receipts.STORAGE_KEY]], '确实尝试过清除');
+
+    // 在途查询照常回来。
+    pending[0].success({ statusCode: 200, data: publicCase(pending[0]) });
+    await loading;
+    await tick();
+    assert.equal(page.data.loading, false, '不残留加载中');
+    const item = page.data.entries[0];
+    assert.equal(item.state, 'success', '在途查询的结果仍然生效');
+    assert.equal(item.statusText, '处理中');
+  } finally {
+    restoreGlobals();
+  }
+});
+
+test('清除本机记录后，在途的单条重试也不把记录写回列表', async () => {
+  const pending = [];
+  const { page, state } = createHarness({
+    request: options => pending.push(options),
+    modal: opts => opts.success({ confirm: true, cancel: false })
+  });
+  try {
+    seed(state, [entry(CASE_A, CODE_A)]);
+    const loading = page.onLoad({});
+    await tick();
+    pending[0].success({ statusCode: 200, data: publicCase(pending[0]) });
+    await loading;
+    await tick();
+    assert.equal(page.data.entries.length, 1, '列表已就绪');
+
+    // 单条重试在途时清除本机记录。
+    const retrying = page.onRetryTap({ currentTarget: { dataset: { code: CODE_A } } });
+    await tick();
+    page.onClearTap();
+    assert.equal(page.data.entries.length, 0, '确认后清空列表');
+
+    pending[1].success({ statusCode: 200, data: publicCase(pending[1]) });
+    await retrying;
+    await tick();
+    assert.equal(page.data.entries.length, 0, '清除后旧的重试结果不写回列表');
+    assert.equal(page.data.empty, true);
+  } finally {
+    restoreGlobals();
+  }
 });

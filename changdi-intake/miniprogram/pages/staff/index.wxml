@@ -30,7 +30,7 @@
   <block wx:else>
     <view class="staff-header">
       <view>
-        <text class="staff-title">{{view === 'report' ? '街区月报' : view === 'detail' ? '工单办理' : '管理方工作台'}}</text>
+        <text class="staff-title">{{view === 'report' ? '街区月报' : view === 'remediation' ? '协商整改台账' : view === 'detail' ? '工单办理' : '管理方工作台'}}</text>
         <text wx:if="{{view === 'report'}}" class="staff-block muted">全街区汇总</text>
         <text wx:else class="staff-block muted">{{staff.roleLabel}} · {{staff.id}}{{staff.department ? ' · ' + staff.department : ''}}</text>
       </view>
@@ -40,6 +40,8 @@
 
     <block wx:if="{{view === 'workbench'}}">
       <button wx:if="{{staff.role === 'duty'}}" class="text-button detail-toolbar" bindtap="onOpenMonthlyReport">查看街区月报</button>
+      <button wx:if="{{staff.role === 'duty' && staff.supervision}}" class="text-button detail-toolbar"
+        bindtap="onOpenRemediation">打开协商整改台账</button>
       <view class="card">
         <view class="section-header">
           <text class="section-title">工单队列</text>
@@ -105,6 +107,7 @@
       <block wx:if="{{report}}">
         <view wx:for="{{report.groups}}" wx:for-item="group" wx:key="title" class="card">
           <text class="section-title">{{group.title}}</text>
+          <text wx:if="{{group.note}}" class="staff-block muted">{{group.note}}</text>
           <view wx:for="{{group.rows}}" wx:key="label" class="report-row">
             <text>{{item.label}}</text><text class="report-value">{{item.value}}</text>
           </view>
@@ -126,9 +129,71 @@
         </view>
         <view wx:if="{{report.duplicateMissing || report.tourismMissing}}" class="card">
           <text wx:if="{{report.duplicateMissing}}" class="staff-block muted">重复投诉待接入</text>
-          <text wx:if="{{report.tourismMissing}}" class="staff-block muted">导览数据缺失</text>
+          <text wx:if="{{report.tourismMissing}}" class="staff-block muted">所选期间暂无导览来源覆盖。</text>
         </view>
       </block>
+    </block>
+
+    <block wx:elif="{{view === 'remediation' && staff.role === 'duty' && staff.supervision}}">
+      <view class="section-header detail-toolbar">
+        <button class="text-button" bindtap="onCloseRemediation" disabled="{{ledger.busy}}">返回工作台</button>
+        <button class="text-button" bindtap="onLedgerList" disabled="{{ledger.busy}}">读取台账列表</button>
+      </view>
+      <view class="card">
+        <text wx:if="{{ledger.busy}}" class="staff-block muted">正在处理台账请求…</text>
+        <text wx:if="{{ledger.error}}" class="staff-block warning" aria-role="alert">{{ledger.error}}</text>
+        <view wx:if="{{ledger.form}}" class="editor">
+          <text class="section-title">登记协商整改</text>
+          <text class="field-label">问题主题</text>
+          <input class="staff-input" value="{{ledger.form.topic}}" maxlength="120" data-field="topic" bindinput="onLedgerInput" />
+          <text class="field-label">协商纪要</text>
+          <textarea class="staff-input text-area" value="{{ledger.form.minutes}}" maxlength="2000" data-field="minutes" bindinput="onLedgerInput" />
+          <text class="field-label">责任单位</text>
+          <input class="staff-input" value="{{ledger.form.responsibleUnit}}" maxlength="120" data-field="responsibleUnit" bindinput="onLedgerInput" />
+          <text class="field-label">整改期限（北京时间）</text>
+          <picker mode="date" value="{{ledger.form.date}}" data-field="date" bindchange="onLedgerInput">
+            <view class="select-field" aria-role="button">{{ledger.form.date || '选择日期'}} ▾</view>
+          </picker>
+          <picker mode="time" value="{{ledger.form.time}}" data-field="time" bindchange="onLedgerInput">
+            <view class="select-field" aria-role="button">{{ledger.form.time || '选择时间'}} ▾</view>
+          </picker>
+          <button class="button-secondary spaced" bindtap="onSaveLedgerEntry" disabled="{{ledger.busy || ledger.mustRefresh}}">保存登记</button>
+        </view>
+        <view wx:elif="{{ledger.entry}}">
+          <text class="section-title">{{ledger.entry.topic}}</text>
+          <text class="staff-block">责任单位 {{ledger.entry.responsibleUnit}}</text>
+          <text class="staff-block">期限 {{ledger.entry.dueLabel}} · {{ledger.entry.statusLabel}}</text>
+          <text class="staff-block muted">登记 {{ledger.entry.staffId}} · {{ledger.entry.createdLabel}}</text>
+          <text class="staff-block detail-copy">{{ledger.entry.minutes}}</text>
+          <view wx:for="{{ledger.entry.reviews}}" wx:key="revision" class="editor">
+            <text class="row-heading">{{item.statusLabel}}</text>
+            <text class="staff-block muted">{{item.staffId}} · {{item.timeLabel}}</text>
+            <text class="staff-block detail-copy">{{item.notes}}</text>
+          </view>
+          <view wx:if="{{ledger.entry.status !== 'resolved'}}" class="editor">
+            <text class="field-label">复查情况</text>
+            <textarea class="staff-input text-area" value="{{ledger.notes}}" maxlength="2000" data-field="notes" bindinput="onLedgerInput" />
+            <picker range="{{conclusionLabels}}" data-field="conclusionIndex" bindchange="onLedgerInput">
+              <view class="select-field" aria-role="button">{{conclusionLabels[ledger.conclusionIndex] || '选择复查结论'}} ▾</view>
+            </picker>
+            <button class="button-secondary spaced" bindtap="onReviewLedgerEntry"
+              disabled="{{ledger.busy || ledger.mustRefresh}}">保存复查</button>
+          </view>
+        </view>
+        <block wx:else>
+          <button class="button-secondary spaced" bindtap="onNewLedgerEntry" disabled="{{ledger.busy || !ledger.items}}">新建整改记录</button>
+          <text wx:if="{{ledger.items && !ledger.items.length}}" class="staff-block muted">暂无整改记录。</text>
+          <button wx:for="{{ledger.items}}" wx:key="id" class="case-row" data-id="{{item.id}}" bindtap="onLedgerEntry" disabled="{{ledger.busy}}">
+            <view class="section-header">
+              <text class="row-heading">{{item.topic}}</text>
+              <text class="status-tag">{{item.statusLabel}}</text>
+            </view>
+            <text class="staff-block muted">{{item.responsibleUnit}} · {{item.dueLabel}}</text>
+          </button>
+          <button wx:if="{{ledger.nextBefore}}" class="button-secondary spaced" data-more="{{true}}" bindtap="onLedgerList"
+            disabled="{{ledger.busy}}">加载更多</button>
+        </block>
+      </view>
     </block>
 
     <block wx:elif="{{view === 'detail'}}">
@@ -157,8 +222,70 @@
           <text wx:if="{{detail.dueLabel}}" class="staff-block">办理截止 {{detail.dueLabel}}</text>
           <text wx:if="{{detail.evaluationLabel}}" class="staff-block">评价截止 {{detail.evaluationLabel}}</text>
           <text wx:if="{{detail.description}}" class="staff-block detail-copy">{{detail.description}}</text>
+          <view wx:if="{{staff.readContact}}" class="spaced">
+            <button wx:if="{{!contactReady && !contactBusy}}" class="button-secondary"
+              bindtap="onReadContact" disabled="{{saving || recovering}}">查看联系方式</button>
+            <text wx:if="{{contactBusy}}" class="staff-block muted">正在读取联系方式…</text>
+            <text wx:if="{{contactError}}" class="staff-block warning" aria-role="alert">{{contactError}}</text>
+            <block wx:if="{{contactReady}}">
+              <text class="staff-block">{{contact || '该工单未填写联系方式。'}}</text>
+              <button class="button-secondary spaced" bindtap="onHideContact">隐藏联系方式</button>
+            </block>
+          </view>
         </view>
 
+        <view wx:if="{{staff.supervision}}" class="card">
+          <view class="section-header">
+            <text class="section-title">重复投诉核对</text>
+            <button wx:if="{{!supervisionPanel}}" class="text-button" bindtap="onOpenSupervision"
+              disabled="{{saving || recovering}}">读取监督记录</button>
+            <button wx:else class="text-button" bindtap="onCloseSupervision">收起</button>
+          </view>
+          <block wx:if="{{supervisionPanel}}">
+            <text wx:if="{{supervisionPanel.busy}}" class="staff-block muted">正在处理监督请求…</text>
+            <text wx:if="{{supervisionPanel.error}}" class="staff-block warning" aria-role="alert">{{supervisionPanel.error}}</text>
+            <button wx:if="{{supervisionPanel.mustRefresh}}" class="text-button" bindtap="onOpenSupervision"
+              disabled="{{supervisionPanel.busy}}">重新读取监督记录</button>
+            <block wx:if="{{supervisionPanel.points}}">
+              <text class="staff-block">{{supervisionPanel.classification ? supervisionPanel.pointLabel + ' · ' + supervisionPanel.categoryLabel : '未标注点位和分类'}}</text>
+              <text wx:if="{{supervisionPanel.lastChange}}" class="staff-block muted">{{supervisionPanel.changeLabel}} · {{supervisionPanel.lastChange.staffId}} · {{supervisionPanel.changeTime}}</text>
+              <text wx:if="{{supervisionPanel.lastChange.reason}}" class="staff-block">{{supervisionPanel.lastChange.reason}}</text>
+              <text wx:if="{{supervisionPanel.classificationLocked}}" class="staff-block muted">有效关联存续期间，点位和分类已锁定。</text>
+              <text wx:if="{{supervisionPanel.linked}}" class="staff-block">已确认重复{{supervisionPanel.targetCaseNumber ? ' · ' + supervisionPanel.targetCaseNumber : ' · 关联工单不在当前权限范围'}}</text>
+              <button wx:if="{{!supervisionPanel.classificationLocked}}" class="text-button spaced" data-action="classify"
+                bindtap="onEditSupervision" disabled="{{supervisionPanel.busy || supervisionPanel.mustRefresh}}">标注点位和分类</button>
+              <button wx:if="{{supervisionPanel.targetCaseNumber}}" class="text-button spaced" data-action="revoke"
+                bindtap="onEditSupervision" disabled="{{supervisionPanel.busy || supervisionPanel.mustRefresh}}">撤销确认</button>
+              <block wx:if="{{supervisionPanel.classification && !supervisionPanel.classificationLocked}}">
+                <text class="field-label">候选工单（前 {{supervisionPanel.windowHours}} 小时，最多 {{supervisionPanel.candidateLimit}} 条）</text>
+                <text wx:if="{{!supervisionPanel.candidates.length}}" class="staff-block muted">当前范围暂无匹配候选。</text>
+                <button wx:for="{{supervisionPanel.candidates}}" wx:key="caseNumber" class="case-row" data-action="confirm"
+                  data-target="{{item.caseNumber}}" bindtap="onEditSupervision" disabled="{{supervisionPanel.busy || supervisionPanel.mustRefresh}}">
+                  <text class="row-heading">核对 {{item.caseNumber}}</text>
+                  <text class="staff-block muted">发生时间 {{item.time}}</text>
+                </button>
+              </block>
+              <view wx:if="{{supervisionPanel.editor}}" class="editor">
+                <text class="row-heading">{{supervisionPanel.editor.label}}</text>
+                <text wx:if="{{supervisionPanel.editor.target}}" class="staff-block">{{supervisionPanel.editor.target}}</text>
+                <block wx:if="{{supervisionPanel.editor.action === 'classify'}}">
+                  <text class="field-label">点位</text>
+                  <picker range="{{supervisionPanel.points}}" range-key="label" data-field="pointIndex" bindchange="onSupervisionInput">
+                    <view class="select-field" aria-role="button">{{supervisionPanel.points[supervisionPanel.editor.pointIndex].label || '选择点位'}} ▾</view>
+                  </picker>
+                  <text class="field-label">分类</text>
+                  <picker range="{{supervisionPanel.categories}}" range-key="label" data-field="categoryIndex" bindchange="onSupervisionInput">
+                    <view class="select-field" aria-role="button">{{supervisionPanel.categories[supervisionPanel.editor.categoryIndex].label || '选择分类'}} ▾</view>
+                  </picker>
+                </block>
+                <text class="field-label">理由</text>
+                <textarea class="staff-input text-area" value="{{supervisionPanel.editor.reason}}" maxlength="1000" data-field="reason" bindinput="onSupervisionInput" />
+                <button class="button-secondary spaced" bindtap="onSaveSupervision"
+                  disabled="{{supervisionPanel.busy || supervisionPanel.mustRefresh || saving || recovering}}">保存</button>
+              </view>
+            </block>
+          </block>
+        </view>
         <view class="card">
           <text class="section-title">办理操作</text>
           <view wx:if="{{availableActions.length}}" class="action-buttons">

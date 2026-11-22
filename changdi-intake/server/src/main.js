@@ -14,6 +14,9 @@ try {
   const integrations = JSON.parse(process.env.CHANGDI_INTEGRATIONS_JSON ?? '[]');
   const staff = JSON.parse(process.env.CHANGDI_STAFF_JSON ?? '[]');
   const merchants = JSON.parse(process.env.CHANGDI_MERCHANTS_JSON ?? '[]');
+  const supervision = JSON.parse(process.env.CHANGDI_SUPERVISION_JSON ?? 'null');
+  const representativeReports = JSON.parse(process.env.CHANGDI_REPRESENTATIVE_REPORTS_JSON ?? 'null');
+  const tourism = JSON.parse(process.env.CHANGDI_TOURISM_JSON ?? '{}');
   const port = Number(process.env.CHANGDI_PORT ?? 3400);
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Invalid port');
   const evaluationSeconds = Number(process.env.CHANGDI_EVALUATION_SECONDS ?? 7 * 86400);
@@ -40,6 +43,9 @@ try {
     integrations,
     staff,
     merchants,
+    supervision,
+    representativeReports,
+    tourism,
     evaluationSeconds,
     reopenSeconds,
     wechatCode,

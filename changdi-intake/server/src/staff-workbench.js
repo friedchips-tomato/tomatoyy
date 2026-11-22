@@ -15,7 +15,7 @@ const statuses = new Set([
   'awaiting_evaluation', 'closed', 'reopen_pending',
 ]);
 
-function caseScope(principal) {
+export function caseScope(principal) {
   switch (principal.role) {
     case 'duty': return { predicate: '1 = 1', parameters: [] };
     case 'supervisor': return { predicate: 'c.department = ?', parameters: [principal.department] };

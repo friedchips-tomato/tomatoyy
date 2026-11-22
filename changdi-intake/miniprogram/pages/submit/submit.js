@@ -10,6 +10,7 @@ const LIMITS = {
   location: 300,
   category: 80,
   description: 4000,
+  suggestedDepartment: 100,
   contact: 300
 };
 
@@ -67,6 +68,7 @@ function validateSubmission(input) {
   const location = typeof content.location === 'string' ? content.location.trim() : '';
   const category = typeof content.category === 'string' ? content.category.trim() : '';
   const description = typeof content.description === 'string' ? content.description.trim() : '';
+  const suggestedDepartment = typeof content.suggestedDepartment === 'string' ? content.suggestedDepartment.trim() : '';
   const contact = typeof content.contact === 'string' ? content.contact.trim() : '';
   if (!clientRequestId || Array.from(clientRequestId).length > LIMITS.clientRequestId) {
     errors.clientRequestId = '请求号无效，请重新提交。';
@@ -79,6 +81,9 @@ function validateSubmission(input) {
   else if (Array.from(category).length > LIMITS.category) errors.category = '问题类别最多 80 字。';
   if (!description) errors.description = '请填写问题描述。';
   else if (Array.from(description).length > LIMITS.description) errors.description = '问题描述最多 4000 字。';
+  if (suggestedDepartment && Array.from(suggestedDepartment).length > LIMITS.suggestedDepartment) {
+    errors.suggestedDepartment = '建议处理部门最多 100 字。';
+  }
   if (contact && Array.from(contact).length > LIMITS.contact) errors.contact = '联系方式最多 300 字。';
   if (Object.keys(errors).length) return { errors };
   // 字段顺序固定，避免同一内容两次拼装出不同结果。
@@ -89,6 +94,8 @@ function validateSubmission(input) {
     category,
     description
   };
+  // 建议处理部门是选填项：填了才带上，不填不传空串。
+  if (suggestedDepartment) payload.suggestedDepartment = suggestedDepartment;
   if (contact) payload.contact = contact;
   return { errors: {}, payload };
 }
@@ -160,6 +167,10 @@ function statusFailure(response) {
   if (response.statusCode === 429) {
     return { kind: 'limited', message: '提交过于频繁，请稍后再试。' };
   }
+  if (response.statusCode === 503 && code === 'wechat_code_unavailable') {
+    // 工单与照片已保存，只是微信查询码暂不可用；用同一请求重试可取回原回执。
+    return { kind: 'error', unknown: true, message: '诉求已保存，微信查询码暂不可用，请用同一请求稍后重试取回回执。' };
+  }
   if (response.statusCode >= 500) {
     return { kind: 'error', unknown: true, message: '服务暂时不可用，结果未知，请用同一请求稍后重试。' };
   }
@@ -167,6 +178,7 @@ function statusFailure(response) {
 }
 
 // 整理回执。工单编号、公开查询码与私密查询凭证缺一不可，缺任一项都不算可用的回执。
+// 微信小程序查询码是可选字段：随回执原样带出，由页面另行校验与展示。
 function normalizeReceipt(data) {
   if (!data || typeof data !== 'object') return null;
   const caseNumber = typeof data.caseNumber === 'string' ? data.caseNumber.trim() : '';
@@ -175,27 +187,38 @@ function normalizeReceipt(data) {
   if (!caseNumber || !RECEIPT_CODE_PATTERN.test(publicLookupCode) || !RECEIPT_TOKEN_PATTERN.test(privateLookupToken)) {
     return null;
   }
-  return { caseNumber, publicLookupCode, privateLookupToken };
+  const receipt = { caseNumber, publicLookupCode, privateLookupToken };
+  if (data.wechatCode && typeof data.wechatCode === 'object') receipt.wechatCode = data.wechatCode;
+  return receipt;
 }
 
 // 提交一条游客诉求。返回 { kind, ... }，kind 为页面状态机取值。
 // unknown 表示结果未知（超时、断网、响应无法识别）：服务端可能已经建单，
 // 调用方必须沿用同一请求号与同一内容重试，不能改内容换号重发。
-async function submitCase({ request, baseUrl, payload, files, timeout, isCurrent }) {
+// 结果未知时一并返回已发出的请求体 body，调用方按原字节重试，
+// 本机照片临时路径失效也不影响重试。
+// prepared 是已经组装好的请求体：重试时直接复用，不再读本机照片文件。
+async function submitCase({ request, baseUrl, payload, files, timeout, isCurrent, prepared }) {
   if (!baseUrl || typeof baseUrl !== 'string' || !baseUrl.startsWith('http')) {
     return { kind: 'error', message: '服务地址无效，无法提交诉求。' };
   }
   const checked = validateSubmission(payload);
   if (Object.keys(checked.errors).length) {
-    return { kind: 'invalid', errors: checked.errors, message: '请补全必填项后再提交。' };
+    return { kind: 'invalid', local: true, errors: checked.errors, message: '请补全必填项后再提交。' };
   }
-  let body;
-  try {
-    body = await buildMultipart({ payload: checked.payload, files, isCurrent });
-  } catch (error) {
-    return { kind: 'invalid', message: photoMessage(error) };
+  let body = null;
+  if (prepared && prepared.data && prepared.contentType) {
+    // 复用已经发出过的请求体：按原字节重试，不再读本机照片文件。
+    body = prepared;
+  } else {
+    try {
+      body = await buildMultipart({ payload: checked.payload, files, isCurrent });
+    } catch (error) {
+      // 本地校验或制包失败：请求没有发出，服务端没有存单。
+      return { kind: 'invalid', local: true, message: photoMessage(error) };
+    }
+    if (!body) return { kind: 'cancelled' };
   }
-  if (!body) return { kind: 'cancelled' };
   let response;
   try {
     response = await requestJson({
@@ -210,17 +233,22 @@ async function submitCase({ request, baseUrl, payload, files, timeout, isCurrent
     const message = (error && error.message) || '';
     if (/invalid_api_environment/.test(message)) {
       // 服务地址未配置，请求没有发出，可以修正配置后重试。
-      return { kind: 'invalid', message: '服务地址无效，无法提交诉求，请稍后再试。' };
+      return { kind: 'invalid', local: true, message: '服务地址无效，无法提交诉求，请稍后再试。' };
     }
     if (error && error.timedOut) {
-      return { kind: 'timeout', unknown: true, message: '提交超时，结果未知，请用同一请求重试。' };
+      return { kind: 'timeout', unknown: true, body, message: '提交超时，结果未知，请用同一请求重试。' };
     }
-    return { kind: 'network', unknown: true, message: '网络异常，结果未知，请用同一请求重试。' };
+    return { kind: 'network', unknown: true, body, message: '网络异常，结果未知，请用同一请求重试。' };
   }
-  if (response.statusCode !== 200 && response.statusCode !== 201) return statusFailure(response);
+  if (response.statusCode !== 200 && response.statusCode !== 201) {
+    const failure = statusFailure(response);
+    // 结果未知时保留已发出的字节，供按原内容原样重试。
+    if (failure.unknown) failure.body = body;
+    return failure;
+  }
   const receipt = normalizeReceipt(response.data);
   if (!receipt) {
-    return { kind: 'error', unknown: true, message: '回执无法识别，结果未知，请用同一请求稍后重试。' };
+    return { kind: 'error', unknown: true, body, message: '回执无法识别，结果未知，请用同一请求稍后重试。' };
   }
   return { kind: 'success', created: response.statusCode === 201, receipt };
 }

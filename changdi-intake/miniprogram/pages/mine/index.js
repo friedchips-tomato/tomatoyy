@@ -33,11 +33,14 @@ Page({
 
   onLoad() {
     this._seq = 0;
+    // 每条记录各自的重试代次：同时重试多条时互不丢弃结果。
+    this._retries = new Map();
     return this.load();
   },
 
   onUnload() {
     this._seq += 1;
+    this._retries.clear();
   },
 
   // 下拉刷新与「刷新」按钮走同一条路径。
@@ -110,6 +113,11 @@ Page({
     if (typeof code !== 'string' || !code) return;
     const index = this.data.entries.findIndex(item => item.publicLookupCode === code);
     if (index < 0) return;
+    // 页面代次：整表刷新、清除成功或卸载之后才到的旧结果一律丢弃。
+    const pageSeq = this._seq;
+    // 每条记录各自一代次：同时重试多条时互不丢弃，同一条记录再重试则丢弃上一轮。
+    const seq = (this._retries.get(code) || 0) + 1;
+    this._retries.set(code, seq);
     this.setData({
       entries: this.data.entries.map((item, position) => (position === index
         ? { ...item, state: 'loading', message: '' }
@@ -122,6 +130,8 @@ Page({
       code,
       timeout: config.requestTimeout
     });
+    if (pageSeq !== this._seq) return;
+    if (this._retries.get(code) !== seq) return;
     const current = this.data.entries.findIndex(item => item.publicLookupCode === code);
     if (current < 0) return;
     this.setData({
@@ -160,6 +170,12 @@ Page({
     });
   },
 
+  // 手动输码查询：进既有的公开查询页，由用户输入回执中的公开查询码。
+  // 这是「游客与居民 → 我的诉求」的旧入口，保留它才能在没有本机记录时查到进度。
+  onManualCodeTap() {
+    wx.navigateTo({ url: '/pages/public/index' });
+  },
+
   // 查看单条公开进度。网址只带公开查询码。
   onViewTap(event) {
     const code = event && event.currentTarget ? event.currentTarget.dataset.code : '';
@@ -178,10 +194,14 @@ Page({
         if (!result || !result.confirm) return;
         const cleared = clearAll();
         if (!cleared.ok) {
+          // 清除失败不取消原查询：在途查询照常回来，列表不会停在查询中。
           this.setData({ message: '清除失败，请稍后重试。' });
           return;
         }
-        this.setData({ entries: [], empty: true, message: '已清除本机记录。' });
+        // 清除成功：作废在途刷新与重试，之后才到的旧响应不得把已清除的记录画回来。
+        this._seq += 1;
+        this._retries.clear();
+        this.setData({ loading: false, entries: [], empty: true, message: '已清除本机记录。' });
       }
     });
   }

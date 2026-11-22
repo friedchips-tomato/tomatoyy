@@ -6,6 +6,9 @@
       <button class="button-primary" bindtap="onScanTap">扫码查询</button>
       <button class="button-secondary" bindtap="onRefreshTap">刷新</button>
     </view>
+    <view class="actions">
+      <button class="button-secondary" bindtap="onManualCodeTap">手动输码查询</button>
+    </view>
     <text wx:if="{{message}}" class="warning-text" aria-role="alert">{{message}}</text>
   </view>
 
@@ -15,7 +18,7 @@
 
   <view class="card" wx:if="{{!loading && empty}}">
     <text class="card-title">本机暂无记录</text>
-    <text class="muted">本机只保存工单编号与公开查询码，不保存问题描述、发生地点、联系方式和私密查询凭证。提交诉求后回执会留在本机，也可凭回执扫码或输入公开查询码查询进度。</text>
+    <text class="muted">本机只保存工单编号与公开查询码，不保存问题描述、发生地点、联系方式和私密查询凭证。提交诉求后回执会留在本机，也可凭回执扫码，或用「手动输码查询」输入公开查询码查询进度。</text>
   </view>
 
   <view class="card entry-card" wx:for="{{entries}}" wx:key="caseNumber">

@@ -7,6 +7,7 @@ const {
 } = require('./workbench');
 const { canAssignCollaboration, reviewActions, taskView, collaborationPayload, canViewTaskPhotos } = require('./collaborations');
 const { beijingMonth, validReportMonth, reportView } = require('./monthly-report');
+const { emptySupervision, emptyLedger, supervisionMethods, ledgerMethods, conclusionLabels } = require('./supervision');
 const {
   choosePhotos, multipartPhotos, photoMessage, submissionPhotos, supplementPhotos, createPreviewFiles, retryPreviewCleanup
 } = require('./photos');
@@ -14,6 +15,8 @@ const {
 const caseEndpoint = '/api/v1/staff/cases';
 const allQueues = [{ id: '', label: '全部工单' }].concat(queues);
 const readError = '读取失败，请重试。';
+const contactWindowMs = 30_000;
+const emptyContact = () => ({ contact: null, contactReady: false, contactBusy: false, contactError: '' });
 const taskPath = caseNumber => caseEndpoint + '/' + caseNumber + '/collaborations';
 const emptyPreview = () => ({ previewPath: '', previewBusy: false, previewError: '', previewTaskId: '', previewLabel: '' });
 const emptyReport = () => ({ reportMonth: '', reportMaxMonth: '', reportBusy: false, reportError: '', report: null });
@@ -34,6 +37,8 @@ function initialData() {
     counts: null, countError: '', countBusy: false, dueSoonHours: null, asOfLabel: '',
     items: [], nextBefore: '', listBusy: false, listError: '', listReady: false,
     activeCase: '', detail: null, detailBusy: false, detailError: '', availableActions: [],
+    ...emptyContact(),
+    ...emptySupervision(), ...emptyLedger(), conclusionLabels,
     submissionPhotos: [], supplementPhotos: [], canPublishFeedbackPhotos: false, ...emptyPreview(),
     ...emptyReport(),
     editor: null, saving: false, recovering: false, recoveryBusy: false, notice: '',
@@ -45,6 +50,8 @@ const dataset = event => event.currentTarget.dataset;
 
 Page({
   data: initialData(),
+  ...supervisionMethods,
+  ...ledgerMethods,
 
   onLoad() {
     this._alive = true;
@@ -55,6 +62,9 @@ Page({
     this._editorRequest = 0;
     this._collaborationRequest = 0;
     this._previewRequest = 0;
+    this._contactRequest = 0;
+    this._supervisionRequest = 0;
+    this._ledgerRequest = 0;
     this._pickedFiles = [];
     this._previewFiles = createPreviewFiles();
     retryPreviewCleanup();
@@ -67,6 +77,9 @@ Page({
     this._session++;
     this._token = '';
     clearWechatSession(this);
+    this.clearContact();
+    this.resetSupervision();
+    this.resetLedger();
     this.clearMedia();
     this.setData({
       ...initialData(), loginKeys: [this.data.loginKeys[0] + 1], loginError: message || ''
@@ -301,8 +314,9 @@ Page({
 
   onOpenCase(event) {
     const caseNumber = dataset(event).case;
-    if (!this._token || this.data.view === 'report' || this.writesBlocked() ||
+    if (!this._token || !['workbench', 'detail'].includes(this.data.view) || this.writesBlocked() ||
         typeof caseNumber !== 'string' || !casePattern.test(caseNumber)) return;
+    this.clearContact();
     this.setData({ view: 'detail', activeCase: caseNumber, notice: '' });
     return this.loadDetail();
   },
@@ -316,6 +330,8 @@ Page({
     this._detailRequest++;
     this._editorRequest++;
     this._collaborationRequest++;
+    this.clearContact();
+    this.resetSupervision();
     this.clearMedia();
     this.setData({
       view: 'workbench', activeCase: '', detail: null, detailBusy: false, detailError: '',
@@ -332,6 +348,8 @@ Page({
   },
 
   showDetail(value) {
+    this.clearContact();
+    this.resetSupervision();
     this.clearMedia();
     const detail = detailView(value);
     const { staff } = this.data;
@@ -351,6 +369,8 @@ Page({
     const request = ++this._detailRequest;
     this._editorRequest++;
     this._collaborationRequest++;
+    this.clearContact();
+    this.resetSupervision();
     this.clearMedia();
     this.setData({
       detail: null, detailBusy: true, detailError: '', availableActions: [], editor: null,
@@ -375,6 +395,49 @@ Page({
     if (this.data.saving || this.data.recoveryBusy) return;
     if (this.data.recovering) return this.readBack();
     return this.loadDetail();
+  },
+
+  clearContact() {
+    this._contactRequest++;
+    clearTimeout(this._contactTimer);
+    this._contactTimer = null;
+    this.setData(emptyContact());
+  },
+
+  onHideContact() {
+    this.clearContact();
+  },
+
+  async onReadContact() {
+    const { staff, detail, activeCase, view, contactBusy, contactReady } = this.data;
+    const session = this._session;
+    if (!this.active(session) || !this._token || view !== 'detail' || staff?.readContact !== true ||
+        !detail || detail.caseNumber !== activeCase || !casePattern.test(activeCase) || !canView(staff, detail) ||
+        this.writesBlocked() || contactBusy || contactReady) return;
+    const request = ++this._contactRequest;
+    const { origin } = apiEnvironment();
+    const current = () => this.active(session) && request === this._contactRequest &&
+      this.data.view === 'detail' && this.data.activeCase === activeCase && this.data.staff?.readContact === true;
+    const deadline = Date.now() + contactWindowMs;
+    this.setData({ ...emptyContact(), contactBusy: true });
+    this._contactTimer = setTimeout(() => {
+      if (request === this._contactRequest) this.clearContact();
+    }, contactWindowMs);
+    try {
+      const { contact } = await this.request(caseEndpoint + '/' + activeCase + '/contact');
+      if (!current()) return;
+      if (Date.now() >= deadline || origin !== apiEnvironment().origin) return this.clearContact();
+      if (contact !== null && (typeof contact !== 'string' || !contact.trim() || Array.from(contact).length > 300)) {
+        throw new Error('Invalid contact response');
+      }
+      this.setData({ contact, contactReady: true, contactBusy: false });
+    } catch (error) {
+      if (!current()) return;
+      this.clearContact();
+      if (this.sessionError(error)) return;
+      if (error.status === 404) return this.caseUnavailable();
+      this.setData({ contactError: '联系方式读取失败，请重试。' });
+    }
   },
 
   async loadCollaborations(caseNumber) {
@@ -679,6 +742,7 @@ Page({
     const detailRequest = this._detailRequest;
     const activeCase = this.data.activeCase;
     const current = () => this.active(session) && detailRequest === this._detailRequest && this.data.activeCase === activeCase;
+    this.clearContact();
     this.onClosePhotoPreview();
     this.setData({ saving: true, notice: '' });
     let options;

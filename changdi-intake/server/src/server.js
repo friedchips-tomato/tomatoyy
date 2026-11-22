@@ -3,12 +3,15 @@ import {createServer} from 'node:http';
 import {createAuth} from './auth.js';
 import {HttpError, sendJson} from './http.js';
 import {createPublicRateLimiter} from './public-rate-limit.js';
+import {representativeReportConfig} from './representative-report.js';
 import {handleIntakeRoute} from './routes/intake.js';
 import {handleOwnerRoute} from './routes/owner.js';
 import {handleMerchantRoute} from './routes/merchant.js';
 import {handlePublicRoute} from './routes/public.js';
 import {handleStaffRoute} from './routes/staff.js';
+import {handleTourismRoute} from './routes/tourism.js';
 import {openStore} from './store.js';
+import {supervisionConfig} from './supervision.js';
 import {createWechatCodeClient, createWechatReceiptCode} from './wechat-code.js';
 
 const MAX_CONCURRENT_UPLOADS = 4;
@@ -26,6 +29,9 @@ export function createIntakeServer({
   wechatCode,
   wechatLogin,
   publicRateLimit,
+  supervision,
+  representativeReports,
+  tourism = {},
 }) {
   if (!Buffer.isBuffer(receiptKey) || receiptKey.length !== 32) {
     throw new Error('Receipt key must contain 32 bytes');
@@ -36,13 +42,23 @@ export function createIntakeServer({
   if (!Number.isSafeInteger(reopenSeconds) || reopenSeconds < 1 || reopenSeconds > 365 * 86400) {
     throw new Error('Reopen period must be between one second and 365 days');
   }
-  const auth = createAuth(integrations, staff, merchants, { wechatLogin, now });
+  if (!tourism || typeof tourism !== 'object' || Array.isArray(tourism) ||
+      Object.keys(tourism).some(key => key !== 'sources' && key !== 'coverage')) {
+    throw new Error('Invalid tourism configuration');
+  }
+  const {sources: tourismSources = [], coverage = []} = tourism;
+  const auth = createAuth(integrations, staff, merchants, { wechatLogin, now, tourismSources });
+  const supervisionSettings = supervisionConfig(supervision);
+  const representativeSettings = representativeReportConfig(representativeReports, auth.representativeMerchants);
   const rateLimiter = createPublicRateLimiter({ ...publicRateLimit, now });
   const wechatClient = wechatCode === undefined ?
       null : createWechatCodeClient(wechatCode, now);
   const store = openStore(dbPath, receiptKey, now, {
     evaluationSeconds,
     reopenSeconds,
+    supervision: supervisionSettings,
+    representativeReports: representativeSettings,
+    tourism: {sources: tourismSources.map(({id, kind, evidence, subjects}) => ({id, kind, evidence, subjects})), coverage},
   });
   const receiptCode = wechatClient && createWechatReceiptCode(wechatClient, store);
   let uploadsInProgress = 0;
@@ -60,6 +76,7 @@ export function createIntakeServer({
   }
 
   const routeContext = { auth, store, receiptCode, readPhotoUpload, rateLimiter };
+  const tourismContext = {authenticateTourismSource: request => auth.authenticate(request, 'tourism'), tourism: store.tourism};
   const server = createServer({
     headersTimeout: 15_000,
     requestTimeout: 20_000,
@@ -68,6 +85,7 @@ export function createIntakeServer({
   }, async (request, response) => {
     try {
       if (await handleIntakeRoute(request, response, routeContext) ||
+          await handleTourismRoute(request, response, tourismContext) ||
           await handlePublicRoute(request, response, routeContext) ||
           await handleOwnerRoute(request, response, routeContext) ||
           await handleMerchantRoute(request, response, routeContext) ||
