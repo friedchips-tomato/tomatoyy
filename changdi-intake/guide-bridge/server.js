@@ -54,6 +54,20 @@ export function createBridge({ upstream, token, metricsToken }) {
         res.writeHead(response.status, {'Content-Type': 'application/json; charset=utf-8'}).end(body);
         return;
       }
+      if (path.startsWith('/bridge/my-cases/')) {
+        // 只允许单一 my-cases 模式：公开查询码必须是 24 位 [A-Za-z0-9_-]，不做任意路径转发。
+        const match = /^\/bridge\/my-cases\/([A-Za-z0-9_-]{24})$/.exec(path);
+        if (!match) { res.writeHead(404).end(); return; }
+        if (req.headers.origin && req.headers.origin !== `http://127.0.0.1:${res.socket.localPort}`) {
+          res.writeHead(403).end();
+          return;
+        }
+        const target = new URL('/api/v1/public/cases/' + match[1], url);
+        const response = await fetch(target, {redirect: 'error', signal: AbortSignal.timeout(5000)});
+        const body = Buffer.from(await response.arrayBuffer());
+        res.writeHead(response.status, {'Content-Type':'application/json; charset=utf-8'}).end(body);
+        return;
+      }
       if (path === '/bridge/client.js') { res.writeHead(200, {'Content-Type':types['.js']}).end(await readFile(resolve(here,'client.js'))); return; }
       if (path === '/bridge/tourism-client.js') {
         if (!metricsToken) { res.writeHead(404).end(); return; }
@@ -66,7 +80,8 @@ export function createBridge({ upstream, token, metricsToken }) {
       if (!target.startsWith(guide + sep) || !types[extname(target).toLowerCase()]) { res.writeHead(404).end(); return; }
       let body = await readFile(target);
       if (target === resolve(guide, 'index.html')) {
-        const scripts = '<script defer src="/bridge/client.js"></script>'
+        // client.js 用 ES module 导出可测纯函数，因此按 module 脚本注入（module 默认 defer）。
+        const scripts = '<script type="module" src="/bridge/client.js"></script>'
           + (metricsToken ? '<script defer src="/bridge/tourism-client.js"></script>' : '');
         body = Buffer.from(body.toString('utf8').replace('</head>', scripts + '</head>'));
       }

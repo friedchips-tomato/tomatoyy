@@ -86,7 +86,10 @@ def data_fingerprint(manifest: Dict[str, Any]) -> str:
 def write_json(path, obj: Any) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "w", encoding="utf-8") as f:
+    # newline="\n"：生成物一律以 LF 落盘，不受平台默认换行转换影响。
+    # 这样「磁盘字节 = Git blob 字节 = 被哈希的字节」三者在任何平台都相等，
+    # manifest 里记录的 SHA-256 才是可用的完整性凭据（见 scripts/report.py 的 files 字段）。
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
         json.dump(to_jsonable(obj), f, ensure_ascii=False, sort_keys=True, indent=2)
         f.write("\n")
 
@@ -94,5 +97,5 @@ def write_json(path, obj: Any) -> None:
 def write_text(path, text: str) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "w", encoding="utf-8") as f:
+    with open(p, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)

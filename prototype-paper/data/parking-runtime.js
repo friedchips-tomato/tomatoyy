@@ -960,7 +960,7 @@ function recommendChecked(dataset, model, destinationId, arriveAtStr, opts) {
 const DEMO_NOW = "2026-04-10T14:00:00+08:00";
 function demoNow() {
   const override = global.CD_PARKING_DEMO_NOW;
-  return (typeof override === "string" && /^d{4}-d{2}-d{2}Td{2}:d{2}:d{2}/.test(override)) ? override : DEMO_NOW;
+  return (typeof override === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(override)) ? override : DEMO_NOW;
 }
 
 function validDataset(dataset) {

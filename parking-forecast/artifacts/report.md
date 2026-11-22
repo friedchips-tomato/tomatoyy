@@ -7,7 +7,7 @@
 ## 0. 模型与数据
 
 - 模型：`kind=linear`（增量岭回归，M1），预测目标 = `target − free_known`，每 horizon 一个系数向量 + 显式标准化 + 残差分位数区间 p10/p90。
-- 数据指纹：`f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb:45bfe99fd903d065fb9a98f107b52e6c63a10771b0068fed1daad0c5ff8ad96f:ce5e1bc47f07eb1ad865bdc063b672d7f00459171e3204d56dc6c32c155d3988`（`data/synthetic/manifest.json` 的 file_sha256）。
+- 数据指纹：`571c7f36d82b66db860b50f6e5b97d6eccd01237be43d40d24df3e1626b870ad:4f61d76032596b6a26e4c93ecc8b0e4cfedf0375d8358102327200bbbf1cae7d:6385dabe29609dcf3a902b8c4dd5e0b77f247d0ea25ae5a28e8ab756c1490990`（`data/synthetic/manifest.json` 的 file_sha256）。
 - 切分：train 2026-04-01~2026-04-07 → valid 2026-04-09~2026-04-10 → test 2026-04-12~2026-04-14，切分点后各留 24h embargo。
 
 ## 1. 主口径：模型 vs 基线（D0 样本，绝对车位 MAE + WAPE）

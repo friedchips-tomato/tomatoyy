@@ -131,7 +131,8 @@ def test_generate_consistency_fixture():
         "recommend_cases": recs,
     }
     FIXTURE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # newline="\n"：夹具也是生成物，一律 LF 落盘（与 pf.export.write_json 同一策略）。
     FIXTURE_PATH.write_text(json.dumps(fixture, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
-                            encoding="utf-8")
+                            encoding="utf-8", newline="\n")
     assert len(cases) == N_CASES
     assert len(recs) == N_RECOMMEND
