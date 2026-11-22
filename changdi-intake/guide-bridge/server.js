@@ -19,7 +19,8 @@ export function createBridge({ upstream, token, metricsToken }) {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'no-referrer');
     try {
-      const path = new URL(req.url, 'http://localhost').pathname;
+      const incoming = new URL(req.url, 'http://localhost');
+      const path = incoming.pathname;
       if (path === '/bridge/tourism-events') {
         await handleTourism(req, res);
         return;
@@ -35,6 +36,24 @@ export function createBridge({ upstream, token, metricsToken }) {
         return;
       }
       if (req.method !== 'GET') { res.writeHead(405).end(); return; }
+      if (path.startsWith('/bridge/parking/')) {
+        const route = path.slice('/bridge/parking/'.length);
+        if (!['recommendations', 'lots'].includes(route) && !/^lots\/[A-Za-z0-9_-]{1,32}\/forecast$/.test(route)) {
+          res.writeHead(404).end();
+          return;
+        }
+        if (req.headers.origin && req.headers.origin !== `http://127.0.0.1:${res.socket.localPort}`) {
+          res.writeHead(403).end();
+          return;
+        }
+        const target = new URL('/api/v1/public/parking/' + route, url);
+        target.search = incoming.search;
+        const response = await fetch(target, {redirect: 'error', signal: AbortSignal.timeout(5000)});
+        const body = Buffer.from(await response.arrayBuffer());
+        if (response.headers.has('retry-after')) res.setHeader('Retry-After', response.headers.get('retry-after'));
+        res.writeHead(response.status, {'Content-Type': 'application/json; charset=utf-8'}).end(body);
+        return;
+      }
       if (path === '/bridge/client.js') { res.writeHead(200, {'Content-Type':types['.js']}).end(await readFile(resolve(here,'client.js'))); return; }
       if (path === '/bridge/tourism-client.js') {
         if (!metricsToken) { res.writeHead(404).end(); return; }

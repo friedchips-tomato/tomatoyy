@@ -50,6 +50,8 @@ try {
     reopenSeconds,
     wechatCode,
     wechatLogin,
+    parkingRateLimit: process.env.CHANGDI_PARKING_RATE_LIMIT === undefined ? undefined :
+      JSON.parse(process.env.CHANGDI_PARKING_RATE_LIMIT),
     onInternalError: () => console.error('changdi-intake: internal_error'),
   });
   server.once('error', error => {
