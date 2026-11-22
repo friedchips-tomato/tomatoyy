@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_artifact",
+  "description": "运行时产物契约（01 §5 / 03 §3.4）。导览侧读取 window.CD_PARKING_ARTIFACT；字段名统一 snake_case（generated_at / model_version / data_fingerprint，对应 01 §5 提到的 generatedAt / modelVersion / dataFingerprint 概念，按 02 §2 约定落为 snake_case）。阶段 2 export.py 会进一步细化此契约。",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "model_version", "data_fingerprint", "source", "lots", "forecasts", "recommendations"],
+  "properties": {
+    "schema_version": { "type": "string", "description": "本 artifact 契约版本，版本不兼容时运行时返回 unavailable" },
+    "generated_at": { "type": "string" },
+    "model_version": { "type": ["string", "null"] },
+    "data_fingerprint": { "type": "string", "description": "训练所用数据集的 manifest 指纹，用于复算追溯" },
+    "source": { "enum": ["synthetic", "real"] },
+    "unavailable": { "type": "boolean", "description": "产物缺失/版本不兼容时运行时返回 unavailable" },
+    "lots": { "type": "array" },
+    "forecasts": { "type": "array" },
+    "recommendations": { "type": "array" }
+  },
+  "additionalProperties": false
+}

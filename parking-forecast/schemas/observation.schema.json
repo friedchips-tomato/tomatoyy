@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_observation",
+  "description": "余位观测时序（02 §2.2，核心表）。free_spaces 允许 null 表示缺失（不得用 0 顶替）。quality=missing 时 free_spaces 必为 null、stale 时 age_seconds 必填——该条件约束由生成器与读取层强制，JSON Schema 子集无法表达 if/then。",
+  "type": "object",
+  "required": ["lot_id", "ts", "free_spaces", "source", "quality"],
+  "properties": {
+    "lot_id": { "type": "string", "description": "外键 → parking_lot.lot_id" },
+    "ts": { "type": "string", "description": "观测时刻（带时区）" },
+    "free_spaces": { "type": ["integer", "null"], "description": "当前余位；null 表示缺失，不是 0" },
+    "total_spaces": { "type": ["integer", "null"], "description": "当时总位数；null 时回落到车场静态表" },
+    "source": { "enum": ["synthetic", "sensor", "manual", "api"] },
+    "quality": { "enum": ["ok", "stale", "suspect", "missing"] },
+    "age_seconds": { "type": ["integer", "null"], "description": "数据年龄；stale 时必填，是过期判定的唯一依据" },
+    "ingested_at": { "type": ["string", "null"], "description": "入库时刻，真实数据接入后用于重算" }
+  },
+  "additionalProperties": false
+}

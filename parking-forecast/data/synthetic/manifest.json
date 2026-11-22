@@ -1,0 +1,217 @@
+{
+  "config": {
+    "day_type": {
+      "holiday_shift": {
+        "P1": 0.15,
+        "P2": 0.12
+      },
+      "holidays": [
+        {
+          "date": "2026-04-06",
+          "name": "示范节假日"
+        }
+      ],
+      "weekend_shift": {
+        "P1": 0.1,
+        "P2": 0.08
+      },
+      "workday_shift": {
+        "P1": 0.08,
+        "P2": 0.05
+      }
+    },
+    "end_date": "2026-04-14",
+    "events": [
+      {
+        "dates": [
+          "2026-04-04",
+          "2026-04-05"
+        ],
+        "event_id": "EVT-DEMO-001",
+        "hours": [
+          18.0,
+          22.0
+        ],
+        "name": "长堤夜市（示范）",
+        "strength": 0.6
+      }
+    ],
+    "generated_at": "2026-04-15T00:00:00+08:00",
+    "granularity_minutes": 15,
+    "lots": [
+      {
+        "access": {
+          "height_limit_m": null,
+          "note": "沿江路单行道，需从水埠头方向进入（示范）",
+          "one_way": false,
+          "open_hours": "00:00-24:00",
+          "restricted_hours": []
+        },
+        "base_occupancy": 0.72,
+        "district": "长堤骑楼街",
+        "fee": {
+          "amount": 5.0,
+          "mode": "hourly",
+          "note": "5 元/小时（示范）",
+          "unit": "CNY"
+        },
+        "geometry": null,
+        "lot_id": "P1",
+        "name": "沿江停车场",
+        "notes": "合成数据，仅用于管线验证",
+        "profile": "urban_core",
+        "source": "synthetic",
+        "total_spaces": 120,
+        "walk_to_street": {
+          "meters": 150,
+          "minutes": 2
+        }
+      },
+      {
+        "access": {
+          "height_limit_m": 2.2,
+          "note": "内街单行（示范）",
+          "one_way": true,
+          "open_hours": "06:00-24:00",
+          "restricted_hours": [
+            {
+              "from": "07:00",
+              "note": "早高峰只出不进（示范）",
+              "to": "09:00"
+            }
+          ]
+        },
+        "base_occupancy": 0.52,
+        "district": "长堤骑楼街",
+        "fee": {
+          "amount": 4.0,
+          "mode": "hourly",
+          "note": "4 元/小时（示范）",
+          "unit": "CNY"
+        },
+        "geometry": null,
+        "lot_id": "P2",
+        "name": "内街停车场",
+        "notes": "合成数据，仅用于管线验证",
+        "profile": "urban_core",
+        "source": "synthetic",
+        "total_spaces": 80,
+        "walk_to_street": {
+          "meters": 450,
+          "minutes": 6
+        }
+      }
+    ],
+    "missing_rate": 0.03,
+    "noise": {
+      "rho": 0.7,
+      "sigma": 0.015
+    },
+    "outage_windows": [
+      {
+        "from": "2026-04-03T02:00:00",
+        "lot_id": "P1",
+        "to": "2026-04-03T04:00:00"
+      }
+    ],
+    "peak": {
+      "intensity": {
+        "P1": 0.18,
+        "P2": 0.15
+      }
+    },
+    "profile": {
+      "urban_core": [
+        [
+          0.0,
+          0.05
+        ],
+        [
+          7.5,
+          0.2
+        ],
+        [
+          9.5,
+          1.0
+        ],
+        [
+          12.0,
+          0.65
+        ],
+        [
+          17.0,
+          0.95
+        ],
+        [
+          19.5,
+          1.0
+        ],
+        [
+          22.0,
+          0.55
+        ],
+        [
+          24.0,
+          0.05
+        ]
+      ]
+    },
+    "seed": 42,
+    "stale_rate": 0.02,
+    "start_date": "2026-04-01",
+    "suspect_rate": 0.0,
+    "weather": {
+      "block_hours": 6,
+      "coeff": {
+        "cloudy": -0.02,
+        "heavy_rain": -0.1,
+        "rain": -0.06,
+        "storm": -0.15,
+        "sunny": 0.0
+      },
+      "distribution": {
+        "cloudy": 0.3,
+        "heavy_rain": 0.04,
+        "rain": 0.15,
+        "storm": 0.01,
+        "sunny": 0.5
+      },
+      "intensity": 1.0,
+      "temperature": {
+        "cloudy": [
+          22.0,
+          28.0
+        ],
+        "heavy_rain": [
+          18.0,
+          23.0
+        ],
+        "rain": [
+          20.0,
+          25.0
+        ],
+        "storm": [
+          16.0,
+          20.0
+        ],
+        "sunny": [
+          24.0,
+          32.0
+        ]
+      }
+    }
+  },
+  "file_sha256": {
+    "lots.jsonl": "f06f4020f09d7fd22a0826eb80ae72342ba93b96776abb1044a18cbd39471feb",
+    "observations.jsonl": "45bfe99fd903d065fb9a98f107b52e6c63a10771b0068fed1daad0c5ff8ad96f",
+    "signals.jsonl": "ce5e1bc47f07eb1ad865bdc063b672d7f00459171e3204d56dc6c32c155d3988"
+  },
+  "generated_at": "2026-04-15T00:00:00+08:00",
+  "generator_version": "1.0.0",
+  "sample_counts": {
+    "lots.jsonl": 2,
+    "observations.jsonl": 2688,
+    "signals.jsonl": 1402
+  },
+  "seed": 42
+}

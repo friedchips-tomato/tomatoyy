@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "parking_recommendation",
+  "description": "推荐输出（02 §2.5）。items / alternates 为数组；单个 item 字段（lot_id/name/arrive_free/arrive_free_rate/arrive_free_p10/arrive_free_p90/walk_meters/walk_minutes/fee_amount/fee_unit/updated_at/stale/score/score_breakdown/reasons/total_time_minutes/transfer/restrictions/forecast_method/degraded）见 02 §2.5，数组元素深度校验由阶段 3 check.mjs 完成。score 方向固定：越大越靠前。",
+  "type": "object",
+  "required": ["destination_id", "arrive_at", "preference", "generated_at", "items", "alternates", "source"],
+  "properties": {
+    "destination_id": { "type": "string", "description": "目的地锚点 id（点位 id 或车场 id）" },
+    "arrive_at": { "type": "string", "description": "计划到达时刻（带时区）" },
+    "preference": { "enum": ["save_time", "less_walking"], "description": "save_time 省总时间 / less_walking 少走路" },
+    "generated_at": { "type": "string" },
+    "items": { "type": "array" },
+    "alternates": { "type": "array", "description": "备选车场（同一目的地次优项）" },
+    "source": { "enum": ["synthetic", "real"] }
+  },
+  "additionalProperties": false
+}
