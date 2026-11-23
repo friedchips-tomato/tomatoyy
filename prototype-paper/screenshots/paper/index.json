@@ -1,0 +1,38 @@
+[
+  {
+    "file": "prototype/screenshots/01-home.png",
+    "label": "像素导览 · 首页街景地图"
+  },
+  {
+    "file": "prototype/screenshots/02-point.png",
+    "label": "像素导览 · 点位卡（点位摘要与讲解）"
+  },
+  {
+    "file": "prototype/screenshots/03-lit.png",
+    "label": "像素导览 · 收卡盖印后点亮街景"
+  },
+  {
+    "file": "prototype/screenshots/04-route-preview.png",
+    "label": "像素导览 · 三条候选路线预览"
+  },
+  {
+    "file": "prototype/screenshots/05-parking.png",
+    "label": "像素导览 · 服务 · 停车（余位曲线）"
+  },
+  {
+    "file": "prototype/screenshots/06-album.png",
+    "label": "像素导览 · 个人页卡册与预约 / 诉求"
+  },
+  {
+    "file": "prototype-paper/screenshots/board-h5.png",
+    "label": "导览端汇总大图（游客主流程长图）"
+  },
+  {
+    "file": "prototype-paper/screenshots/board-ops.png",
+    "label": "运营台汇总大图"
+  },
+  {
+    "file": "prototype-paper/screenshots/pic-compare.png",
+    "label": "点位卡配图三种做法对比"
+  }
+]

@@ -29,7 +29,16 @@ function checkFile(ref, image = false) {
   }
 }
 
+function checkSources(label, sources) {
+  if (!Array.isArray(sources) || sources.length === 0
+    || sources.some(source => typeof source !== "string" || source.trim().length === 0)) {
+    errors.push(`${label} 的 sources 必须是非空来源字符串数组`);
+  }
+}
+
 for (const point of points) {
+  checkSources(`点位 ${point.id}`, point.sources);
+  if (point.guide) checkSources(`点位 ${point.id} 的三语讲解稿`, point.guide.sources);
   if (!point.id || pointIds.has(point.id)) errors.push(`无效或重复的点位 ID：${point.id}`);
   pointIds.add(point.id);
   const { x, y, w, h } = point.hotspot || {};
@@ -46,8 +55,16 @@ function checkRefs(kind, id, refs) {
   }
 }
 
-for (const route of routes) checkRefs("路线", route.id, route.points);
-for (const story of stories) checkRefs("故事线", story.id, story.nodes.map(node => node.point));
+for (const route of routes) {
+  checkRefs("路线", route.id, route.points);
+  checkSources(`路线 ${route.id}`, route.sources);
+}
+for (const story of stories) {
+  checkRefs("故事线", story.id, story.nodes.map(node => node.point));
+  for (const [index, node] of story.nodes.entries()) {
+    checkSources(`故事线 ${story.id} 节点 ${index + 1}（${node.point}）`, node.sources);
+  }
+}
 
 // 停车字段校验（阶段 3）：lot_id 合法、fee 结构完整、时间戳可解析、余位 ∈ [0,total]、forecast 长度与粒度一致。
 // 新增字段（fee/access/updated_at/source/walk_minutes）为可选：缺省时回落静态示范数据，不作为错误；存在时校验结构。

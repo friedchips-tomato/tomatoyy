@@ -156,7 +156,7 @@
 | --- | --- | --- |
 | `caseNumber` | `CD-3F2A9C7E5B1D8406A9C4E7B2D5F80130` | `CD-` + 32 位大写十六进制 |
 | `publicLookupCode` | `ebIZ7JBnxpMZbM6mFK5qRYnr` | 24 位 `[A-Za-z0-9_-]` |
-| `privateLookupToken` | `pEkN37yDLjtSyY3I1Gc8u95cNeA6Dk-kvMEne-y_0oE` | 私密查询凭证，由服务端签发 |
+| `privateLookupToken` | `<PRIVATE_LOOKUP_TOKEN>` | 私密查询凭证，由服务端签发 |
 
 ---
 
@@ -188,7 +188,7 @@ Cache-Control: no-store
 {
   "caseNumber": "CD-3F2A9C7E5B1D8406A9C4E7B2D5F80130",
   "publicLookupCode": "ebIZ7JBnxpMZbM6mFK5qRYnr",
-  "privateLookupToken": "pEkN37yDLjtSyY3I1Gc8u95cNeA6Dk-kvMEne-y_0oE"
+  "privateLookupToken": "<PRIVATE_LOOKUP_TOKEN>"
 }
 ```
 
@@ -225,7 +225,7 @@ Content-Type: application/json; charset=utf-8
 {
   "caseNumber": "CD-3F2A9C7E5B1D8406A9C4E7B2D5F80130",
   "publicLookupCode": "ebIZ7JBnxpMZbM6mFK5qRYnr",
-  "privateLookupToken": "pEkN37yDLjtSyY3I1Gc8u95cNeA6Dk-kvMEne-y_0oE"
+  "privateLookupToken": "<PRIVATE_LOOKUP_TOKEN>"
 }
 ```
 
@@ -315,7 +315,7 @@ Content-Type: application/json; charset=utf-8
 │  ── 下方分隔线以下为仅您可见的内容 ──      │
 │                                        │
 │  私密查询凭证（请截图保存，勿转发他人）      │
-│  pEkN37yDLjtSyY3I1Gc8u95cNeA6Dk-kvMEne-y_0oE      │
+│  <PRIVATE_LOOKUP_TOKEN>      │
 │  凭此凭证可在小程序内核验本人身份，          │
 │  查看完整反馈、补充材料、评价和申请补办。      │
 └────────────────────────────────────────┘

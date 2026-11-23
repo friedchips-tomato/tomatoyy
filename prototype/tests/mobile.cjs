@@ -1,12 +1,12 @@
-// Run with a local HTTP preview URL. Requires playwright-core on NODE_PATH.
+// Run with a local HTTP preview URL. Requires playwright-core installed (npm install --no-save playwright-core).
+// Browser: auto-detects local Microsoft Edge; override with the CHROMIUM_PATH environment variable.
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const os = require('node:os');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright-core');
+const { resolveChromiumPath } = require('./browser.cjs');
 const root = path.resolve(__dirname, '..');
-const executablePath = process.env.CHROMIUM_PATH || path.join(os.homedir(),
-  'Library/Caches/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-mac-arm64/chrome-headless-shell');
+const executablePath = resolveChromiumPath();
 
 async function exercise(browser, url, capture) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });

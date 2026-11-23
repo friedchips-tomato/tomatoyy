@@ -1,0 +1,14 @@
+[
+  {
+    "file": "prototype-paper/screenshots/link/01-游客诉求闭环.png",
+    "label": "联动对照 01 · 游客诉求闭环（提交→回执→查询→评价）"
+  },
+  {
+    "file": "prototype-paper/screenshots/link/02-处置流转闭环.png",
+    "label": "联动对照 02 · 处置流转闭环（队列→工单→办理→复核→关闭）"
+  },
+  {
+    "file": "prototype-paper/screenshots/link/03-停车接驳联动.png",
+    "label": "联动对照 03 · 停车接驳联动（余位→选场→接驳路线→到达）"
+  }
+]

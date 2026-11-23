@@ -7,8 +7,10 @@
 在仓库根目录启动 HTTP 预览，然后打开对应页面。
 
 ```sh
-python3 -m http.server 8931 --bind 127.0.0.1
+python -m http.server 8931 --bind 127.0.0.1
 ```
+
+> Windows 上命令是 `python`；macOS / Linux 上用 `python3`（Windows 的 `python3` 是 Microsoft Store 存根，退出码 49，不能用）。
 
 | 页面 | 地址 |
 | --- | --- |
@@ -45,6 +47,7 @@ python3 -m http.server 8931 --bind 127.0.0.1
 | `assets/` | 地图、小卡 JPG，以及样张的两张撕纸边 PNG |
 | `check.mjs` | 静态自检（复制自旧版） |
 | `tests/pages.cjs` `tests/ops.cjs` | 逐页走查并截图 |
+| `screenshots/miniprogram/` | 微信小程序 6 页界面示意图（静态绘制，非真机截图；见该目录的 README） |
 
 ## 运营台与游客端的联动
 

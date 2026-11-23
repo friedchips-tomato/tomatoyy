@@ -1,0 +1,18 @@
+[
+  {
+    "file": "prototype-paper/screenshots/intake/01-receipt.png",
+    "label": "提交回执（脱敏展示副本）· 工单编号 / 公开查询码 / 本人私密凭证值均已遮挡 + 我的诉求"
+  },
+  {
+    "file": "prototype-paper/screenshots/intake/02-panel-after-refresh.png",
+    "label": "我的诉求面板（脱敏展示副本）· 刷新后状态与里程碑 + 重新查询（工单编号已遮挡）"
+  },
+  {
+    "file": "prototype-paper/screenshots/intake/03-case-not-found.png",
+    "label": "我的诉求面板 · 查不到该工单（降级态）"
+  },
+  {
+    "file": "prototype-paper/screenshots/intake/04-upstream-down.png",
+    "label": "我的诉求面板（脱敏展示副本）· 暂时查不到进度（上游异常降级态，工单编号已遮挡）"
+  }
+]

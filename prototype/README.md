@@ -4,8 +4,10 @@
 
 ```sh
 cd prototype
-python3 -m http.server 8000
+python -m http.server 8000
 ```
+
+> Windows 上命令是 `python`；macOS / Linux 上用 `python3`（Windows 的 `python3` 是 Microsoft Store 存根，退出码 49，不能用）。
 
 在本机打开 `http://localhost:8000/`。同一局域网内的手机可打开电脑局域网 IP 对应的 8000 端口。页面使用原生 HTML、CSS 和 JavaScript，打开前无需安装依赖。
 

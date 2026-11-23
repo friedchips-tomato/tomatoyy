@@ -1,0 +1,398 @@
+{
+  "generated": "2026-11-23",
+  "generatedBy": "prototype-paper/screenshots/tools/build_index.py",
+  "pathBase": "仓库根（repo root）",
+  "note": "全部截图来自本地演示与原型环境，不是线上真机截图；停车相关数字为示范数据。intake 回执类截图均为脱敏展示副本，原始证据不入库，仅保存在仓库外本机目录。",
+  "groups": [
+    {
+      "key": "h5",
+      "label": "导览 H5 · 游客主流程",
+      "dir": "prototype-paper/screenshots/h5",
+      "dirs": [
+        "prototype-paper/screenshots/h5"
+      ],
+      "index": "h5/index.json",
+      "count": 29,
+      "capturedBy": "prototype-paper/tests/pages.cjs（本机 Microsoft Edge 自动定位，viewport 390×844）",
+      "capturedAt": "2026-11-23",
+      "note": "游客侧导览主流程：首页街景、点位与讲解、盖印收卡、行程单三条路线、到站讲解、扫码到站、讲解预约、服务（讲解员/停车/反馈）与个人中心。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/h5/01-home.png",
+          "label": "首页 · 街景看楼"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/02-point-card.png",
+          "label": "点位卡"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/03-detail.png",
+          "label": "点位详情"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/04-listen.png",
+          "label": "讲解（手动收听）"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/05-reward.png",
+          "label": "收卡 · 盖印"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/06-map-lit.png",
+          "label": "街景 · 点亮一栋后"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/07-story.png",
+          "label": "故事线"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/08-route-form.png",
+          "label": "沿街行程单 · 填写"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/09-route-results.png",
+          "label": "三条候选路线"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/10-route-nav.png",
+          "label": "沿街行程 · 地图导航"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/11-itinerary.png",
+          "label": "行程单"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/12-arrival-listen.png",
+          "label": "到站讲解"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/13-route-complete.png",
+          "label": "路线完成"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/14-scan.png",
+          "label": "扫码到站（模拟）"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/15-guides.png",
+          "label": "服务 · 讲解员"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/16-booking.png",
+          "label": "讲解预约"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/17-booking-success.png",
+          "label": "预约已提交"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/18-parking.png",
+          "label": "服务 · 停车"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/19-parking-point.png",
+          "label": "停车场点位卡"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/20-feedback.png",
+          "label": "服务 · 反馈"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/21-feedback-success.png",
+          "label": "反馈已受理"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/22-mine.png",
+          "label": "个人页 · 卡册"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/23-mine-records.png",
+          "label": "个人页 · 预约与诉求"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/24-journal.png",
+          "label": "游记回听"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/25-listen-yue.png",
+          "label": "讲解 · 粤语"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/pic-crop.png",
+          "label": "配图 · crop"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/pic-mount.png",
+          "label": "配图 · mount"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/pic-stamp.png",
+          "label": "配图 · stamp"
+        },
+        {
+          "file": "prototype-paper/screenshots/h5/26-journal-empty.png",
+          "label": "游记回听 · 空状态"
+        }
+      ]
+    },
+    {
+      "key": "intake",
+      "label": "接诉即办接入层 · 导览端回执与进度",
+      "dir": "prototype-paper/screenshots/intake",
+      "dirs": [
+        "prototype-paper/screenshots/intake"
+      ],
+      "index": "intake/index.json",
+      "count": 4,
+      "capturedBy": "prototype-paper/tests/intake.cjs（本机 Microsoft Edge 自动定位，viewport 390×844）",
+      "capturedAt": "2026-11-23",
+      "note": "导览 H5 反馈表单接入接诉即办后的回执与查询：提交回执（工单编号/公开查询码/私密凭证，值已脱敏）、刷新后「我的诉求」里程碑，以及查不到工单、上游不可用两种降级态。01/02/04 均为公开展示用的脱敏副本，原始证据不入库。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/intake/01-receipt.png",
+          "label": "提交回执（脱敏展示副本）· 工单编号 / 公开查询码 / 本人私密凭证值均已遮挡 + 我的诉求"
+        },
+        {
+          "file": "prototype-paper/screenshots/intake/02-panel-after-refresh.png",
+          "label": "我的诉求面板（脱敏展示副本）· 刷新后状态与里程碑 + 重新查询（工单编号已遮挡）"
+        },
+        {
+          "file": "prototype-paper/screenshots/intake/03-case-not-found.png",
+          "label": "我的诉求面板 · 查不到该工单（降级态）"
+        },
+        {
+          "file": "prototype-paper/screenshots/intake/04-upstream-down.png",
+          "label": "我的诉求面板（脱敏展示副本）· 暂时查不到进度（上游异常降级态，工单编号已遮挡）"
+        }
+      ]
+    },
+    {
+      "key": "ops",
+      "label": "运营台 · 值班视角（桌面 + 手机）",
+      "dir": "prototype-paper/screenshots/ops",
+      "dirs": [
+        "prototype-paper/screenshots/ops"
+      ],
+      "index": "ops/index.json",
+      "count": 16,
+      "capturedBy": "prototype-paper/tests/ops.cjs（本机 Microsoft Edge 自动定位，viewport 390×844 与 1280×800）",
+      "capturedAt": "2026-11-23",
+      "note": "运营台值班视角：诉求工单列表与详情、讲解预约、车场点位、点位内容维护，以及运营台操作后游客端「我的」「停车」的同步结果。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/ops/phone-01-overview.png",
+          "label": "值班总览（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-02-tickets.png",
+          "label": "诉求工单（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-03-ticket-detail.png",
+          "label": "工单详情 · 分派前（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-04-ticket-processing.png",
+          "label": "工单详情 · 处理中（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-05-bookings.png",
+          "label": "讲解预约 · 待确认（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-06-parking.png",
+          "label": "车场 · 标记陈旧（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-07-content.png",
+          "label": "点位内容（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-08-guest-mine-synced.png",
+          "label": "游客端「我的」· 运营台处理后（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/phone-09-guest-parking-stale.png",
+          "label": "游客端停车 · 运营台标记陈旧后（390×844）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-01-overview.png",
+          "label": "值班总览（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-02-tickets.png",
+          "label": "诉求工单（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-03-ticket-detail.png",
+          "label": "工单详情 · 分派前（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-04-ticket-processing.png",
+          "label": "工单详情 · 处理中（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-05-bookings.png",
+          "label": "讲解预约 · 待确认（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-06-parking.png",
+          "label": "车场 · 标记陈旧（1280×800）"
+        },
+        {
+          "file": "prototype-paper/screenshots/ops/desk-07-content.png",
+          "label": "点位内容（1280×800）"
+        }
+      ]
+    },
+    {
+      "key": "parking",
+      "label": "停车预测 · 正常与降级",
+      "dir": "prototype-paper/screenshots/parking",
+      "dirs": [
+        "prototype-paper/screenshots/parking"
+      ],
+      "index": "parking/index.json",
+      "count": 4,
+      "capturedBy": "prototype-paper/tests/parking.cjs（本机 Microsoft Edge 自动定位，viewport 390×844）",
+      "capturedAt": "2026-11-23",
+      "note": "停车推荐卡片的正常态与降级态：余位/费用/步行距离与预测曲线、少走路偏好切换、预测产物损坏回退、无产物回退。图中数字均为本地示范数据。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/parking/01-parking-normal.png",
+          "label": "停车 · 正常预测卡片（模拟数据 + 预测曲线）"
+        },
+        {
+          "file": "prototype-paper/screenshots/parking/02-parking-preference.png",
+          "label": "停车 · 偏好切换（少走路）"
+        },
+        {
+          "file": "prototype-paper/screenshots/parking/03-parking-bad-artifact.png",
+          "label": "停车 · 坏产物回退（暂不可用）"
+        },
+        {
+          "file": "prototype-paper/screenshots/parking/04-parking-no-artifact.png",
+          "label": "停车 · 无产物回退"
+        }
+      ]
+    },
+    {
+      "key": "miniprogram",
+      "label": "微信小程序 · 6 页界面示意图",
+      "dir": "prototype-paper/screenshots/miniprogram",
+      "dirs": [
+        "prototype-paper/screenshots/miniprogram"
+      ],
+      "index": "miniprogram/index.json",
+      "count": 6,
+      "capturedBy": "prototype-paper/screenshots/miniprogram/render.py（Pillow 静态绘制，750×1334）",
+      "capturedAt": "2026-11-23",
+      "note": "接诉即办微信小程序 6 页界面示意图（首页 / 提交诉求 / 我的诉求 / 公开查询 / 商户 / 管理方工作台）。仓库无微信开发者工具，为静态绘制示意图，非真机截图。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/miniprogram/01-home.png",
+          "label": "首页 · 长堤风貌街（提交诉求 / 游客与居民 / 商户 / 管理方 四个入口）"
+        },
+        {
+          "file": "prototype-paper/screenshots/miniprogram/02-submit.png",
+          "label": "提交诉求 · 匿名表单与提交回执（工单编号 / 公开查询码 / 私密凭证）"
+        },
+        {
+          "file": "prototype-paper/screenshots/miniprogram/03-mine.png",
+          "label": "我的诉求 · 本机回执夹（工单编号 / 公开查询码 / 提交时间）与进度查询"
+        },
+        {
+          "file": "prototype-paper/screenshots/miniprogram/04-public.png",
+          "label": "公开查询 · 里程碑时间线、补件上传与三维评价"
+        },
+        {
+          "file": "prototype-paper/screenshots/miniprogram/05-merchant.png",
+          "label": "商户 · 身份核验、本商户工单、提交诉求与协办送审"
+        },
+        {
+          "file": "prototype-paper/screenshots/miniprogram/06-staff.png",
+          "label": "管理方工作台 · 7 个队列计数、工单列表、13 个办理动作与督办协办"
+        }
+      ]
+    },
+    {
+      "key": "paper",
+      "label": "纸质原型 · 像素导览与汇总大图",
+      "dir": "prototype-paper/screenshots",
+      "dirs": [
+        "prototype/screenshots",
+        "prototype-paper/screenshots"
+      ],
+      "index": "paper/index.json",
+      "count": 9,
+      "capturedBy": "prototype/tests/mobile.cjs（像素导览 390×844）+ prototype-paper 汇总大图导出",
+      "capturedAt": "2026-11-22",
+      "note": "像素版导览原型的走查截图（首页 / 点位 / 点亮 / 路线 / 停车 / 卡册），以及纸质原型的三张汇总大图：导览端汇总、运营台汇总、点位卡配图对比。",
+      "files": [
+        {
+          "file": "prototype/screenshots/01-home.png",
+          "label": "像素导览 · 首页街景地图"
+        },
+        {
+          "file": "prototype/screenshots/02-point.png",
+          "label": "像素导览 · 点位卡（点位摘要与讲解）"
+        },
+        {
+          "file": "prototype/screenshots/03-lit.png",
+          "label": "像素导览 · 收卡盖印后点亮街景"
+        },
+        {
+          "file": "prototype/screenshots/04-route-preview.png",
+          "label": "像素导览 · 三条候选路线预览"
+        },
+        {
+          "file": "prototype/screenshots/05-parking.png",
+          "label": "像素导览 · 服务 · 停车（余位曲线）"
+        },
+        {
+          "file": "prototype/screenshots/06-album.png",
+          "label": "像素导览 · 个人页卡册与预约 / 诉求"
+        },
+        {
+          "file": "prototype-paper/screenshots/board-h5.png",
+          "label": "导览端汇总大图（游客主流程长图）"
+        },
+        {
+          "file": "prototype-paper/screenshots/board-ops.png",
+          "label": "运营台汇总大图"
+        },
+        {
+          "file": "prototype-paper/screenshots/pic-compare.png",
+          "label": "点位卡配图三种做法对比"
+        }
+      ]
+    },
+    {
+      "key": "link",
+      "label": "联动对照图 · 3 张流程对照",
+      "dir": "prototype-paper/screenshots/link",
+      "dirs": [
+        "prototype-paper/screenshots/link"
+      ],
+      "index": "link/index.json",
+      "count": 3,
+      "capturedBy": "prototype-paper/screenshots/link/render_link.py（Pillow 拼版现有截图并加标注）",
+      "capturedAt": "2026-11-23",
+      "note": "答辩用联动对照图：游客诉求闭环、处置流转闭环、停车接驳联动。由已有截图拼版绘制，未改动任何原图界面内容。",
+      "files": [
+        {
+          "file": "prototype-paper/screenshots/link/01-游客诉求闭环.png",
+          "label": "联动对照 01 · 游客诉求闭环（提交→回执→查询→评价）"
+        },
+        {
+          "file": "prototype-paper/screenshots/link/02-处置流转闭环.png",
+          "label": "联动对照 02 · 处置流转闭环（队列→工单→办理→复核→关闭）"
+        },
+        {
+          "file": "prototype-paper/screenshots/link/03-停车接驳联动.png",
+          "label": "联动对照 03 · 停车接驳联动（余位→选场→接驳路线→到达）"
+        }
+      ]
+    }
+  ]
+}

@@ -2,3 +2,12 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+node_modules/
+
+# 答辩现场一键启停脚本的运行时产物（不进 git）
+scripts/.demo.pids.json
+scripts/.demo-logs/
+/scripts/.demo-local/
+
+# 演示前自检生成的结果文件（每次运行覆盖）
+docs/演示前自检-*.txt

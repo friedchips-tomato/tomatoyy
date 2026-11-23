@@ -15,6 +15,7 @@ window.CD_DATA = {
     ]
   },
 
+  // guide.sources 为 zh/yue/en 三语讲解稿的共同出处；路线来源仅指沿途内容，时长与距离仍为示意。
   points: [
     {
       id: "CD-R01",
@@ -28,7 +29,8 @@ window.CD_DATA = {
       guide: {
         zh: "这里是长堤的东端。从蓬江大桥一路向西，到江门铁桥为止，沿江大约一点五公里，就是长堤历史文化街区。往下滑，我们从这头开始走。",
         yue: "呢度系长堤嘅东头。由蓬江大桥一路向西行，行到江门铁桥为止，沿住条江大约一点五公里，就系长堤历史文化街区。向下碌，我哋由呢头开始行。",
-        en: "This is the east end of Changdi. From Pengjiang Bridge west to the Jiangmen Iron Bridge, about one and a half kilometres along the river, lies the Changdi historic district. Scroll down and let's start walking from here."
+        en: "This is the east end of Changdi. From Pengjiang Bridge west to the Jiangmen Iron Bridge, about one and a half kilometres along the river, lies the Changdi historic district. Scroll down and let's start walking from here.",
+        sources: ["携程景点页「长堤风貌街」"]
       },
       sources: ["携程景点页「长堤风貌街」"]
     },
@@ -46,7 +48,8 @@ window.CD_DATA = {
       guide: {
         zh: "你现在来到启明里。它在长堤历史风貌区的东侧，是江门中心城区的华侨村落之一。走进巷子，可以留意侨房的门楼和窗户。这里住过哪些侨眷、建于哪一年，我们还在整理史料，核实后会补充进讲解。",
         yue: "你而家嚟到启明里。佢喺长堤历史风貌区嘅东边，系江门市区入面嘅华侨村落之一。行入条巷，可以留意下侨屋嘅门楼同埋啲窗。呢度住过边啲侨眷、几时起嘅，我哋仲整理紧史料，核实咗之后会补返入讲解度。",
-        en: "You are now at Qimingli, on the east side of the Changdi historic district. It is one of the overseas-Chinese villages in central Jiangmen. As you walk into the lane, look at the gateways and windows of the old houses. We are still checking the records on who lived here and when it was built, and will add them once confirmed."
+        en: "You are now at Qimingli, on the east side of the Changdi historic district. It is one of the overseas-Chinese villages in central Jiangmen. As you walk into the lane, look at the gateways and windows of the old houses. We are still checking the records on who lived here and when it was built, and will add them once confirmed.",
+        sources: ["中国新闻网 2025-10-22 报道", "期刊论文《长堤历史文化街区启明里片区微更新实践》（题名据检索结果）"]
       },
       sources: ["中国新闻网 2025-10-22 报道", "期刊论文《长堤历史文化街区启明里片区微更新实践》（题名据检索结果）"]
     },
@@ -64,7 +67,8 @@ window.CD_DATA = {
       guide: {
         zh: "一九零四年，江门辟为对外通商口岸，长堤沿江一带随之商号林立。地图上这栋楼标的是海关旧址的位置示意，确切地址和建筑样貌还在核实。等史料确认后，这一站会补上完整讲解。",
         yue: "一九零四年，江门开埠做对外通商口岸，长堤沿江一带跟住开满商号。地图上面呢栋楼标嘅系海关旧址嘅大概位置，准确地址同建筑样貌仲核实紧。等史料确认咗，呢一站会补返完整讲解。",
-        en: "In 1904 Jiangmen opened as a treaty port, and shops soon lined the Changdi riverfront. This building marks the approximate site of the former customs house; its exact address and appearance are still being verified. A full narration will follow once the records are confirmed."
+        en: "In 1904 Jiangmen opened as a treaty port, and shops soon lined the Changdi riverfront. This building marks the approximate site of the former customs house; its exact address and appearance are still being verified. A full narration will follow once the records are confirmed.",
+        sources: ["凤凰网《江门墟兴 老城脉续》"]
       },
       sources: ["凤凰网《江门墟兴 老城脉续》"]
     },
@@ -82,7 +86,8 @@ window.CD_DATA = {
       guide: {
         zh: "眼前是两栋并肩相连的骑楼，叫双联骑楼，建于晚清民初。现在它是江门市博物馆的长堤分馆，办过「烟火长堤」主题展，里面还有咖啡和非遗体验空间。走累了，可以进去坐一坐。",
         yue: "你面前系两栋孖住起嘅骑楼，叫双联骑楼，系晚清民初起嘅。而家佢系江门市博物馆嘅长堤分馆，搞过「烟火长堤」主题展，入面仲有咖啡同非遗体验空间。行攰咗，可以入去坐下。",
-        en: "In front of you are two arcade buildings joined side by side, a twin qilou from the late Qing and early Republican era. It now houses the Changdi branch of the Jiangmen Museum, which has hosted the 'Smoke and Fire of Changdi' exhibition and has a café and an intangible-heritage workshop inside. If you're tired, step in and rest."
+        en: "In front of you are two arcade buildings joined side by side, a twin qilou from the late Qing and early Republican era. It now houses the Changdi branch of the Jiangmen Museum, which has hosted the 'Smoke and Fire of Changdi' exhibition and has a café and an intangible-heritage workshop inside. If you're tired, step in and rest.",
+        sources: ["携程景点页「长堤风貌街」", "新快报 2024-08-28 报道"]
       },
       sources: ["携程景点页「长堤风貌街」", "新快报 2024-08-28 报道"]
     },
@@ -100,7 +105,8 @@ window.CD_DATA = {
       guide: {
         zh: "顺着石阶往下看，台阶一级一级伸进江水里，这就是水埠头。过去人们在这里上下船、取水洗衣。它也是好几部影视作品的取景地。有游记说这里一共三十三级，你可以自己数一数。",
         yue: "顺住啲石级向下望，一级一级伸落江水度，呢度就系水埠头。旧时啲人喺度上落船、担水洗衫。佢都系几套影视作品嘅取景地。有游记话呢度一共三十三级，你可以自己数下。",
-        en: "Follow the stone steps down as they reach into the river: this is Shuibutou, the old water landing. It has appeared in several film and TV productions. Travel notes say there are 33 steps. Why not count them yourself?"
+        en: "Follow the stone steps down as they reach into the river: this is Shuibutou, the old water landing. It has appeared in several film and TV productions. Travel notes say there are 33 steps. Why not count them yourself?",
+        sources: ["携程游记", "澎湃新闻报道"]
       },
       sources: ["携程游记", "澎湃新闻报道"]
     },
@@ -118,7 +124,8 @@ window.CD_DATA = {
       guide: {
         zh: "抬头看看这排骑楼。底层连续的拱券是罗马式的，楼上彩色玻璃的窗户叫满洲窗，屋顶女儿墙中间那块装饰是浮雕山花。西式拱券和岭南的满洲窗在同一面墙上，这就是长堤骑楼的中西合璧。",
         yue: "抬起头睇下呢排骑楼。地下一路落嘅拱券系罗马式，楼上嗰啲彩色玻璃窗叫满洲窗，天面女儿墙中间嗰块装饰系浮雕山花。西式拱券同岭南满洲窗喺同一幅墙度，呢样就系长堤骑楼嘅中西合璧。",
-        en: "Look up at this row of arcades. The arches along the ground floor are Roman in style, the coloured-glass windows above are called Manchu windows, and the ornament on the parapet is a relief gable. Western arches and Lingnan windows on one façade: that is the East-meets-West character of Changdi's qilou."
+        en: "Look up at this row of arcades. The arches along the ground floor are Roman in style, the coloured-glass windows above are called Manchu windows, and the ornament on the parapet is a relief gable. Western arches and Lingnan windows on one façade: that is the East-meets-West character of Changdi's qilou.",
+        sources: ["携程景点页「长堤风貌街」"]
       },
       sources: ["携程景点页「长堤风貌街」"]
     },
@@ -136,7 +143,8 @@ window.CD_DATA = {
       guide: {
         zh: "这条往内街延伸的路叫新市路，也属于长堤历史文化街区。电视剧《狂飙》在这里取过景，不少游客专门来找同一个机位拍照。",
         yue: "呢条向内街伸入去嘅路叫新市路，都系长堤历史文化街区嘅一部分。电视剧《狂飙》喺度取过景，好多游客专登嚟揾同一个机位影相。",
-        en: "This street heading inland is Xinshi Road, part of the Changdi historic district. The TV drama 'The Knockout' filmed scenes here, and many visitors come looking for the same camera angles."
+        en: "This street heading inland is Xinshi Road, part of the Changdi historic district. The TV drama 'The Knockout' filmed scenes here, and many visitors come looking for the same camera angles.",
+        sources: ["携程景点页「长堤风貌街」", "澎湃新闻报道"]
       },
       sources: ["携程景点页「长堤风貌街」", "澎湃新闻报道"]
     },
@@ -154,7 +162,8 @@ window.CD_DATA = {
       guide: {
         zh: "墟，就是集市。长堤一带从明代起就形成了墟集，后来才有了沿江的商号和骑楼。墟顶老街也叫三十三墟街，也是影视取景地。它和长堤的具体边界，我们还在核实。",
         yue: "墟，即系趁墟嘅墟，就系市集。长堤一带由明代开始就有墟集，后来先至有沿江嘅商号同骑楼。墟顶老街又叫三十三墟街，都系影视取景地。佢同长堤嘅具体边界，我哋仲核实紧。",
-        en: "A 'xu' is a market. Markets formed around Changdi as early as the Ming dynasty, long before the riverside shops and arcades. Xuding Old Street, also called Thirty-Three Market Street, has also been used as a filming location. Its exact boundary with Changdi is still being verified."
+        en: "A 'xu' is a market. Markets formed around Changdi as early as the Ming dynasty, long before the riverside shops and arcades. Xuding Old Street, also called Thirty-Three Market Street, has also been used as a filming location. Its exact boundary with Changdi is still being verified.",
+        sources: ["凤凰网《江门墟兴 老城脉续》", "携程游记"]
       },
       sources: ["凤凰网《江门墟兴 老城脉续》", "携程游记"]
     },
@@ -169,7 +178,7 @@ window.CD_DATA = {
       oneLine: "示范数据：余位与预测均为模拟。",
       intro: "这是用于演示停车功能的示范停车场，余位与预测数据均为模拟，接入需求方停车数据后替换。",
       guide: null,
-      sources: []
+      sources: ["示范数据，无公开史料出处"]
     },
     {
       id: "CD-R02",
@@ -183,7 +192,8 @@ window.CD_DATA = {
       guide: {
         zh: "走到江门铁桥，长堤就到头了。回头看，一点五公里的骑楼沿江排开，这就是江门城区开始的地方。",
         yue: "行到江门铁桥，长堤就行完喇。返转头望，一点五公里嘅骑楼沿住江排开，呢度就系江门城区开始嘅地方。",
-        en: "At the Jiangmen Iron Bridge, Changdi comes to an end. Look back: a kilometre and a half of arcades along the river, where the city of Jiangmen began."
+        en: "At the Jiangmen Iron Bridge, Changdi comes to an end. Look back: a kilometre and a half of arcades along the river, where the city of Jiangmen began.",
+        sources: ["携程景点页「长堤风貌街」"]
       },
       sources: ["携程景点页「长堤风貌街」"]
     }
@@ -196,11 +206,11 @@ window.CD_DATA = {
       title: "从墟集到商埠",
       summary: "沿着长堤，看一条集市怎样变成通商口岸的商业街。",
       nodes: [
-        { point: "CD-S03", text: "明代，长堤一带形成墟集，人们在这里趁墟买卖。" },
-        { point: "CD-A02", text: "1904 年，江门辟为对外通商口岸。" },
-        { point: "CD-S01", text: "开埠后商号林立，沿江建起数百间中西合璧的骑楼。" },
-        { point: "CD-A03", text: "江边的石阶码头，连着水路与街市。" },
-        { point: "CD-A01", text: "今天，晚清民初的双联骑楼成了博物馆分馆。" }
+        { point: "CD-S03", text: "明代，长堤一带形成墟集，人们在这里趁墟买卖。", sources: ["凤凰网《江门墟兴 老城脉续》","携程游记"] },
+        { point: "CD-A02", text: "1904 年，江门辟为对外通商口岸。", sources: ["凤凰网《江门墟兴 老城脉续》"] },
+        { point: "CD-S01", text: "开埠后商号林立，沿江建起数百间中西合璧的骑楼。", sources: ["携程景点页「长堤风貌街」"] },
+        { point: "CD-A03", text: "江边的石阶码头，连着水路与街市。", sources: ["携程游记","澎湃新闻报道"] },
+        { point: "CD-A01", text: "今天，晚清民初的双联骑楼成了博物馆分馆。", sources: ["携程景点页「长堤风貌街」","新快报 2024-08-28 报道"] }
       ]
     }
   ],
@@ -214,6 +224,7 @@ window.CD_DATA = {
       minutes: 45,
       meters: 1100,
       points: ["CD-V01", "CD-A02", "CD-A01", "CD-A03", "CD-S01"],
+      sources: ["中国新闻网 2025-10-22 报道","期刊论文《长堤历史文化街区启明里片区微更新实践》（题名据检索结果）","凤凰网《江门墟兴 老城脉续》","携程景点页「长堤风貌街」","新快报 2024-08-28 报道","携程游记","澎湃新闻报道"],
       reason: "五个最有代表性的点位，沿江一路向西，不走回头路。",
       tags: ["建筑", "历史"]
     },
@@ -224,6 +235,7 @@ window.CD_DATA = {
       minutes: 60,
       meters: 1400,
       points: ["CD-S03", "CD-S02", "CD-S01", "CD-A02", "CD-A03", "CD-A01"],
+      sources: ["凤凰网《江门墟兴 老城脉续》","携程游记","携程景点页「长堤风貌街」","澎湃新闻报道","新快报 2024-08-28 报道"],
       reason: "按故事线顺序走，先看老墟街，再看开埠后的骑楼和码头。",
       tags: ["历史", "人物"]
     },
@@ -234,6 +246,7 @@ window.CD_DATA = {
       minutes: 30,
       meters: 600,
       points: ["CD-P01", "CD-S01", "CD-A03", "CD-A01"],
+      sources: ["携程景点页「长堤风貌街」","携程游记","澎湃新闻报道","新快报 2024-08-28 报道"],
       reason: "从停车场出发，只走沿江一段，步行约 600 米，适合带老人小孩。",
       tags: ["拍照", "轻松"],
       drive: true

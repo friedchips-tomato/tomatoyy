@@ -1,14 +1,15 @@
 // 走查值班运营台，并验证运营台改动回到游客端「我的」。截图写入 prototype-paper/screenshots/ops/。
-//   NODE_PATH=<含 playwright-core 的 node_modules> node prototype-paper/tests/ops.cjs http://127.0.0.1:8931/prototype-paper/
+//   npm install --no-save playwright-core
+//   node prototype-paper/tests/ops.cjs http://127.0.0.1:8931/prototype-paper/
+// 浏览器：默认自动探测本机 Microsoft Edge，可用环境变量 CHROMIUM_PATH 覆盖。
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const os = require('node:os');
 const { chromium } = require('playwright-core');
+const { resolveChromiumPath } = require('./browser.cjs');
 const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'screenshots', 'ops');
-const executablePath = process.env.CHROMIUM_PATH || path.join(os.homedir(),
-  'Library/Caches/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-mac-arm64/chrome-headless-shell');
+const executablePath = resolveChromiumPath();
 
 async function main(base) {
   fs.mkdirSync(outDir, { recursive: true });

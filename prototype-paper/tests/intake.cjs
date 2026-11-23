@@ -1,13 +1,13 @@
 // 接诉即办「我的诉求」走查（任务书 P2 验收要求 E）。
 // 用法：
-//   NODE_PATH=<含 playwright-core 的 node_modules> CHROMIUM_PATH=<chrome-headless-shell> \
+//   npm install --no-save playwright-core
 //   node prototype-paper/tests/intake.cjs
+// 浏览器：默认自动探测本机 Microsoft Edge，可用环境变量 CHROMIUM_PATH 覆盖。
 // 脚本自带真实接诉即办服务端与导览接入层，截图写入 prototype-paper/screenshots/intake/。
 // 断言失败或页面出现脚本错误时以非零状态退出。
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const os = require('node:os');
 const { randomBytes } = require('node:crypto');
 const { once } = require('node:events');
 const { mkdtemp, rm } = require('node:fs/promises');
@@ -15,11 +15,11 @@ const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright-core');
+const { resolveChromiumPath } = require('./browser.cjs');
 
 const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'screenshots', 'intake');
-const executablePath = process.env.CHROMIUM_PATH || path.join(os.homedir(),
-  'Library/Caches/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-mac-arm64/chrome-headless-shell');
+const executablePath = resolveChromiumPath();
 
 async function main() {
   fs.mkdirSync(outDir, { recursive: true });
