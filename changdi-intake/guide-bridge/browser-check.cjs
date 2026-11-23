@@ -3,12 +3,25 @@ const assert = require('node:assert/strict');
 const { randomBytes } = require('node:crypto');
 const { once } = require('node:events');
 const { mkdtemp, rm, readFile } = require('node:fs/promises');
+const { existsSync } = require('node:fs');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { setTimeout: delay } = require('node:timers/promises');
 const { runInNewContext } = require('node:vm');
 const { chromium } = require('playwright-core');
+
+// 浏览器定位：复用走查脚本的公共解析（CHROMIUM_PATH 优先，其次自动探测本机 Edge），
+// 找不到时给出中文提示而不是 playwright 的英文异常。
+const BROWSER_HELPER = join(__dirname, '..', '..', 'prototype-paper', 'tests', 'browser.cjs');
+function resolveBrowserPath() {
+  if (existsSync(BROWSER_HELPER)) {
+    const { resolveChromiumPath } = require(BROWSER_HELPER);
+    return resolveChromiumPath();
+  }
+  if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  throw new Error('找不到可用的 Chromium 内核浏览器：请设置 CHROMIUM_PATH 指向本机 Edge/Chrome 可执行文件');
+}
 
 const beijingOffset = 8 * 3600000;
 const beijingMonth = ms => new Date(ms + beijingOffset).toISOString().slice(0, 7);
@@ -264,7 +277,7 @@ async function checkTourism(page, origin, events) {
     intake.listen(0,'127.0.0.1'); await once(intake,'listening');
     const upstream = `http://127.0.0.1:${intake.address().port}`;
     bridge = createBridge({upstream,token}); bridge.listen(0,'127.0.0.1'); await once(bridge,'listening');
-    browser = await chromium.launch({executablePath:process.env.CHROMIUM_PATH,headless:true});
+    browser = await chromium.launch({executablePath:resolveBrowserPath(),headless:true});
     const page = await browser.newPage({viewport:{width:390,height:844},locale:'zh-CN'});
     const errors = []; page.on('pageerror',e=>errors.push(e.message));
     await page.goto(`http://127.0.0.1:${bridge.address().port}/`);
