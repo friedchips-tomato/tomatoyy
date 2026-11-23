@@ -3,3 +3,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 node_modules/
+
+# 答辩现场一键启停脚本的运行时产物（不进 git）
+scripts/.demo.pids.json
+scripts/.demo-logs/
+/scripts/.demo-local/
