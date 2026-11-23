@@ -8,3 +8,6 @@ node_modules/
 scripts/.demo.pids.json
 scripts/.demo-logs/
 /scripts/.demo-local/
+
+# 演示前自检生成的结果文件（每次运行覆盖）
+docs/演示前自检-*.txt
