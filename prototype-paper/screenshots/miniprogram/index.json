@@ -1,26 +1,26 @@
 [
   {
-    "file": "01-home.png",
+    "file": "prototype-paper/screenshots/miniprogram/01-home.png",
     "label": "首页 · 长堤风貌街（提交诉求 / 游客与居民 / 商户 / 管理方 四个入口）"
   },
   {
-    "file": "02-submit.png",
+    "file": "prototype-paper/screenshots/miniprogram/02-submit.png",
     "label": "提交诉求 · 匿名表单与提交回执（工单编号 / 公开查询码 / 私密凭证）"
   },
   {
-    "file": "03-mine.png",
+    "file": "prototype-paper/screenshots/miniprogram/03-mine.png",
     "label": "我的诉求 · 本机回执夹（工单编号 / 公开查询码 / 提交时间）与进度查询"
   },
   {
-    "file": "04-public.png",
+    "file": "prototype-paper/screenshots/miniprogram/04-public.png",
     "label": "公开查询 · 里程碑时间线、补件上传与三维评价"
   },
   {
-    "file": "05-merchant.png",
+    "file": "prototype-paper/screenshots/miniprogram/05-merchant.png",
     "label": "商户 · 身份核验、本商户工单、提交诉求与协办送审"
   },
   {
-    "file": "06-staff.png",
+    "file": "prototype-paper/screenshots/miniprogram/06-staff.png",
     "label": "管理方工作台 · 7 个队列计数、工单列表、13 个办理动作与督办协办"
   }
 ]
