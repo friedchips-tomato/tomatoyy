@@ -1,18 +1,18 @@
 [
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\parking\\01-parking-normal.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\parking\\01-parking-normal.png",
     "label": "停车 · 正常预测卡片（模拟数据 + 预测曲线）"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\parking\\02-parking-preference.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\parking\\02-parking-preference.png",
     "label": "停车 · 偏好切换（少走路）"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\parking\\03-parking-bad-artifact.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\parking\\03-parking-bad-artifact.png",
     "label": "停车 · 坏产物回退（暂不可用）"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\parking\\04-parking-no-artifact.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\parking\\04-parking-no-artifact.png",
     "label": "停车 · 无产物回退"
   }
 ]

@@ -1,118 +1,118 @@
 [
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\01-home.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\01-home.png",
     "label": "首页 · 街景看楼"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\02-point-card.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\02-point-card.png",
     "label": "点位卡"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\03-detail.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\03-detail.png",
     "label": "点位详情"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\04-listen.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\04-listen.png",
     "label": "讲解（手动收听）"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\05-reward.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\05-reward.png",
     "label": "收卡 · 盖印"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\06-map-lit.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\06-map-lit.png",
     "label": "街景 · 点亮一栋后"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\07-story.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\07-story.png",
     "label": "故事线"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\08-route-form.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\08-route-form.png",
     "label": "沿街行程单 · 填写"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\09-route-results.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\09-route-results.png",
     "label": "三条候选路线"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\10-route-nav.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\10-route-nav.png",
     "label": "沿街行程 · 地图导航"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\11-itinerary.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\11-itinerary.png",
     "label": "行程单"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\12-arrival-listen.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\12-arrival-listen.png",
     "label": "到站讲解"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\13-route-complete.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\13-route-complete.png",
     "label": "路线完成"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\14-scan.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\14-scan.png",
     "label": "扫码到站（模拟）"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\15-guides.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\15-guides.png",
     "label": "服务 · 讲解员"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\16-booking.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\16-booking.png",
     "label": "讲解预约"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\17-booking-success.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\17-booking-success.png",
     "label": "预约已提交"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\18-parking.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\18-parking.png",
     "label": "服务 · 停车"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\19-parking-point.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\19-parking-point.png",
     "label": "停车场点位卡"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\20-feedback.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\20-feedback.png",
     "label": "服务 · 反馈"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\21-feedback-success.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\21-feedback-success.png",
     "label": "反馈已受理"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\22-mine.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\22-mine.png",
     "label": "个人页 · 卡册"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\23-mine-records.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\23-mine-records.png",
     "label": "个人页 · 预约与诉求"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\24-journal.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\24-journal.png",
     "label": "游记回听"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\25-listen-yue.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\25-listen-yue.png",
     "label": "讲解 · 粤语"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\pic-crop.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\pic-crop.png",
     "label": "配图 · crop"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\pic-mount.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\pic-mount.png",
     "label": "配图 · mount"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\pic-stamp.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\pic-stamp.png",
     "label": "配图 · stamp"
   },
   {
-    "file": "D:\\乐游蓬江AI智慧导览小程序\\tomatoyy\\prototype-paper\\screenshots\\h5\\26-journal-empty.png",
+    "file": "C:\\Users\\17109\\orca\\workspaces\\tomatoyy\\t1-walkthrough-v3\\prototype-paper\\screenshots\\h5\\26-journal-empty.png",
     "label": "游记回听 · 空状态"
   }
 ]
