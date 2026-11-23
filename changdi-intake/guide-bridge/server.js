@@ -11,7 +11,8 @@ const types = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; char
 
 export function createBridge({ upstream, token, metricsToken }) {
   const url = new URL(upstream);
-  if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || url.username || url.password || url.pathname !== '/' || url.search || url.hash || !token) throw new Error('Local loopback upstream and token required');
+  if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('GUIDE_INTAKE_ORIGIN must be a loopback address without credentials');
+  if (!token) throw new Error('Configure GUIDE_INTAKE_TOKEN');
   if (metricsToken && metricsToken === token) throw new Error('Tourism and intake require separate tokens');
   const handleTourism = createTourismHandler(url, metricsToken);
   return createServer(async (req, res) => {
@@ -96,11 +97,90 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const port = Number(process.env.GUIDE_BRIDGE_PORT || 8932);
     if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Invalid port');
     const server = createBridge({
-      upstream: process.env.GUIDE_INTAKE_ORIGIN || 'http://127.0.0.1:3400',
+      upstream: readUpstream(process.env.GUIDE_INTAKE_ORIGIN || 'http://127.0.0.1:3400'),
       token: process.env.GUIDE_INTAKE_TOKEN,
       metricsToken: process.env.GUIDE_METRICS_TOKEN
     });
     server.listen(port, '127.0.0.1', () => console.log(`Guide bridge: http://127.0.0.1:${port}/`));
     for (const signal of ['SIGINT','SIGTERM']) process.once(signal, () => server.close());
-  } catch { console.error('Guide bridge startup failed: check local configuration'); process.exitCode = 1; }
+  } catch (error) {
+    // 通用提示保留，另起一行打印脱敏后的真实原因（与后端 server/src/main.js 同口径）。
+    const secrets = secretValues(process.env);
+    const reason = describeStartupFailure(error);
+    console.error('Guide bridge startup failed: check local configuration');
+    console.error('Guide bridge startup error:', redact(reason, secrets));
+    const stack = redact(startupStack(error, reason), secrets);
+    if (stack) console.error('Guide bridge startup stack:', stack);
+    process.exitCode = 1;
+  }
+}
+
+// 启动失败诊断：打印真实原因，但绝不回显任何凭据。
+// 与后端 server/src/main.js 同思路：先通用提示，再脱敏后的根因。
+// 这里全部用函数声明（会被提升），因此可以放在文件末尾，
+// 而上面的启动块在模块求值时就能直接调用。
+
+function secretValues(environment) {
+  const secrets = new Set();
+  const add = value => { if (typeof value === 'string' && value.length > 0) secrets.add(value); };
+  // 令牌与上游地址都不回显：上游地址里可能带用户名口令。
+  add(environment.GUIDE_INTAKE_TOKEN);
+  add(environment.GUIDE_METRICS_TOKEN);
+  add(environment.GUIDE_INTAKE_ORIGIN);
+  return [...secrets];
+}
+
+function redact(text, secrets) {
+  let output = String(text);
+  for (const secret of secrets) {
+    if (secret) output = output.split(secret).join('[redacted]');
+  }
+  // 兜底遮蔽 32 位以上的 base64url 串（令牌都是这种长度），已知环境变量名保留，
+  // 这样现场仍能看出是哪一个变量没配好。
+  const known = new Set(['GUIDE_INTAKE_TOKEN', 'GUIDE_METRICS_TOKEN', 'GUIDE_INTAKE_ORIGIN', 'GUIDE_BRIDGE_PORT', 'NODE_ENV']);
+  output = output.replace(/[A-Za-z0-9_-]{32,}/g, match => known.has(match) ? match : '[redacted]');
+  return output;
+}
+
+// JSON 解析失败只报变量名与位置，不回显原文（原文里可能带 token）。
+function parseConfigurationJson(name, raw) {
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    const detail = String(error && error.message ? error.message : error);
+    const position = /at position (\d+)/.exec(detail)?.[1];
+    throw new Error('Invalid ' + name + ': not valid JSON' + (position ? ' at position ' + position : ''));
+  }
+}
+
+// 读取上游地址：只接受 http://127.0.0.1:<port>。
+// 现场常把整段 JSON 配置粘进这个变量：这时只报变量名与位置，不回显原文。
+function readUpstream(raw) {
+  const text = String(raw ?? '').trim();
+  if (text.startsWith('{') || text.startsWith('[')) {
+    parseConfigurationJson('GUIDE_INTAKE_ORIGIN', text);
+    throw new Error('Invalid GUIDE_INTAKE_ORIGIN: expected http://127.0.0.1:<port>');
+  }
+  try { new URL(text); } catch { throw new Error('Invalid GUIDE_INTAKE_ORIGIN: not a valid URL'); }
+  return text;
+}
+
+// 归一化根因文案：JSON 解析错误只保留变量名与位置。
+function describeStartupFailure(error) {
+  const message = error && error.message ? String(error.message) : String(error);
+  const position = /at position (\d+)/.exec(message)?.[1];
+  if (position) {
+    const name = /Invalid ([A-Z][A-Z0-9_]*)/.exec(message)?.[1] ?? 'GUIDE_INTAKE_ORIGIN';
+    return 'Invalid ' + name + ': not valid JSON at position ' + position;
+  }
+  return message;
+}
+
+// 堆栈的首行是原始消息，可能带原文；替换成脱敏后的根因。
+function startupStack(error, reason) {
+  if (!error || !error.stack) return '';
+  const stack = String(error.stack);
+  const message = error && error.message ? String(error.message) : '';
+  if (!message || !stack.includes(message)) return stack;
+  return stack.replace(message, reason);
 }

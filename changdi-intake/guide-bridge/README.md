@@ -21,6 +21,15 @@ npm.cmd start
 npm.cmd test
 ```
 
+启动失败时退出码为 1，终端会先打印通用提示，再打印**脱敏后的真实原因**（与接诉后端 `server/src/main.js` 同口径）：令牌、上游地址与任何长串凭据都不会原样出现在输出里，只有环境变量名会保留。
+
+```text
+Guide bridge startup failed: check local configuration
+Guide bridge startup error: Configure GUIDE_INTAKE_TOKEN
+```
+
+常见根因互不相同，可据此判断：缺接单令牌报 `Configure GUIDE_INTAKE_TOKEN`；上游不是回环地址报 `GUIDE_INTAKE_ORIGIN must be a loopback address without credentials`；上游变量被粘成 JSON 报 `Invalid GUIDE_INTAKE_ORIGIN: not valid JSON at position N`（只报变量名与位置，不回显原文）；接单令牌与行为令牌相同报 `Tourism and intake require separate tokens`；端口非法报 `Invalid port`；`NODE_ENV=production` 报 `Local development only`。JSON 原文若含令牌，也会被整体遮蔽成 `[redacted]`。
+
 浏览器走查另需本机已有的 `playwright-core` 和 Chromium 或 Edge，通过 `NODE_PATH` 指向其所在 `node_modules`，`CHROMIUM_PATH` 指向浏览器程序后运行 `node browser-check.cjs`。脚本启动临时接诉后端和接入层，模拟回执丢失并重试，再以真实浏览器操作导览界面，把行为事件经接入层送入临时接诉后端并落库，最后用值班凭据读取管理月报并按浏览器实际发出的事件复算各组数字。结束时关闭浏览器和服务并删除测试数据库。
 
 ```powershell
