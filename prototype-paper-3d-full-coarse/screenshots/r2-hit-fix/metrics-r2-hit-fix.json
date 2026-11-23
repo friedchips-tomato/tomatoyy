@@ -1,0 +1,5358 @@
+{
+  "url": "http://127.0.0.1:8943/prototype-paper-3d-full-coarse/",
+  "timestamp": "2026-11-22T23:56:33.570Z",
+  "viewports": {
+    "desktop-1280": {
+      "viewport": {
+        "vw": 1280,
+        "vh": 860,
+        "dpr": 2,
+        "isTouch": false,
+        "reducedMotion": false
+      },
+      "errors": [],
+      "routes": {
+        "flat": {
+          "st100": {
+            "mapRect": [
+              445,
+              102,
+              390,
+              638
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 10,
+          "st150": {
+            "mapRect": [
+              445,
+              102,
+              390,
+              638
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-P01"
+          ],
+          "clicks150Count": 9,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 728,
+              "y": 153,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 755,
+              "y": 153,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 783,
+              "y": 153,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 711,
+              "y": 684,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 739,
+              "y": 684,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 766,
+              "y": 684,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 546,
+              "y": 250,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 585,
+              "y": 250,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 623,
+              "y": 250,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 692,
+              "y": 476,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 516,
+              "y": 162,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 555,
+              "y": 162,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 593,
+              "y": 162,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 594,
+              "y": 407,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 686,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 719,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 752,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 582,
+              "y": 614,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 634,
+              "y": 727,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            }
+          ]
+        },
+        "R1": {
+          "st100": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-S02"
+          ],
+          "clicks150Count": 7,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 771,
+              "y": 182,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 783,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 601,
+              "y": 279,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 708,
+              "y": 506,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 541,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 579,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 618,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 618,
+              "y": 436,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 743,
+              "y": 538,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 607,
+              "y": 645,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 457,
+              "y": 641,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            }
+          ]
+        },
+        "R2": {
+          "st100": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 13,
+          "st150": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 8,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 744,
+              "y": 182,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 771,
+              "y": 182,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 799,
+              "y": 182,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 727,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 755,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 783,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "rightEdge",
+              "x": 784,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 562,
+              "y": 279,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 601,
+              "y": 279,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 639,
+              "y": 279,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 675,
+              "y": 506,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 708,
+              "y": 506,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 741,
+              "y": 506,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 515,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 554,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 592,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 593,
+              "y": 436,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 686,
+              "y": 538,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 719,
+              "y": 538,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 752,
+              "y": 538,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 582,
+              "y": 645,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        },
+        "R3": {
+          "st100": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              445,
+              161,
+              390,
+              579
+            ],
+            "toolbarRect": [
+              445,
+              740,
+              390,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 6,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 749,
+              "y": 182,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 760,
+              "y": 715,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 578,
+              "y": 279,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 686,
+              "y": 506,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 506,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 544,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 583,
+              "y": 190,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 584,
+              "y": 436,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 710,
+              "y": 538,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 573,
+              "y": 645,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        }
+      },
+      "independentControls": {
+        "tiers": [
+          {
+            "tier": "orig",
+            "unit": 0.14
+          },
+          {
+            "tier": "medium",
+            "unit": 0.34
+          },
+          {
+            "tier": "coarse",
+            "unit": 0.48
+          }
+        ],
+        "zoomCycle": [
+          150,
+          200,
+          150,
+          100
+        ]
+      },
+      "sheetControls": {
+        "allShopsInVisible100": true,
+        "sampleShops100": [
+          {
+            "id": "shop1",
+            "name": "① 北转角红灯笼主铺",
+            "left": 195.3,
+            "top": 12.5,
+            "right": 278.6,
+            "bottom": 125.1,
+            "width": 83.2,
+            "height": 112.7,
+            "inVisible": true
+          },
+          {
+            "id": "shop2",
+            "name": "② 杏黄高挑弧顶铺",
+            "left": 159.8,
+            "top": 50.6,
+            "right": 229.2,
+            "bottom": 155.5,
+            "width": 69.4,
+            "height": 104.9,
+            "inVisible": true
+          },
+          {
+            "id": "shop3",
+            "name": "③ 薄荷阶梯半圆铺",
+            "left": 135.8,
+            "top": 80.4,
+            "right": 205.6,
+            "bottom": 175.9,
+            "width": 69.8,
+            "height": 95.5,
+            "inVisible": true
+          },
+          {
+            "id": "shop4",
+            "name": "④ 珊瑚粉波浪铺",
+            "left": 110.3,
+            "top": 99.7,
+            "right": 182.2,
+            "bottom": 197.2,
+            "width": 71.9,
+            "height": 97.5,
+            "inVisible": true
+          }
+        ],
+        "controlsInsideSheet": true,
+        "returnedToToolbar": true,
+        "returnDrift": 0
+      }
+    },
+    "mobile-375": {
+      "viewport": {
+        "vw": 375,
+        "vh": 812,
+        "dpr": 3,
+        "isTouch": true,
+        "reducedMotion": false
+      },
+      "errors": [],
+      "routes": {
+        "flat": {
+          "st100": {
+            "mapRect": [
+              0,
+              94,
+              375,
+              606
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 10,
+          "st150": {
+            "mapRect": [
+              0,
+              94,
+              375,
+              606
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-P01"
+          ],
+          "clicks150Count": 9,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 271,
+              "y": 139,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 298,
+              "y": 139,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 326,
+              "y": 139,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 255,
+              "y": 650,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 282,
+              "y": 650,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 310,
+              "y": 650,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 96,
+              "y": 233,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 134,
+              "y": 233,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 173,
+              "y": 233,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 238,
+              "y": 450,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 67,
+              "y": 148,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 105,
+              "y": 148,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 144,
+              "y": 148,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 143,
+              "y": 383,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 230,
+              "y": 481,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 263,
+              "y": 481,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 296,
+              "y": 481,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 132,
+              "y": 583,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 182,
+              "y": 689,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            }
+          ]
+        },
+        "R1": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-S02"
+          ],
+          "clicks150Count": 7,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 309,
+              "y": 171,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 321,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 147,
+              "y": 264,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 249,
+              "y": 479,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 87,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 126,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 164,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 163,
+              "y": 412,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 281,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 152,
+              "y": 610,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 11,
+              "y": 607,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            }
+          ]
+        },
+        "R2": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 13,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 8,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 282,
+              "y": 171,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 309,
+              "y": 171,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 337,
+              "y": 171,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 266,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 294,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 321,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "rightEdge",
+              "x": 322,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 109,
+              "y": 264,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 147,
+              "y": 264,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 186,
+              "y": 264,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 216,
+              "y": 479,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 249,
+              "y": 479,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 282,
+              "y": 479,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 67,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 106,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 144,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 143,
+              "y": 412,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 229,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 263,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 296,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 133,
+              "y": 610,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        },
+        "R3": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              375,
+              547
+            ],
+            "toolbarRect": [
+              0,
+              700,
+              375,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 6,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 291,
+              "y": 171,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 303,
+              "y": 677,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 129,
+              "y": 264,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 231,
+              "y": 479,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 58,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 97,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 135,
+              "y": 179,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 135,
+              "y": 412,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 254,
+              "y": 509,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 124,
+              "y": 610,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        }
+      },
+      "independentControls": {
+        "tiers": [
+          {
+            "tier": "orig",
+            "unit": 0.14
+          },
+          {
+            "tier": "medium",
+            "unit": 0.34
+          },
+          {
+            "tier": "coarse",
+            "unit": 0.48
+          }
+        ],
+        "zoomCycle": [
+          150,
+          200,
+          150,
+          100
+        ]
+      },
+      "sheetControls": {
+        "allShopsInVisible100": true,
+        "sampleShops100": [
+          {
+            "id": "shop1",
+            "name": "① 北转角红灯笼主铺",
+            "left": 187.8,
+            "top": 15,
+            "right": 255,
+            "bottom": 106.4,
+            "width": 67.3,
+            "height": 91.4,
+            "inVisible": true
+          },
+          {
+            "id": "shop2",
+            "name": "② 杏黄高挑弧顶铺",
+            "left": 159.2,
+            "top": 46.2,
+            "right": 214.9,
+            "bottom": 130.8,
+            "width": 55.7,
+            "height": 84.6,
+            "inVisible": true
+          },
+          {
+            "id": "shop3",
+            "name": "③ 薄荷阶梯半圆铺",
+            "left": 140,
+            "top": 70.3,
+            "right": 196,
+            "bottom": 147.2,
+            "width": 56,
+            "height": 76.9,
+            "inVisible": true
+          },
+          {
+            "id": "shop4",
+            "name": "④ 珊瑚粉波浪铺",
+            "left": 119.8,
+            "top": 85.9,
+            "right": 177.2,
+            "bottom": 164.1,
+            "width": 57.4,
+            "height": 78.2,
+            "inVisible": true
+          }
+        ],
+        "controlsInsideSheet": true,
+        "returnedToToolbar": true,
+        "returnDrift": 0
+      }
+    },
+    "mobile-393": {
+      "viewport": {
+        "vw": 393,
+        "vh": 852,
+        "dpr": 3,
+        "isTouch": true,
+        "reducedMotion": false
+      },
+      "errors": [],
+      "routes": {
+        "flat": {
+          "st100": {
+            "mapRect": [
+              0,
+              94,
+              393,
+              646
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 10,
+          "st150": {
+            "mapRect": [
+              0,
+              94,
+              393,
+              646
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-P01"
+          ],
+          "clicks150Count": 9,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 285,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 313,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 340,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 268,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 296,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 323,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 102,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 141,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 179,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 249,
+              "y": 473,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 72,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 110,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 149,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 150,
+              "y": 403,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 243,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 276,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 309,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 139,
+              "y": 612,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 191,
+              "y": 726,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            }
+          ]
+        },
+        "R1": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-S02"
+          ],
+          "clicks150Count": 7,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 329,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 340,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 157,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 265,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 97,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 135,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 174,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 175,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 300,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 164,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 12,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            }
+          ]
+        },
+        "R2": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 13,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 8,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 301,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 329,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 356,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 285,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 312,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 340,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "rightEdge",
+              "x": 341,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 118,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 157,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 196,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 232,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 265,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 298,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 71,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 110,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 148,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 150,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 243,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 276,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 309,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 138,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        },
+        "R3": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 4,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 6,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 307,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 318,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 134,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 243,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 61,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 100,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 139,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 140,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 267,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 129,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        }
+      },
+      "independentControls": {
+        "tiers": [
+          {
+            "tier": "orig",
+            "unit": 0.14
+          },
+          {
+            "tier": "medium",
+            "unit": 0.34
+          },
+          {
+            "tier": "coarse",
+            "unit": 0.48
+          }
+        ],
+        "zoomCycle": [
+          150,
+          200,
+          150,
+          100
+        ]
+      },
+      "sheetControls": {
+        "allShopsInVisible100": true,
+        "sampleShops100": [
+          {
+            "id": "shop1",
+            "name": "① 北转角红灯笼主铺",
+            "left": 196.8,
+            "top": 11.6,
+            "right": 284.3,
+            "bottom": 129.9,
+            "width": 87.4,
+            "height": 118.2,
+            "inVisible": true
+          },
+          {
+            "id": "shop2",
+            "name": "② 杏黄高挑弧顶铺",
+            "left": 159.5,
+            "top": 51.5,
+            "right": 232.5,
+            "bottom": 161.8,
+            "width": 73,
+            "height": 110.3,
+            "inVisible": true
+          },
+          {
+            "id": "shop3",
+            "name": "③ 薄荷阶梯半圆铺",
+            "left": 134.2,
+            "top": 82.8,
+            "right": 207.7,
+            "bottom": 183.3,
+            "width": 73.5,
+            "height": 100.4,
+            "inVisible": true
+          },
+          {
+            "id": "shop4",
+            "name": "④ 珊瑚粉波浪铺",
+            "left": 107.3,
+            "top": 103.2,
+            "right": 183,
+            "bottom": 205.7,
+            "width": 75.7,
+            "height": 102.6,
+            "inVisible": true
+          }
+        ],
+        "controlsInsideSheet": true,
+        "returnedToToolbar": true,
+        "returnDrift": 0
+      }
+    },
+    "mobile-393-reduced": {
+      "viewport": {
+        "vw": 393,
+        "vh": 852,
+        "dpr": 3,
+        "isTouch": true,
+        "reducedMotion": true
+      },
+      "errors": [],
+      "routes": {
+        "flat": {
+          "st100": {
+            "mapRect": [
+              0,
+              94,
+              393,
+              646
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 30,
+          "st150": {
+            "mapRect": [
+              0,
+              94,
+              393,
+              646
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-P01"
+          ],
+          "clicks150Count": 15,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 285,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 313,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 340,
+              "y": 147,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "left",
+              "x": 27,
+              "y": 213,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "center",
+              "x": 49,
+              "y": 213,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "right",
+              "x": 71,
+              "y": 213,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 102,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 141,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 179,
+              "y": 245,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 105,
+              "y": 405,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 166,
+              "y": 405,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 226,
+              "y": 405,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 216,
+              "y": 473,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 249,
+              "y": 473,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 282,
+              "y": 473,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 126,
+              "y": 541,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 159,
+              "y": 541,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 192,
+              "y": 541,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 29,
+              "y": 540,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 51,
+              "y": 540,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 73,
+              "y": 540,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "left",
+              "x": 30,
+              "y": 615,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "center",
+              "x": 57,
+              "y": 615,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "right",
+              "x": 85,
+              "y": 615,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "left",
+              "x": 151,
+              "y": 619,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 193,
+              "y": 619,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "right",
+              "x": 234,
+              "y": 619,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 268,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 296,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 323,
+              "y": 682,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 72,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 110,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 149,
+              "y": 157,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 89,
+              "y": 403,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 150,
+              "y": 403,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 210,
+              "y": 403,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 243,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 276,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 309,
+              "y": 505,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 105,
+              "y": 612,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 139,
+              "y": 612,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 172,
+              "y": 612,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "left",
+              "x": 149,
+              "y": 726,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 191,
+              "y": 726,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "right",
+              "x": 232,
+              "y": 726,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-P01"
+            }
+          ]
+        },
+        "R1": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 30,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-S02"
+          ],
+          "clicks150Count": 15,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 301,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 329,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 356,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "left",
+              "x": 43,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "center",
+              "x": 65,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "right",
+              "x": 87,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 118,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 157,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 196,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 122,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 182,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 243,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 232,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 265,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 298,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 142,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 175,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 208,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 45,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 67,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 89,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "left",
+              "x": 45,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "center",
+              "x": 73,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "right",
+              "x": 101,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "left",
+              "x": 167,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 209,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "right",
+              "x": 250,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 285,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 312,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 340,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 97,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 135,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 174,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 114,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 175,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 235,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 267,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 300,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 333,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 130,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 164,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 197,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 2,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 12,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 21,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            }
+          ]
+        },
+        "R2": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 30,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01",
+            "CD-S02"
+          ],
+          "clicks150Count": 15,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 301,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 329,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 356,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "left",
+              "x": 43,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "center",
+              "x": 65,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "right",
+              "x": 87,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 118,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 157,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 196,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 122,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 182,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 243,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 232,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 265,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 298,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 142,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 175,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 208,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 45,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 67,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 89,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "left",
+              "x": 45,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "center",
+              "x": 73,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "right",
+              "x": 101,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "left",
+              "x": 167,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 209,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "right",
+              "x": 250,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 285,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 312,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 340,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 97,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 135,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 174,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 114,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 175,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 235,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 267,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 300,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 333,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 130,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 164,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 197,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 2,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 12,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 21,
+              "y": 639,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S02"
+            }
+          ]
+        },
+        "R3": {
+          "st100": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "voxelTier": "coarse",
+            "voxelUnit": 0.48
+          },
+          "scan100Flagged": [],
+          "clicks100Count": 30,
+          "st150": {
+            "mapRect": [
+              0,
+              153,
+              393,
+              587
+            ],
+            "toolbarRect": [
+              0,
+              740,
+              393,
+              52
+            ],
+            "zoomPercent": 150
+          },
+          "scan150Flagged": [],
+          "clicks150Ids": [
+            "CD-A02",
+            "CD-A01",
+            "CD-A03",
+            "CD-S01"
+          ],
+          "clicks150Count": 12,
+          "clicks100": [
+            {
+              "id": "CD-R01",
+              "spot": "left",
+              "x": 279,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "center",
+              "x": 307,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-R01",
+              "spot": "right",
+              "x": 334,
+              "y": 176,
+              "openedTitle": "蓬江大桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "left",
+              "x": 21,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "center",
+              "x": 43,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-V01",
+              "spot": "right",
+              "x": 65,
+              "y": 242,
+              "openedTitle": "启明里",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-V01"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 96,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 134,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 173,
+              "y": 274,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 99,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 160,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 220,
+              "y": 434,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 210,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 243,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 276,
+              "y": 502,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 119,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 152,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 185,
+              "y": 571,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "left",
+              "x": 23,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "center",
+              "x": 45,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S02",
+              "spot": "right",
+              "x": 67,
+              "y": 570,
+              "openedTitle": "新市路",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S02"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "left",
+              "x": 23,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "center",
+              "x": 51,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-S03",
+              "spot": "right",
+              "x": 78,
+              "y": 645,
+              "openedTitle": "墟顶老街",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-S03"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "left",
+              "x": 145,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "center",
+              "x": 187,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-P01",
+              "spot": "right",
+              "x": 228,
+              "y": 649,
+              "openedTitle": "沿江停车场",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-P01"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "left",
+              "x": 262,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "center",
+              "x": 290,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            },
+            {
+              "id": "CD-R02",
+              "spot": "right",
+              "x": 318,
+              "y": 713,
+              "openedTitle": "江门铁桥",
+              "pitchDeg": 44,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 100,
+              "focusRestoredId": "CD-R02"
+            }
+          ],
+          "clicks150": [
+            {
+              "id": "CD-A02",
+              "spot": "left",
+              "x": 61,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "center",
+              "x": 100,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A02",
+              "spot": "right",
+              "x": 139,
+              "y": 184,
+              "openedTitle": "江门海关旧址",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A02"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "left",
+              "x": 80,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "center",
+              "x": 140,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A01",
+              "spot": "right",
+              "x": 201,
+              "y": 432,
+              "openedTitle": "江门市博物馆长堤分馆",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A01"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "left",
+              "x": 234,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "center",
+              "x": 267,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-A03",
+              "spot": "right",
+              "x": 300,
+              "y": 535,
+              "openedTitle": "水埠头石阶",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-A03"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "left",
+              "x": 96,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "center",
+              "x": 129,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "close",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            },
+            {
+              "id": "CD-S01",
+              "spot": "right",
+              "x": 162,
+              "y": 643,
+              "openedTitle": "堤东路骑楼",
+              "pitchDeg": 45,
+              "closeMethod": "back",
+              "returnDrift": 0,
+              "returnZoom": 150,
+              "focusRestoredId": "CD-S01"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "lastRunDurationSec": 144.5
+}

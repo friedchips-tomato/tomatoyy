@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efe6d2">
+  <title>长堤 · 值班运营台</title>
+  <link rel="stylesheet" href="paper.css">
+  <link rel="stylesheet" href="ops.css">
+  <link rel="icon" href="data:,">
+  <script defer src="data/points.js"></script>
+  <script defer src="ops.js"></script>
+</head>
+<body>
+  <div class="ops" id="ops">
+    <aside class="ops-side">
+      <div class="brand">
+        <h1>长堤 · 值班台</h1>
+        <p class="small" id="duty"></p>
+      </div>
+      <nav class="ops-nav" id="ops-nav" aria-label="运营台菜单">
+        <a href="#overview" data-view="overview">总览</a>
+        <a href="#tickets" data-view="tickets">诉求工单<b data-badge="tickets"></b></a>
+        <a href="#bookings" data-view="bookings">讲解预约<b data-badge="bookings"></b></a>
+        <a href="#parking" data-view="parking">车场</a>
+        <a href="#content" data-view="content">点位内容</a>
+      </nav>
+      <p class="small side-note">示范数据 · 与本机游客端共用演示记录。<br><a href="index.html">打开游客端 ›</a></p>
+    </aside>
+    <main class="ops-main">
+      <header class="ops-head">
+        <div>
+          <p class="kicker" id="view-kicker"></p>
+          <h2 id="view-title"></h2>
+        </div>
+        <p class="small" id="clock"></p>
+      </header>
+      <section id="view" class="ops-view" aria-live="polite"></section>
+    </main>
+  </div>
+  <p class="sr-only" id="announcement" role="status"></p>
+</body>
+</html>
