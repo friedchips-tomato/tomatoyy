@@ -1,18 +1,18 @@
 // 停车预测与推荐走查（阶段 3 验收 3.1–3.11 的浏览器部分）。用法：
-//   NODE_PATH=<含 playwright-core 的 node_modules> CHROMIUM_PATH=<chrome-headless-shell> \
-//     node prototype-paper/tests/parking.cjs http://127.0.0.1:8931/prototype-paper/
+//   npm install --no-save playwright-core
+//   node prototype-paper/tests/parking.cjs http://127.0.0.1:8931/prototype-paper/
+// 浏览器：默认自动探测本机 Microsoft Edge，可用环境变量 CHROMIUM_PATH 覆盖。
 // 覆盖：① 正常预测卡片（模拟数据标注 + 预测曲线）；② 偏好切换前后排序与理由；
 // ③ 理由数字与页面数字一致；④ 坏产物 / 无产物回退态；⑤ DOM 内 (data-action, data-id) 唯一性。
 // 截图写入 prototype-paper/screenshots/parking/。
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const os = require('node:os');
 const { chromium } = require('playwright-core');
+const { resolveChromiumPath } = require('./browser.cjs');
 const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'screenshots', 'parking');
-const executablePath = process.env.CHROMIUM_PATH || path.join(os.homedir(),
-  'Library/Caches/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-mac-arm64/chrome-headless-shell');
+const executablePath = resolveChromiumPath();
 
 // ── 防回归：同一业务对象不得被两个同名 CTA 重复指向 ────────────────────
 // 判据（按「同一 (action, id) 组合对应同一个业务对象」）：

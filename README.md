@@ -100,10 +100,16 @@ node prototype/check.mjs
 浏览器走查需要 `playwright-core` 与本机 Edge，命令见 [DEPENDENCIES.md](DEPENDENCIES.md)：
 
 ```sh
+npm install                # 装 playwright-core（走查脚本唯一依赖，node_modules 已被 .gitignore 忽略）
 python -m http.server 8931 --bind 127.0.0.1 &
 node prototype-paper/tests/pages.cjs http://127.0.0.1:8931/prototype-paper/
 node prototype-paper/tests/ops.cjs http://127.0.0.1:8931/prototype-paper/
 ```
+
+> Windows 上命令是 `python`；macOS / Linux 上用 `python3`。Windows 的 `python3` 是 Microsoft Store 存根，退出码 49，直接执行会失败。
+>
+> 走查脚本自动探测本机 Microsoft Edge（`C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`）；
+> 需要换浏览器时设环境变量 `CHROMIUM_PATH` 指向浏览器可执行文件；两者都找不到时脚本打印中文报错并以退出码 2 退出。
 
 脚本会把截图写回 `prototype-paper/screenshots/`。
 

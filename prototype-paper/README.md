@@ -7,8 +7,10 @@
 在仓库根目录启动 HTTP 预览，然后打开对应页面。
 
 ```sh
-python3 -m http.server 8931 --bind 127.0.0.1
+python -m http.server 8931 --bind 127.0.0.1
 ```
+
+> Windows 上命令是 `python`；macOS / Linux 上用 `python3`（Windows 的 `python3` 是 Microsoft Store 存根，退出码 49，不能用）。
 
 | 页面 | 地址 |
 | --- | --- |

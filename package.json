@@ -1,0 +1,9 @@
+{
+  "name": "leyou-pengjiang-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "乐游蓬江 AI 智慧导览仓库根依赖：仅浏览器走查脚本需要 playwright-core",
+  "devDependencies": {
+    "playwright-core": "^1.65.1"
+  }
+}

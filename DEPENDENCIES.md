@@ -14,7 +14,7 @@
 | numpy | **1.26.4** | 停车预测必需 | 合成数据生成器与特征构造（`numpy.random.default_rng`） |
 | scikit-learn | **1.8.0** | 停车预测必需 | 训练基线：`Ridge`、`HistGradientBoostingRegressor` |
 | pytest | **9.0.2** | 停车预测必需 | 跑 `parking-forecast/tests` |
-| playwright-core | **1.59.1** | **可选**，浏览器走查才需要 | 驱动本机 Edge 做逐页截图走查与端到端验收 |
+| playwright-core | **1.65.1** | **可选**，浏览器走查才需要 | 驱动本机 Edge 做逐页截图走查与端到端验收 |
 | Microsoft Edge | **157.0.4341.60** | **可选**，浏览器走查才需要 | 给 `playwright-core` 提供 Chromium 内核浏览器 |
 | 微信开发者工具 | **2.02.2609250** | **可选**，跑小程序端才需要 | 打开 `changdi-intake/miniprogram/` 做预览与前后端联调 |
 
@@ -67,34 +67,40 @@
   - `prototype-paper/tests/ops.cjs`（值班运营台逐页截图）
   - `prototype-paper/tests/parking.cjs`、`prototype-paper/tests/intake.cjs`
   - `changdi-intake/guide-bridge/browser-check.cjs`（端到端回执、重试、行为事件落库、月报复算）
-- **装法**：装到仓库之外，别污染仓库（仓库本来没有 `node_modules`）：
+- **装法**：装在**仓库根目录**（根 `package.json` 已声明 `playwright-core` 为 devDependency；`node_modules/` 已在 `.gitignore` 里，不会进 Git）：
 
   ```sh
-  # 装到全局
-  npm install -g playwright-core
-
-  # 或装到指定目录，再用 NODE_PATH 指过去
-  npm install --prefix C:\tools\pw playwright-core
+  # 在仓库根目录
+  npm install
+  # 只想临时装一次、不写 package-lock.json：
+  npm install --no-save playwright-core
   ```
 
-- **用法**：脚本用 `require('playwright-core')`，靠 `NODE_PATH` 找到它；浏览器可执行文件靠 `CHROMIUM_PATH` 指定。
+  不装到全局、不用 `NODE_PATH`：脚本用 `require('playwright-core')`，从仓库根的 `node_modules` 就能解析到。
+
+- **用法**：浏览器可执行文件由脚本**自动探测**本机 Microsoft Edge，必要时用环境变量 `CHROMIUM_PATH` 覆盖。
 
   ```sh
-  # PowerShell
-  $env:NODE_PATH = 'C:\Users\<你的用户名>\AppData\Roaming\npm\node_modules'
-  $env:CHROMIUM_PATH = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+  # 仓库根目录（默认自动探测 Edge，无需设任何环境变量）
   node prototype-paper/tests/pages.cjs http://127.0.0.1:8931/prototype-paper/
+
+  # 换浏览器时才需要显式指定
+  # PowerShell
+  $env:CHROMIUM_PATH = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
   ```
 
-  本机实测：`playwright-core@1.59.1` 位于 `C:\Users\17109\AppData\Roaming\npm\node_modules\openclaw\node_modules`，把 `NODE_PATH` 指到这一层即可 `require` 到；用上面截图走查命令实测通过（29 张截图、页面错误 0）。
-- **注意**：`playwright-core` **不自带浏览器**，必须配 `CHROMIUM_PATH` 指向本机已装的 Edge 或 Chrome；不设 `CHROMIUM_PATH` 时，脚本会去找 macOS 的 playwright 缓存路径，在 Windows 上必然失败。
+  本机实测：仓库根 `npm install` 装到 `playwright-core@1.65.1`，自动探测命中
+  `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`，4 个走查脚本全部 exit 0。
+- **注意**：`playwright-core` **不自带浏览器**。脚本的探测顺序是：① 环境变量 `CHROMIUM_PATH` →
+  ② `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe` → ③ `C:\Program Files\Microsoft\Edge\Application\msedge.exe`
+  → ④ macOS 的 playwright 缓存路径。全部找不到时脚本打印中文报错并以**退出码 2** 退出。
 
 ### Microsoft Edge —— 可选，走查用的浏览器
 
 - **装它是为了什么**：给 `playwright-core` 一个可启动的 Chromium 内核浏览器。
 - **本机路径与版本**：`C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`，实测 **157.0.4341.60**。
 - **装法**：Windows 11 一般预装 Edge；没有就从 <https://www.microsoft.com/edge/download> 装。
-- **用法**：把上面的路径赋给 `CHROMIUM_PATH`。
+- **用法**：走查脚本默认自动探测这个路径，不用手动设 `CHROMIUM_PATH`；要换浏览器才需要指定。
 
 ### 微信开发者工具 —— 可选，跑小程序端才需要
 
@@ -125,7 +131,7 @@ python -m pytest --version
 
 ```sh
 # playwright-core
-node -p "require('playwright-core/package.json').version"   # 需 NODE_PATH 指向其所在 node_modules
+node -p "require('playwright-core/package.json').version"   # 在仓库根执行（需先 npm install）
 
 # Edge
 powershell -NoProfile -Command "(Get-Item 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe').VersionInfo.ProductVersion"
