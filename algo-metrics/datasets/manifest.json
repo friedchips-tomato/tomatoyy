@@ -1,0 +1,106 @@
+{
+  "data_source": "synthetic",
+  "verified": false,
+  "seed": 20261122,
+  "generator": "algo-metrics/datasets/gen_datasets.py",
+  "command": "python algo-metrics/datasets/gen_datasets.py --seed 20261122",
+  "generated_at": "2026-11-22T09:00:00+08:00",
+  "period": {
+    "start": "2026-10-01T00:00:00+08:00",
+    "end": "2026-10-14T23:30:00+08:00",
+    "timezone": "+08:00",
+    "granularity_minutes": 30,
+    "warmup_days": 4
+  },
+  "files": {
+    "parking_observations_sample.csv": {
+      "rows": 2016,
+      "sha256": "102a674f964f95525066a02b3f2ecfe2cb8d327f00c361dba15de679620c54c2",
+      "quality_counts": {
+        "ok": 1909,
+        "stale": 61,
+        "missing": 46
+      }
+    },
+    "visitor_events_sample.csv": {
+      "rows": 767,
+      "sha256": "f2fa79b2650de57bdf3a44d0fd55d8495b9b203becc376cff2f948e970626f77"
+    },
+    "route_impressions_sample.csv": {
+      "rows": 240,
+      "sha256": "ab4efacc80ac6a7f7a4c1b17fc882e58b1c27a3439114a8c8bb296c2bfdcb7c4"
+    }
+  },
+  "parameters": {
+    "lots": [
+      {
+        "parking_id": "PK001",
+        "total_spaces": 100,
+        "base_occupancy": 0.42,
+        "workday_shift": 0.12,
+        "holiday_shift": 0.18,
+        "weekend_shift": 0.1
+      },
+      {
+        "parking_id": "PK002",
+        "total_spaces": 120,
+        "base_occupancy": 0.38,
+        "workday_shift": 0.1,
+        "holiday_shift": 0.16,
+        "weekend_shift": 0.08
+      },
+      {
+        "parking_id": "PK003",
+        "total_spaces": 80,
+        "base_occupancy": 0.46,
+        "workday_shift": 0.14,
+        "holiday_shift": 0.2,
+        "weekend_shift": 0.12
+      }
+    ],
+    "horizon_minutes": 60,
+    "missing_rate": 0.02,
+    "stale_rate": 0.03,
+    "outage_windows": [
+      "PK002 2026-10-08 02:00~05:00",
+      "PK003 2026-10-12 13:00~13:30"
+    ],
+    "holiday_dates": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07"
+    ],
+    "event_dates": [
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-10",
+      "2026-10-11"
+    ],
+    "weather_by_day": [
+      "sunny",
+      "sunny",
+      "cloudy",
+      "rain",
+      "cloudy",
+      "sunny",
+      "heavy_rain",
+      "cloudy",
+      "sunny",
+      "sunny",
+      "rain",
+      "cloudy",
+      "sunny",
+      "sunny"
+    ],
+    "route_finish_rate": 0.45,
+    "route_adopt_click_rate": 0.55,
+    "offpeak_adoption_rate": 0.3,
+    "impression_adoption_rate": 0.45,
+    "visitor_count": 120
+  },
+  "disclaimer": "本目录全部为合成数据（data_source=synthetic，verified=false），只用于验证评测链路与口径计算，不代表任何真实业务水平；真实数据到位后只替换数据文件，不改算法与口径。"
+}

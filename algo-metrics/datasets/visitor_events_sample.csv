@@ -1,0 +1,768 @@
+visitor_id,ts,event_type,point_id,route_id,dwell_seconds,interest_tags,device_lang,data_source
+V0098,2026-10-05T10:48:00+08:00,view_route,,R0981,81,"[""历史"", ""建筑"", ""非遗""]",zh-Hans,synthetic
+V0098,2026-10-05T10:49:00+08:00,adopt_route,,R0981,,"[""历史"", ""建筑"", ""非遗""]",zh-Hans,synthetic
+V0098,2026-10-05T10:53:00+08:00,view_route,,R0980,10,"[""历史"", ""建筑"", ""非遗""]",zh-Hans,synthetic
+V0101,2026-10-05T11:26:00+08:00,view_route,,R1010,98,"[""历史""]",yue-Hant,synthetic
+V0081,2026-10-05T11:29:00+08:00,view_route,,R0810,63,"[""非遗""]",zh-Hans,synthetic
+V0081,2026-10-05T11:30:00+08:00,adopt_route,,R0810,,"[""非遗""]",zh-Hans,synthetic
+V0048,2026-10-05T11:32:00+08:00,view_route,,R0480,43,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0048,2026-10-05T11:33:00+08:00,adopt_route,,R0480,,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0081,2026-10-05T11:41:00+08:00,book_guide,LD008,,,"[""非遗""]",zh-Hans,synthetic
+V0016,2026-10-05T11:56:00+08:00,view_route,,R0161,97,"[""美食""]",en,synthetic
+V0016,2026-10-05T11:57:00+08:00,adopt_route,,R0161,,"[""美食""]",en,synthetic
+V0098,2026-10-05T12:07:00+08:00,view_parking,,,,"[""历史"", ""建筑"", ""非遗""]",zh-Hans,synthetic
+V0016,2026-10-05T12:17:00+08:00,view_route,,R0162,40,"[""美食""]",en,synthetic
+V0016,2026-10-05T12:22:00+08:00,view_route,,R0160,74,"[""美食""]",en,synthetic
+V0016,2026-10-05T12:23:00+08:00,adopt_route,,R0160,,"[""美食""]",en,synthetic
+V0016,2026-10-05T13:14:00+08:00,view_parking,,,,,en,synthetic
+V0016,2026-10-05T13:16:00+08:00,finish_route,,R0162,5187,"[""美食""]",en,synthetic
+V0016,2026-10-05T13:18:00+08:00,listen_guide,LD011,R0162,59,"[""美食""]",en,synthetic
+V0016,2026-10-05T13:19:00+08:00,arrive_point,LD006,R0162,259,"[""美食""]",en,synthetic
+V0016,2026-10-05T13:20:00+08:00,arrive_point,LD012,R0162,883,"[""美食""]",en,synthetic
+V0016,2026-10-05T13:20:00+08:00,arrive_point,LD008,R0162,573,,en,synthetic
+V0016,2026-10-05T13:25:00+08:00,arrive_point,LD011,R0162,600,"[""美食""]",en,synthetic
+V0048,2026-10-05T13:56:00+08:00,finish_route,,R0480,2633,,yue-Hant,synthetic
+V0048,2026-10-05T13:59:00+08:00,ask_question,LD001,R0480,622,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0048,2026-10-05T14:05:00+08:00,arrive_point,LD005,R0480,848,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0048,2026-10-05T14:06:00+08:00,arrive_point,LD002,R0480,111,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0048,2026-10-05T14:07:00+08:00,arrive_point,LD001,R0480,690,"[""建筑"", ""侨乡""]",yue-Hant,synthetic
+V0008,2026-10-05T14:10:00+08:00,view_route,,R0082,5,,yue-Hant,synthetic
+V0008,2026-10-05T14:11:00+08:00,adopt_route,,R0082,,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T14:13:00+08:00,view_route,,R0080,33,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T14:14:00+08:00,adopt_route,,R0080,,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T14:23:00+08:00,view_route,,R0081,18,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0117,2026-10-05T14:37:00+08:00,view_parking,,,,"[""非遗""]",yue-Hant,synthetic
+V0117,2026-10-05T14:44:00+08:00,view_route,,R1170,100,"[""非遗""]",yue-Hant,synthetic
+V0016,2026-10-05T14:56:00+08:00,finish_route,,R0161,3565,"[""美食""]",en,synthetic
+V0101,2026-10-05T14:57:00+08:00,finish_route,,R1010,1209,"[""历史""]",yue-Hant,synthetic
+V0101,2026-10-05T14:58:00+08:00,arrive_point,LD003,R1010,224,"[""历史""]",yue-Hant,synthetic
+V0101,2026-10-05T14:59:00+08:00,listen_guide,LD003,R1010,473,"[""历史""]",yue-Hant,synthetic
+V0101,2026-10-05T15:00:00+08:00,arrive_point,LD004,R1010,774,,yue-Hant,synthetic
+V0016,2026-10-05T15:04:00+08:00,arrive_point,LD005,R0161,731,"[""美食""]",en,synthetic
+V0016,2026-10-05T15:06:00+08:00,arrive_point,LD003,R0161,322,"[""美食""]",en,synthetic
+V0016,2026-10-05T15:32:00+08:00,feedback,LD002,,53,"[""美食""]",en,synthetic
+V0016,2026-10-05T15:39:00+08:00,finish_route,,R0160,1153,"[""美食""]",en,synthetic
+V0016,2026-10-05T15:41:00+08:00,listen_guide,LD002,R0160,772,,en,synthetic
+V0016,2026-10-05T15:49:00+08:00,arrive_point,LD002,R0160,226,"[""美食""]",en,synthetic
+V0016,2026-10-05T15:50:00+08:00,arrive_point,LD001,R0160,660,"[""美食""]",en,synthetic
+V0111,2026-10-05T17:27:00+08:00,view_parking,,,,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T17:52:00+08:00,view_route,,R1110,76,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T17:53:00+08:00,adopt_route,,R1110,,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0008,2026-10-05T17:58:00+08:00,finish_route,,R0082,896,,yue-Hant,synthetic
+V0008,2026-10-05T17:59:00+08:00,arrive_point,LD009,R0082,284,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:01:00+08:00,ask_question,LD003,R0082,125,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:05:00+08:00,arrive_point,LD006,R0082,848,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:07:00+08:00,arrive_point,LD003,R0082,186,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:11:00+08:00,finish_route,,R0081,2116,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:13:00+08:00,arrive_point,LD007,R0081,143,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:13:00+08:00,listen_guide,LD007,R0081,40,,yue-Hant,synthetic
+V0120,2026-10-05T18:14:00+08:00,view_route,,R1200,114,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T18:16:00+08:00,view_route,,R1201,109,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0008,2026-10-05T18:17:00+08:00,arrive_point,LD008,R0081,619,"[""亲子"", ""非遗"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T19:20:00+08:00,view_parking,,,,,yue-Hant,synthetic
+V0111,2026-10-05T19:53:00+08:00,finish_route,,R1110,3946,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T19:55:00+08:00,listen_guide,LD008,R1110,722,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T19:55:00+08:00,listen_guide,LD005,R1110,745,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T19:59:00+08:00,arrive_point,LD003,R1110,802,,yue-Hant,synthetic
+V0111,2026-10-05T19:59:00+08:00,arrive_point,LD005,R1110,447,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T20:02:00+08:00,arrive_point,LD007,R1110,746,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T20:03:00+08:00,arrive_point,LD008,R1110,362,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0111,2026-10-05T20:25:00+08:00,feedback,LD001,,19,"[""摄影"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0120,2026-10-05T21:07:00+08:00,feedback,LD011,,45,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:08:00+08:00,finish_route,,R1201,4787,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:10:00+08:00,listen_guide,LD008,R1201,235,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:11:00+08:00,ask_question,LD003,R1201,415,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:12:00+08:00,arrive_point,LD008,R1201,649,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:15:00+08:00,arrive_point,LD005,R1201,120,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:16:00+08:00,arrive_point,LD010,R1201,508,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0120,2026-10-05T21:19:00+08:00,arrive_point,LD003,R1201,273,"[""历史"", ""亲子"", ""自然""]",yue-Hant,synthetic
+V0007,2026-10-06T11:27:00+08:00,view_route,,R0070,84,"[""摄影""]",yue-Hant,synthetic
+V0079,2026-10-06T12:11:00+08:00,book_guide,LD008,,,,yue-Hant,synthetic
+V0007,2026-10-06T12:42:00+08:00,view_parking,,,,"[""摄影""]",yue-Hant,synthetic
+V0007,2026-10-06T13:24:00+08:00,book_guide,LD006,,,"[""摄影""]",yue-Hant,synthetic
+V0012,2026-10-06T13:54:00+08:00,view_route,,R0120,37,"[""非遗"", ""美食""]",en,synthetic
+V0026,2026-10-06T14:10:00+08:00,view_route,,R0260,20,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T14:11:00+08:00,adopt_route,,R0260,,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T14:13:00+08:00,view_route,,R0261,73,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T14:14:00+08:00,adopt_route,,R0261,,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0012,2026-10-06T14:19:00+08:00,book_guide,LD007,,,"[""非遗"", ""美食""]",en,synthetic
+V0012,2026-10-06T14:30:00+08:00,view_parking,,,,"[""非遗"", ""美食""]",en,synthetic
+V0040,2026-10-06T14:54:00+08:00,view_route,,R0400,72,"[""亲子"", ""侨乡"", ""建筑""]",yue-Hant,synthetic
+V0061,2026-10-06T14:56:00+08:00,view_route,,R0611,50,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T14:57:00+08:00,adopt_route,,R0611,,,yue-Hant,synthetic
+V0061,2026-10-06T15:18:00+08:00,view_route,,R0610,67,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T15:19:00+08:00,adopt_route,,R0610,,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T15:20:00+08:00,view_route,,R0612,46,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T15:21:00+08:00,adopt_route,,R0612,,"[""摄影""]",yue-Hant,synthetic
+V0026,2026-10-06T15:35:00+08:00,view_parking,,,,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0061,2026-10-06T15:45:00+08:00,view_parking,,,,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T15:48:00+08:00,adopt_parking,,,,"[""摄影""]",yue-Hant,synthetic
+V0024,2026-10-06T16:16:00+08:00,view_route,,R0240,65,"[""侨乡""]",zh-Hans,synthetic
+V0024,2026-10-06T16:17:00+08:00,adopt_route,,R0240,,"[""侨乡""]",zh-Hans,synthetic
+V0026,2026-10-06T16:26:00+08:00,finish_route,,R0261,3141,,yue-Hant,synthetic
+V0067,2026-10-06T16:27:00+08:00,view_route,,R0670,53,"[""自然""]",zh-Hans,synthetic
+V0026,2026-10-06T16:28:00+08:00,listen_guide,LD001,R0261,211,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T16:28:00+08:00,listen_guide,LD005,R0261,781,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0067,2026-10-06T16:28:00+08:00,adopt_route,,R0670,,"[""自然""]",zh-Hans,synthetic
+V0026,2026-10-06T16:29:00+08:00,ask_question,LD001,R0261,688,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T16:30:00+08:00,arrive_point,LD005,R0261,137,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T16:31:00+08:00,arrive_point,LD011,R0261,208,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0061,2026-10-06T16:31:00+08:00,finish_route,,R0612,2765,"[""摄影""]",yue-Hant,synthetic
+V0039,2026-10-06T16:33:00+08:00,view_route,,R0390,14,"[""非遗"", ""摄影""]",zh-Hans,synthetic
+V0061,2026-10-06T16:33:00+08:00,listen_guide,LD003,R0612,569,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T16:33:00+08:00,arrive_point,LD012,R0612,874,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T16:33:00+08:00,listen_guide,LD012,R0612,615,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T16:33:00+08:00,listen_guide,LD004,R0612,60,"[""摄影""]",yue-Hant,synthetic
+V0026,2026-10-06T16:34:00+08:00,arrive_point,LD001,R0261,610,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0061,2026-10-06T16:34:00+08:00,arrive_point,LD001,R0612,815,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T16:41:00+08:00,arrive_point,LD004,R0612,732,"[""摄影""]",yue-Hant,synthetic
+V0061,2026-10-06T16:42:00+08:00,arrive_point,LD003,R0612,553,"[""摄影""]",yue-Hant,synthetic
+V0024,2026-10-06T16:56:00+08:00,view_parking,,,,"[""侨乡""]",zh-Hans,synthetic
+V0018,2026-10-06T17:31:00+08:00,view_route,,R0180,93,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T17:32:00+08:00,adopt_route,,R0180,,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T17:35:00+08:00,view_route,,R0181,118,"[""自然"", ""历史""]",en,synthetic
+V0067,2026-10-06T17:43:00+08:00,finish_route,,R0670,921,"[""自然""]",zh-Hans,synthetic
+V0067,2026-10-06T17:45:00+08:00,listen_guide,LD007,R0670,516,"[""自然""]",zh-Hans,synthetic
+V0067,2026-10-06T17:52:00+08:00,arrive_point,LD007,R0670,618,"[""自然""]",zh-Hans,synthetic
+V0067,2026-10-06T17:54:00+08:00,arrive_point,LD009,R0670,503,"[""自然""]",zh-Hans,synthetic
+V0018,2026-10-06T17:55:00+08:00,finish_route,,R0180,629,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T17:56:00+08:00,arrive_point,LD011,R0180,174,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T17:56:00+08:00,arrive_point,LD003,R0180,199,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T17:57:00+08:00,listen_guide,LD011,R0180,888,"[""自然"", ""历史""]",en,synthetic
+V0026,2026-10-06T18:06:00+08:00,finish_route,,R0260,4417,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0018,2026-10-06T18:07:00+08:00,arrive_point,LD005,R0180,469,"[""自然"", ""历史""]",en,synthetic
+V0026,2026-10-06T18:08:00+08:00,arrive_point,LD009,R0260,588,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T18:09:00+08:00,ask_question,LD010,R0260,814,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T18:09:00+08:00,ask_question,LD003,R0260,711,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0026,2026-10-06T18:10:00+08:00,arrive_point,LD003,R0260,271,,yue-Hant,synthetic
+V0026,2026-10-06T18:16:00+08:00,arrive_point,LD010,R0260,649,"[""建筑"", ""自然"", ""非遗""]",yue-Hant,synthetic
+V0022,2026-10-06T18:19:00+08:00,view_parking,,,,"[""非遗"", ""侨乡"", ""历史""]",yue-Hant,synthetic
+V0018,2026-10-06T18:20:00+08:00,view_parking,,,,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T19:08:00+08:00,book_guide,LD008,,,"[""自然"", ""历史""]",en,synthetic
+V0109,2026-10-06T20:16:00+08:00,book_guide,LD004,,,"[""侨乡"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0022,2026-10-06T20:22:00+08:00,book_guide,LD005,,,"[""非遗"", ""侨乡"", ""历史""]",yue-Hant,synthetic
+V0018,2026-10-06T20:56:00+08:00,finish_route,,R0181,5382,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T20:58:00+08:00,listen_guide,LD002,R0181,32,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T21:02:00+08:00,arrive_point,LD002,R0181,53,"[""自然"", ""历史""]",en,synthetic
+V0018,2026-10-06T21:03:00+08:00,arrive_point,LD003,R0181,416,"[""自然"", ""历史""]",en,synthetic
+V0088,2026-10-07T09:51:00+08:00,view_parking,,,,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0088,2026-10-07T09:54:00+08:00,adopt_parking,,,,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0088,2026-10-07T10:07:00+08:00,view_route,,R0880,55,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0056,2026-10-07T10:39:00+08:00,view_route,,R0560,109,"[""历史""]",en,synthetic
+V0056,2026-10-07T10:40:00+08:00,adopt_route,,R0560,,"[""历史""]",en,synthetic
+V0056,2026-10-07T10:47:00+08:00,view_parking,,,,"[""历史""]",en,synthetic
+V0056,2026-10-07T10:59:00+08:00,book_guide,LD011,,,"[""历史""]",en,synthetic
+V0103,2026-10-07T11:16:00+08:00,view_route,,R1030,106,"[""非遗""]",zh-Hans,synthetic
+V0103,2026-10-07T11:17:00+08:00,adopt_route,,R1030,,"[""非遗""]",zh-Hans,synthetic
+V0103,2026-10-07T12:30:00+08:00,view_parking,,,,,zh-Hans,synthetic
+V0103,2026-10-07T12:37:00+08:00,adopt_parking,,,,"[""非遗""]",zh-Hans,synthetic
+V0088,2026-10-07T13:01:00+08:00,finish_route,,R0880,2228,,yue-Hant,synthetic
+V0088,2026-10-07T13:02:00+08:00,arrive_point,LD011,R0880,161,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0088,2026-10-07T13:04:00+08:00,ask_question,LD011,R0880,440,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0088,2026-10-07T13:13:00+08:00,arrive_point,LD001,R0880,67,"[""非遗"", ""摄影""]",yue-Hant,synthetic
+V0057,2026-10-07T14:41:00+08:00,view_route,,R0570,62,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0057,2026-10-07T14:42:00+08:00,adopt_route,,R0570,,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0057,2026-10-07T14:48:00+08:00,view_parking,,,,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0076,2026-10-07T16:02:00+08:00,view_route,,R0761,92,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0076,2026-10-07T16:03:00+08:00,adopt_route,,R0761,,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0076,2026-10-07T16:04:00+08:00,view_route,,R0760,42,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0076,2026-10-07T16:05:00+08:00,adopt_route,,R0760,,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0057,2026-10-07T16:15:00+08:00,book_guide,LD007,,,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0066,2026-10-07T16:17:00+08:00,view_route,,R0660,76,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T16:18:00+08:00,adopt_route,,R0660,,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0076,2026-10-07T16:22:00+08:00,view_route,,R0762,54,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0076,2026-10-07T16:23:00+08:00,adopt_route,,R0762,,"[""自然"", ""侨乡"", ""美食""]",zh-Hans,synthetic
+V0066,2026-10-07T16:29:00+08:00,view_route,,R0661,47,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T16:30:00+08:00,view_route,,R0662,20,,yue-Hant,synthetic
+V0066,2026-10-07T16:31:00+08:00,adopt_route,,R0662,,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0069,2026-10-07T17:29:00+08:00,view_parking,,,,,zh-Hans,synthetic
+V0057,2026-10-07T17:41:00+08:00,finish_route,,R0570,3100,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0057,2026-10-07T17:43:00+08:00,listen_guide,LD006,R0570,337,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0069,2026-10-07T17:46:00+08:00,view_route,,R0690,25,"[""美食"", ""建筑""]",zh-Hans,synthetic
+V0069,2026-10-07T17:47:00+08:00,adopt_route,,R0690,,"[""美食"", ""建筑""]",zh-Hans,synthetic
+V0057,2026-10-07T17:48:00+08:00,arrive_point,LD008,R0570,237,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0057,2026-10-07T17:48:00+08:00,arrive_point,LD007,R0570,511,,zh-Hans,synthetic
+V0057,2026-10-07T17:50:00+08:00,arrive_point,LD006,R0570,192,"[""历史"", ""亲子""]",zh-Hans,synthetic
+V0106,2026-10-07T18:20:00+08:00,view_parking,,,,"[""非遗"", ""摄影""]",zh-Hans,synthetic
+V0064,2026-10-07T18:21:00+08:00,view_route,,R0640,101,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T18:22:00+08:00,adopt_route,,R0640,,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0106,2026-10-07T18:23:00+08:00,adopt_parking,,,,"[""非遗"", ""摄影""]",zh-Hans,synthetic
+V0053,2026-10-07T18:27:00+08:00,view_parking,,,,"[""侨乡"", ""亲子""]",zh-Hans,synthetic
+V0084,2026-10-07T18:55:00+08:00,view_route,,R0840,62,,zh-Hans,synthetic
+V0064,2026-10-07T19:27:00+08:00,view_parking,,,,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T19:39:00+08:00,adopt_parking,,,,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0066,2026-10-07T19:53:00+08:00,finish_route,,R0660,1074,,yue-Hant,synthetic
+V0066,2026-10-07T19:54:00+08:00,arrive_point,LD010,R0660,289,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T19:55:00+08:00,listen_guide,LD006,R0660,192,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T19:55:00+08:00,listen_guide,LD010,R0660,370,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T19:56:00+08:00,ask_question,LD009,R0660,531,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T19:56:00+08:00,ask_question,LD010,R0660,678,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T20:02:00+08:00,arrive_point,LD009,R0660,40,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0066,2026-10-07T20:03:00+08:00,arrive_point,LD006,R0660,656,"[""历史"", ""侨乡"", ""自然""]",yue-Hant,synthetic
+V0084,2026-10-07T20:08:00+08:00,book_guide,LD010,,,"[""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T20:30:00+08:00,feedback,LD001,,32,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:14:00+08:00,finish_route,,R0640,4765,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:16:00+08:00,arrive_point,LD002,R0640,776,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:16:00+08:00,listen_guide,LD002,R0640,680,,zh-Hans,synthetic
+V0064,2026-10-07T22:17:00+08:00,ask_question,LD011,R0640,453,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:17:00+08:00,arrive_point,LD001,R0640,636,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:22:00+08:00,arrive_point,LD010,R0640,616,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0064,2026-10-07T22:23:00+08:00,arrive_point,LD011,R0640,899,"[""建筑"", ""自然""]",zh-Hans,synthetic
+V0063,2026-10-08T09:10:00+08:00,view_route,,R0630,85,,yue-Hant,synthetic
+V0063,2026-10-08T09:26:00+08:00,view_route,,R0631,68,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T09:39:00+08:00,view_route,,R0632,50,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T09:40:00+08:00,adopt_route,,R0632,,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T09:51:00+08:00,view_parking,,,,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:06:00+08:00,adopt_parking,,,,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:37:00+08:00,finish_route,,R0632,3206,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:39:00+08:00,listen_guide,LD003,R0632,97,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:39:00+08:00,listen_guide,LD005,R0632,757,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:40:00+08:00,ask_question,LD003,R0632,688,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:43:00+08:00,arrive_point,LD005,R0632,678,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T10:46:00+08:00,arrive_point,LD003,R0632,514,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:09:00+08:00,finish_route,,R0631,1001,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:11:00+08:00,listen_guide,LD001,R0631,140,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:11:00+08:00,listen_guide,LD010,R0631,191,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:13:00+08:00,arrive_point,LD001,R0631,517,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:20:00+08:00,arrive_point,LD008,R0631,411,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0063,2026-10-08T13:20:00+08:00,arrive_point,LD010,R0631,202,"[""摄影"", ""历史"", ""亲子""]",yue-Hant,synthetic
+V0115,2026-10-08T13:44:00+08:00,view_route,,R1150,40,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0115,2026-10-08T13:45:00+08:00,adopt_route,,R1150,,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0115,2026-10-08T13:54:00+08:00,view_route,,R1152,56,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0115,2026-10-08T13:57:00+08:00,view_parking,,,,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0115,2026-10-08T13:59:00+08:00,view_route,,R1151,26,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0115,2026-10-08T14:00:00+08:00,adopt_route,,R1151,,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0005,2026-10-08T14:08:00+08:00,view_route,,R0051,29,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0115,2026-10-08T14:13:00+08:00,adopt_parking,,,,"[""亲子"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0005,2026-10-08T14:20:00+08:00,view_parking,,,,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:24:00+08:00,view_route,,R0050,29,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:25:00+08:00,adopt_route,,R0050,,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:29:00+08:00,finish_route,,R0051,3982,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:31:00+08:00,listen_guide,LD007,R0051,794,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:31:00+08:00,listen_guide,LD004,R0051,875,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:32:00+08:00,arrive_point,LD004,R0051,765,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:32:00+08:00,ask_question,LD003,R0051,842,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:34:00+08:00,arrive_point,LD001,R0051,853,,zh-Hans,synthetic
+V0005,2026-10-08T14:37:00+08:00,arrive_point,LD003,R0051,835,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:37:00+08:00,view_route,,R0052,70,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:38:00+08:00,adopt_route,,R0052,,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T14:41:00+08:00,arrive_point,LD007,R0051,322,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T15:21:00+08:00,finish_route,,R0050,4588,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T15:23:00+08:00,listen_guide,LD006,R0050,83,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0005,2026-10-08T15:23:00+08:00,listen_guide,LD010,R0050,341,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0096,2026-10-08T15:27:00+08:00,view_parking,,,,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0005,2026-10-08T15:29:00+08:00,arrive_point,LD006,R0050,792,,zh-Hans,synthetic
+V0096,2026-10-08T15:29:00+08:00,view_route,,R0960,52,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0005,2026-10-08T15:33:00+08:00,arrive_point,LD010,R0050,381,"[""摄影"", ""自然"", ""建筑""]",zh-Hans,synthetic
+V0107,2026-10-08T15:37:00+08:00,view_route,,R1070,59,"[""建筑""]",zh-Hans,synthetic
+V0107,2026-10-08T15:38:00+08:00,adopt_route,,R1070,,"[""建筑""]",zh-Hans,synthetic
+V0102,2026-10-08T16:01:00+08:00,view_route,,R1020,14,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T16:02:00+08:00,adopt_route,,R1020,,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T16:02:00+08:00,view_parking,,,,,zh-Hans,synthetic
+V0107,2026-10-08T16:21:00+08:00,finish_route,,R1070,3093,"[""建筑""]",zh-Hans,synthetic
+V0107,2026-10-08T16:23:00+08:00,listen_guide,LD006,R1070,548,"[""建筑""]",zh-Hans,synthetic
+V0102,2026-10-08T16:25:00+08:00,view_route,,R1021,34,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T16:26:00+08:00,adopt_route,,R1021,,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0107,2026-10-08T16:26:00+08:00,arrive_point,LD010,R1070,272,"[""建筑""]",zh-Hans,synthetic
+V0107,2026-10-08T16:26:00+08:00,arrive_point,LD006,R1070,599,"[""建筑""]",zh-Hans,synthetic
+V0107,2026-10-08T16:30:00+08:00,arrive_point,LD009,R1070,488,"[""建筑""]",zh-Hans,synthetic
+V0096,2026-10-08T16:32:00+08:00,finish_route,,R0960,1880,,zh-Hans,synthetic
+V0096,2026-10-08T16:33:00+08:00,arrive_point,LD004,R0960,126,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0096,2026-10-08T16:34:00+08:00,arrive_point,LD005,R0960,481,,zh-Hans,synthetic
+V0096,2026-10-08T16:34:00+08:00,listen_guide,LD005,R0960,731,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0096,2026-10-08T16:36:00+08:00,arrive_point,LD009,R0960,739,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0096,2026-10-08T16:37:00+08:00,arrive_point,LD007,R0960,44,"[""历史"", ""美食""]",zh-Hans,synthetic
+V0032,2026-10-08T16:55:00+08:00,view_route,,R0320,108,"[""自然"", ""亲子"", ""非遗""]",en,synthetic
+V0035,2026-10-08T17:02:00+08:00,view_parking,,,,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0035,2026-10-08T17:04:00+08:00,view_route,,R0350,48,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0035,2026-10-08T17:09:00+08:00,adopt_parking,,,,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0062,2026-10-08T17:31:00+08:00,book_guide,LD011,,,"[""美食"", ""侨乡""]",en,synthetic
+V0041,2026-10-08T17:39:00+08:00,view_route,,R0410,9,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0102,2026-10-08T17:56:00+08:00,finish_route,,R1021,4953,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T17:58:00+08:00,listen_guide,LD003,R1021,31,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T17:59:00+08:00,ask_question,LD002,R1021,406,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T17:59:00+08:00,arrive_point,LD003,R1021,152,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T18:01:00+08:00,arrive_point,LD002,R1021,790,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T18:07:00+08:00,arrive_point,LD001,R1021,645,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0107,2026-10-08T18:18:00+08:00,book_guide,LD001,,,"[""建筑""]",zh-Hans,synthetic
+V0013,2026-10-08T18:25:00+08:00,view_route,,R0131,62,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T18:26:00+08:00,adopt_route,,R0131,,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T18:30:00+08:00,view_route,,R0132,98,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T18:31:00+08:00,adopt_route,,R0132,,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T18:37:00+08:00,view_route,,R0130,96,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0045,2026-10-08T18:47:00+08:00,view_parking,,,,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0045,2026-10-08T18:54:00+08:00,view_route,,R0450,97,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0045,2026-10-08T18:55:00+08:00,adopt_route,,R0450,,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0102,2026-10-08T19:11:00+08:00,finish_route,,R1020,4137,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T19:12:00+08:00,arrive_point,LD003,R1020,158,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T19:14:00+08:00,ask_question,LD010,R1020,408,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T19:16:00+08:00,arrive_point,LD004,R1020,158,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T19:17:00+08:00,arrive_point,LD010,R1020,498,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0102,2026-10-08T19:18:00+08:00,arrive_point,LD001,R1020,762,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0013,2026-10-08T19:31:00+08:00,finish_route,,R0131,3584,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T19:34:00+08:00,ask_question,LD004,R0131,122,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T19:35:00+08:00,arrive_point,LD006,R0131,168,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0013,2026-10-08T19:36:00+08:00,arrive_point,LD004,R0131,157,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0045,2026-10-08T19:37:00+08:00,finish_route,,R0450,3608,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0045,2026-10-08T19:39:00+08:00,listen_guide,LD001,R0450,732,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0045,2026-10-08T19:41:00+08:00,arrive_point,LD001,R0450,591,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0045,2026-10-08T19:42:00+08:00,arrive_point,LD011,R0450,504,"[""历史"", ""建筑"", ""亲子""]",yue-Hant,synthetic
+V0013,2026-10-08T19:43:00+08:00,arrive_point,LD002,R0131,543,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0041,2026-10-08T19:59:00+08:00,book_guide,LD002,,,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0035,2026-10-08T20:22:00+08:00,finish_route,,R0350,2634,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0035,2026-10-08T20:24:00+08:00,listen_guide,LD008,R0350,549,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0035,2026-10-08T20:27:00+08:00,arrive_point,LD008,R0350,498,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0035,2026-10-08T20:34:00+08:00,arrive_point,LD003,R0350,524,"[""摄影"", ""非遗""]",zh-Hans,synthetic
+V0041,2026-10-08T21:23:00+08:00,finish_route,,R0410,4115,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0041,2026-10-08T21:26:00+08:00,ask_question,LD006,R0410,863,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0041,2026-10-08T21:27:00+08:00,arrive_point,LD002,R0410,617,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0041,2026-10-08T21:31:00+08:00,arrive_point,LD006,R0410,279,"[""摄影"", ""建筑"", ""美食""]",zh-Hans,synthetic
+V0013,2026-10-08T23:11:00+08:00,feedback,LD004,,23,"[""侨乡"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0078,2026-10-09T11:20:00+08:00,view_route,,R0780,29,"[""美食"", ""自然"", ""侨乡""]",zh-Hans,synthetic
+V0023,2026-10-09T11:45:00+08:00,view_route,,R0230,25,"[""亲子""]",en,synthetic
+V0023,2026-10-09T11:46:00+08:00,adopt_route,,R0230,,,en,synthetic
+V0078,2026-10-09T12:14:00+08:00,view_parking,,,,"[""美食"", ""自然"", ""侨乡""]",zh-Hans,synthetic
+V0023,2026-10-09T12:22:00+08:00,view_route,,R0231,6,"[""亲子""]",en,synthetic
+V0023,2026-10-09T12:23:00+08:00,adopt_route,,R0231,,"[""亲子""]",en,synthetic
+V0014,2026-10-09T13:42:00+08:00,view_route,,R0140,97,"[""美食""]",zh-Hans,synthetic
+V0023,2026-10-09T13:58:00+08:00,finish_route,,R0230,3612,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:00:00+08:00,listen_guide,LD003,R0230,34,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:00:00+08:00,listen_guide,LD008,R0230,766,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:00:00+08:00,listen_guide,LD001,R0230,634,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:01:00+08:00,ask_question,LD003,R0230,169,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:03:00+08:00,arrive_point,LD003,R0230,872,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:04:00+08:00,arrive_point,LD001,R0230,770,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:07:00+08:00,arrive_point,LD008,R0230,400,"[""亲子""]",en,synthetic
+V0023,2026-10-09T14:07:00+08:00,arrive_point,LD004,R0230,200,"[""亲子""]",en,synthetic
+V0014,2026-10-09T14:27:00+08:00,view_parking,,,,"[""美食""]",zh-Hans,synthetic
+V0021,2026-10-09T15:04:00+08:00,view_route,,R0210,109,"[""侨乡"", ""自然""]",en,synthetic
+V0021,2026-10-09T15:05:00+08:00,adopt_route,,R0210,,"[""侨乡"", ""自然""]",en,synthetic
+V0023,2026-10-09T15:05:00+08:00,finish_route,,R0231,1622,"[""亲子""]",en,synthetic
+V0023,2026-10-09T15:06:00+08:00,arrive_point,LD005,R0231,593,"[""亲子""]",en,synthetic
+V0023,2026-10-09T15:07:00+08:00,listen_guide,LD005,R0231,412,"[""亲子""]",en,synthetic
+V0023,2026-10-09T15:09:00+08:00,arrive_point,LD006,R0231,806,"[""亲子""]",en,synthetic
+V0021,2026-10-09T15:32:00+08:00,view_parking,,,,"[""侨乡"", ""自然""]",en,synthetic
+V0009,2026-10-09T15:48:00+08:00,view_route,,R0090,56,,en,synthetic
+V0097,2026-10-09T15:56:00+08:00,view_route,,R0970,21,"[""自然"", ""摄影""]",en,synthetic
+V0097,2026-10-09T16:00:00+08:00,view_route,,R0971,11,"[""自然"", ""摄影""]",en,synthetic
+V0097,2026-10-09T16:01:00+08:00,adopt_route,,R0971,,,en,synthetic
+V0009,2026-10-09T16:03:00+08:00,view_parking,,,,,en,synthetic
+V0021,2026-10-09T16:25:00+08:00,finish_route,,R0210,2499,"[""侨乡"", ""自然""]",en,synthetic
+V0021,2026-10-09T16:26:00+08:00,arrive_point,LD003,R0210,695,"[""侨乡"", ""自然""]",en,synthetic
+V0021,2026-10-09T16:27:00+08:00,listen_guide,LD003,R0210,120,"[""侨乡"", ""自然""]",en,synthetic
+V0021,2026-10-09T16:27:00+08:00,listen_guide,LD007,R0210,248,"[""侨乡"", ""自然""]",en,synthetic
+V0021,2026-10-09T16:35:00+08:00,arrive_point,LD007,R0210,714,"[""侨乡"", ""自然""]",en,synthetic
+V0097,2026-10-09T16:41:00+08:00,view_parking,,,,"[""自然"", ""摄影""]",en,synthetic
+V0080,2026-10-09T17:29:00+08:00,book_guide,LD001,,,,zh-Hans,synthetic
+V0091,2026-10-09T18:32:00+08:00,view_route,,R0910,97,"[""建筑"", ""历史""]",en,synthetic
+V0091,2026-10-09T18:33:00+08:00,adopt_route,,R0910,,"[""建筑"", ""历史""]",en,synthetic
+V0091,2026-10-09T18:42:00+08:00,view_route,,R0911,80,"[""建筑"", ""历史""]",en,synthetic
+V0091,2026-10-09T18:43:00+08:00,adopt_route,,R0911,,"[""建筑"", ""历史""]",en,synthetic
+V0091,2026-10-09T19:09:00+08:00,view_parking,,,,"[""建筑"", ""历史""]",en,synthetic
+V0029,2026-10-09T19:20:00+08:00,view_route,,R0290,77,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0091,2026-10-09T19:20:00+08:00,finish_route,,R0910,3026,,en,synthetic
+V0091,2026-10-09T19:22:00+08:00,arrive_point,LD009,R0910,734,"[""建筑"", ""历史""]",en,synthetic
+V0091,2026-10-09T19:22:00+08:00,arrive_point,LD005,R0910,848,"[""建筑"", ""历史""]",en,synthetic
+V0080,2026-10-09T19:48:00+08:00,feedback,LD008,,14,"[""摄影"", ""历史""]",zh-Hans,synthetic
+V0091,2026-10-09T19:48:00+08:00,feedback,LD011,,38,"[""建筑"", ""历史""]",en,synthetic
+V0029,2026-10-09T20:24:00+08:00,view_parking,,,,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0029,2026-10-09T20:36:00+08:00,adopt_parking,,,,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0029,2026-10-09T22:18:00+08:00,finish_route,,R0290,3224,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0029,2026-10-09T22:21:00+08:00,arrive_point,LD010,R0290,789,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0029,2026-10-09T22:23:00+08:00,arrive_point,LD003,R0290,167,"[""亲子"", ""建筑""]",yue-Hant,synthetic
+V0051,2026-10-10T11:44:00+08:00,view_route,,R0511,15,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T12:03:00+08:00,view_route,,R0510,45,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T12:04:00+08:00,adopt_route,,R0510,,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T12:38:00+08:00,view_parking,,,,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:24:00+08:00,finish_route,,R0511,2317,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:26:00+08:00,listen_guide,LD003,R0511,391,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:26:00+08:00,arrive_point,LD008,R0511,821,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:26:00+08:00,listen_guide,LD012,R0511,449,,zh-Hans,synthetic
+V0051,2026-10-10T14:27:00+08:00,ask_question,LD005,R0511,634,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:27:00+08:00,ask_question,LD003,R0511,115,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:28:00+08:00,arrive_point,LD005,R0511,291,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:29:00+08:00,arrive_point,LD012,R0511,219,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T14:33:00+08:00,arrive_point,LD003,R0511,141,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0068,2026-10-10T15:00:00+08:00,view_route,,R0680,55,"[""亲子"", ""非遗"", ""摄影""]",yue-Hant,synthetic
+V0068,2026-10-10T15:01:00+08:00,adopt_route,,R0680,,"[""亲子"", ""非遗"", ""摄影""]",yue-Hant,synthetic
+V0051,2026-10-10T15:08:00+08:00,finish_route,,R0510,5099,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:10:00+08:00,listen_guide,LD011,R0510,265,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:10:00+08:00,listen_guide,LD008,R0510,132,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:11:00+08:00,ask_question,LD011,R0510,510,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:11:00+08:00,ask_question,LD008,R0510,865,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:17:00+08:00,arrive_point,LD011,R0510,58,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0051,2026-10-10T15:18:00+08:00,arrive_point,LD008,R0510,252,"[""非遗"", ""自然"", ""美食""]",zh-Hans,synthetic
+V0119,2026-10-10T15:26:00+08:00,view_parking,,,,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0119,2026-10-10T15:29:00+08:00,view_route,,R1190,14,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0119,2026-10-10T15:30:00+08:00,adopt_route,,R1190,,,zh-Hans,synthetic
+V0010,2026-10-10T15:32:00+08:00,view_route,,R0100,99,"[""非遗""]",zh-Hans,synthetic
+V0010,2026-10-10T15:33:00+08:00,adopt_route,,R0100,,"[""非遗""]",zh-Hans,synthetic
+V0090,2026-10-10T15:49:00+08:00,view_parking,,,,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T15:52:00+08:00,view_route,,R0900,106,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T15:53:00+08:00,adopt_route,,R0900,,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T15:53:00+08:00,view_route,,R0901,82,,zh-Hans,synthetic
+V0075,2026-10-10T16:06:00+08:00,view_route,,R0750,102,"[""非遗"", ""摄影"", ""美食""]",zh-Hans,synthetic
+V0119,2026-10-10T16:13:00+08:00,book_guide,LD009,,,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0075,2026-10-10T16:20:00+08:00,view_parking,,,,"[""非遗"", ""摄影"", ""美食""]",zh-Hans,synthetic
+V0075,2026-10-10T16:21:00+08:00,adopt_parking,,,,"[""非遗"", ""摄影"", ""美食""]",zh-Hans,synthetic
+V0020,2026-10-10T16:31:00+08:00,view_parking,,,,"[""美食""]",en,synthetic
+V0020,2026-10-10T17:03:00+08:00,view_route,,R0200,54,"[""美食""]",en,synthetic
+V0093,2026-10-10T17:10:00+08:00,view_route,,R0930,102,,zh-Hans,synthetic
+V0093,2026-10-10T17:11:00+08:00,adopt_route,,R0930,,"[""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T17:15:00+08:00,finish_route,,R0900,4449,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T17:18:00+08:00,arrive_point,LD003,R0900,179,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T17:24:00+08:00,arrive_point,LD005,R0900,376,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0090,2026-10-10T17:27:00+08:00,arrive_point,LD001,R0900,895,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0110,2026-10-10T17:30:00+08:00,view_parking,,,,,yue-Hant,synthetic
+V0090,2026-10-10T17:35:00+08:00,feedback,LD003,,24,"[""自然"", ""亲子""]",zh-Hans,synthetic
+V0093,2026-10-10T17:42:00+08:00,view_parking,,,,"[""亲子""]",zh-Hans,synthetic
+V0094,2026-10-10T18:07:00+08:00,view_parking,,,,"[""历史""]",zh-Hans,synthetic
+V0094,2026-10-10T18:15:00+08:00,adopt_parking,,,,"[""历史""]",zh-Hans,synthetic
+V0020,2026-10-10T18:20:00+08:00,feedback,LD004,,22,"[""美食""]",en,synthetic
+V0037,2026-10-10T18:20:00+08:00,view_route,,R0371,102,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T18:20:00+08:00,view_route,,R0372,52,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T18:21:00+08:00,view_route,,R0370,29,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T18:21:00+08:00,adopt_route,,R0371,,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T18:21:00+08:00,adopt_route,,R0372,,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T18:22:00+08:00,adopt_route,,R0370,,"[""自然""]",zh-Hans,synthetic
+V0119,2026-10-10T18:43:00+08:00,finish_route,,R1190,1334,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0119,2026-10-10T18:45:00+08:00,listen_guide,LD005,R1190,717,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0093,2026-10-10T18:47:00+08:00,feedback,LD003,,29,"[""亲子""]",zh-Hans,synthetic
+V0037,2026-10-10T18:51:00+08:00,view_parking,,,,"[""自然""]",zh-Hans,synthetic
+V0119,2026-10-10T18:52:00+08:00,arrive_point,LD005,R1190,609,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0119,2026-10-10T18:54:00+08:00,arrive_point,LD004,R1190,756,"[""摄影"", ""侨乡""]",zh-Hans,synthetic
+V0020,2026-10-10T19:45:00+08:00,finish_route,,R0200,965,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:47:00+08:00,listen_guide,LD008,R0200,353,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:47:00+08:00,arrive_point,LD012,R0200,329,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:47:00+08:00,listen_guide,LD012,R0200,379,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:47:00+08:00,listen_guide,LD003,R0200,645,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:50:00+08:00,arrive_point,LD003,R0200,263,"[""美食""]",en,synthetic
+V0020,2026-10-10T19:57:00+08:00,arrive_point,LD008,R0200,347,"[""美食""]",en,synthetic
+V0110,2026-10-10T20:45:00+08:00,feedback,LD007,,31,"[""历史"", ""侨乡""]",yue-Hant,synthetic
+V0037,2026-10-10T21:46:00+08:00,finish_route,,R0372,2690,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T21:53:00+08:00,arrive_point,LD011,R0372,141,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T21:54:00+08:00,arrive_point,LD002,R0372,778,"[""自然""]",zh-Hans,synthetic
+V0037,2026-10-10T22:42:00+08:00,feedback,LD010,,43,"[""自然""]",zh-Hans,synthetic
+V0105,2026-10-11T10:24:00+08:00,view_route,,R1050,10,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T10:46:00+08:00,view_route,,R1051,34,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T10:51:00+08:00,view_route,,R1052,54,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T10:52:00+08:00,adopt_route,,R1052,,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0001,2026-10-11T10:58:00+08:00,view_route,,R0011,13,"[""非遗"", ""建筑""]",en,synthetic
+V0001,2026-10-11T11:08:00+08:00,view_route,,R0010,89,"[""非遗"", ""建筑""]",en,synthetic
+V0105,2026-10-11T11:12:00+08:00,book_guide,LD004,,,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0060,2026-10-11T11:22:00+08:00,view_route,,R0600,29,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T11:22:00+08:00,view_route,,R0602,55,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T11:23:00+08:00,adopt_route,,R0602,,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0105,2026-10-11T11:28:00+08:00,view_parking,,,,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0060,2026-10-11T11:31:00+08:00,view_route,,R0601,76,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0089,2026-10-11T11:34:00+08:00,view_route,,R0891,44,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T11:35:00+08:00,finish_route,,R1051,3991,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T11:37:00+08:00,arrive_point,LD007,R1051,175,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0089,2026-10-11T11:38:00+08:00,view_route,,R0890,120,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0046,2026-10-11T11:40:00+08:00,view_parking,,,,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0105,2026-10-11T11:41:00+08:00,arrive_point,LD001,R1051,331,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0001,2026-10-11T11:43:00+08:00,view_parking,,,,"[""非遗"", ""建筑""]",en,synthetic
+V0105,2026-10-11T11:44:00+08:00,arrive_point,LD010,R1051,348,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0046,2026-10-11T11:50:00+08:00,view_route,,R0460,41,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0060,2026-10-11T11:50:00+08:00,view_parking,,,,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T12:04:00+08:00,adopt_parking,,,,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0043,2026-10-11T13:23:00+08:00,view_route,,R0430,75,"[""摄影""]",yue-Hant,synthetic
+V0043,2026-10-11T13:24:00+08:00,adopt_route,,R0430,,"[""摄影""]",yue-Hant,synthetic
+V0060,2026-10-11T14:12:00+08:00,finish_route,,R0602,3938,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T14:13:00+08:00,arrive_point,LD004,R0602,381,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T14:14:00+08:00,arrive_point,LD002,R0602,684,,zh-Hans,synthetic
+V0060,2026-10-11T14:14:00+08:00,listen_guide,LD002,R0602,472,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T14:20:00+08:00,arrive_point,LD001,R0602,604,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0060,2026-10-11T14:23:00+08:00,arrive_point,LD012,R0602,427,,zh-Hans,synthetic
+V0043,2026-10-11T14:30:00+08:00,view_parking,,,,,yue-Hant,synthetic
+V0105,2026-10-11T14:39:00+08:00,finish_route,,R1052,3685,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:40:00+08:00,arrive_point,LD006,R1052,55,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:41:00+08:00,listen_guide,LD005,R1052,214,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:41:00+08:00,arrive_point,LD008,R1052,545,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:41:00+08:00,listen_guide,LD007,R1052,452,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:42:00+08:00,arrive_point,LD005,R1052,545,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0105,2026-10-11T14:48:00+08:00,arrive_point,LD007,R1052,825,"[""建筑"", ""美食""]",zh-Hans,synthetic
+V0046,2026-10-11T15:29:00+08:00,feedback,LD009,,48,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0030,2026-10-11T15:36:00+08:00,view_route,,R0300,118,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0046,2026-10-11T15:36:00+08:00,finish_route,,R0460,4456,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0030,2026-10-11T15:37:00+08:00,adopt_route,,R0300,,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0046,2026-10-11T15:37:00+08:00,arrive_point,LD010,R0460,165,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0046,2026-10-11T15:38:00+08:00,listen_guide,LD008,R0460,854,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0089,2026-10-11T15:38:00+08:00,finish_route,,R0890,2092,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0089,2026-10-11T15:40:00+08:00,listen_guide,LD006,R0890,125,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0089,2026-10-11T15:41:00+08:00,ask_question,LD006,R0890,870,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0046,2026-10-11T15:47:00+08:00,arrive_point,LD008,R0460,356,"[""亲子"", ""摄影""]",yue-Hant,synthetic
+V0089,2026-10-11T15:48:00+08:00,arrive_point,LD004,R0890,581,,zh-Hans,synthetic
+V0089,2026-10-11T15:48:00+08:00,arrive_point,LD006,R0890,76,"[""建筑"", ""亲子"", ""美食""]",zh-Hans,synthetic
+V0060,2026-10-11T15:56:00+08:00,feedback,LD003,,56,"[""建筑"", ""自然"", ""亲子""]",zh-Hans,synthetic
+V0030,2026-10-11T16:12:00+08:00,view_parking,,,,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0054,2026-10-11T16:21:00+08:00,view_route,,R0540,42,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T16:39:00+08:00,view_route,,R0541,100,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T16:40:00+08:00,adopt_route,,R0541,,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T17:06:00+08:00,view_parking,,,,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T17:38:00+08:00,book_guide,LD001,,,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0030,2026-10-11T18:26:00+08:00,finish_route,,R0300,4012,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0030,2026-10-11T18:27:00+08:00,arrive_point,LD011,R0300,362,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0030,2026-10-11T18:34:00+08:00,arrive_point,LD010,R0300,818,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0030,2026-10-11T18:37:00+08:00,arrive_point,LD005,R0300,847,"[""摄影"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0054,2026-10-11T19:10:00+08:00,finish_route,,R0540,2073,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:12:00+08:00,listen_guide,LD008,R0540,552,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:12:00+08:00,listen_guide,LD007,R0540,592,,zh-Hans,synthetic
+V0054,2026-10-11T19:13:00+08:00,arrive_point,LD008,R0540,468,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:14:00+08:00,arrive_point,LD006,R0540,71,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:17:00+08:00,arrive_point,LD007,R0540,754,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0118,2026-10-11T19:18:00+08:00,view_route,,R1182,33,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0118,2026-10-11T19:19:00+08:00,adopt_route,,R1182,,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0118,2026-10-11T19:21:00+08:00,view_route,,R1181,7,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0118,2026-10-11T19:27:00+08:00,view_route,,R1180,30,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0118,2026-10-11T19:28:00+08:00,adopt_route,,R1180,,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0011,2026-10-11T19:38:00+08:00,view_route,,R0110,99,,zh-Hans,synthetic
+V0054,2026-10-11T19:42:00+08:00,finish_route,,R0541,4898,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:44:00+08:00,listen_guide,LD004,R0541,94,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0054,2026-10-11T19:47:00+08:00,arrive_point,LD010,R0541,754,,zh-Hans,synthetic
+V0011,2026-10-11T19:48:00+08:00,view_parking,,,,"[""非遗""]",zh-Hans,synthetic
+V0054,2026-10-11T19:48:00+08:00,arrive_point,LD004,R0541,111,"[""建筑"", ""非遗"", ""摄影""]",zh-Hans,synthetic
+V0118,2026-10-11T19:54:00+08:00,view_parking,,,,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0011,2026-10-11T20:03:00+08:00,view_route,,R0111,53,"[""非遗""]",zh-Hans,synthetic
+V0011,2026-10-11T20:04:00+08:00,adopt_route,,R0111,,"[""非遗""]",zh-Hans,synthetic
+V0118,2026-10-11T20:14:00+08:00,adopt_parking,,,,"[""非遗"", ""历史"", ""美食""]",en,synthetic
+V0011,2026-10-11T21:23:00+08:00,finish_route,,R0110,1559,"[""非遗""]",zh-Hans,synthetic
+V0011,2026-10-11T21:25:00+08:00,listen_guide,LD006,R0110,470,"[""非遗""]",zh-Hans,synthetic
+V0011,2026-10-11T21:29:00+08:00,arrive_point,LD003,R0110,184,"[""非遗""]",zh-Hans,synthetic
+V0011,2026-10-11T21:31:00+08:00,arrive_point,LD006,R0110,831,"[""非遗""]",zh-Hans,synthetic
+V0011,2026-10-11T21:32:00+08:00,arrive_point,LD007,R0110,233,"[""非遗""]",zh-Hans,synthetic
+V0092,2026-10-12T09:51:00+08:00,view_route,,R0920,70,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T09:52:00+08:00,adopt_route,,R0920,,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T10:10:00+08:00,view_route,,R0922,53,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T10:11:00+08:00,adopt_route,,R0922,,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0049,2026-10-12T10:12:00+08:00,view_route,,R0490,32,"[""亲子"", ""自然""]",en,synthetic
+V0092,2026-10-12T10:12:00+08:00,view_route,,R0921,80,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0049,2026-10-12T10:46:00+08:00,finish_route,,R0490,1840,,en,synthetic
+V0049,2026-10-12T10:47:00+08:00,arrive_point,LD009,R0490,312,"[""亲子"", ""自然""]",en,synthetic
+V0074,2026-10-12T10:47:00+08:00,view_route,,R0740,76,"[""历史""]",yue-Hant,synthetic
+V0049,2026-10-12T10:48:00+08:00,listen_guide,LD001,R0490,217,"[""亲子"", ""自然""]",en,synthetic
+V0049,2026-10-12T10:48:00+08:00,listen_guide,LD011,R0490,614,"[""亲子"", ""自然""]",en,synthetic
+V0074,2026-10-12T10:48:00+08:00,adopt_route,,R0740,,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T10:48:00+08:00,view_route,,R0741,44,"[""历史""]",yue-Hant,synthetic
+V0049,2026-10-12T10:52:00+08:00,arrive_point,LD011,R0490,760,"[""亲子"", ""自然""]",en,synthetic
+V0049,2026-10-12T10:52:00+08:00,arrive_point,LD006,R0490,768,"[""亲子"", ""自然""]",en,synthetic
+V0049,2026-10-12T10:54:00+08:00,arrive_point,LD001,R0490,95,"[""亲子"", ""自然""]",en,synthetic
+V0074,2026-10-12T11:15:00+08:00,view_parking,,,,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T13:01:00+08:00,book_guide,LD012,,,"[""历史""]",yue-Hant,synthetic
+V0092,2026-10-12T13:16:00+08:00,finish_route,,R0921,2609,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:17:00+08:00,arrive_point,LD008,R0921,106,,yue-Hant,synthetic
+V0092,2026-10-12T13:17:00+08:00,arrive_point,LD009,R0921,881,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:18:00+08:00,listen_guide,LD008,R0921,450,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:18:00+08:00,listen_guide,LD002,R0921,409,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:18:00+08:00,listen_guide,LD009,R0921,298,,yue-Hant,synthetic
+V0092,2026-10-12T13:19:00+08:00,ask_question,LD002,R0921,762,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:20:00+08:00,arrive_point,LD002,R0921,375,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0092,2026-10-12T13:22:00+08:00,arrive_point,LD006,R0921,512,"[""建筑"", ""美食""]",yue-Hant,synthetic
+V0074,2026-10-12T14:27:00+08:00,finish_route,,R0741,4923,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:28:00+08:00,arrive_point,LD008,R0741,351,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:29:00+08:00,listen_guide,LD002,R0741,573,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:29:00+08:00,listen_guide,LD008,R0741,258,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:30:00+08:00,ask_question,LD002,R0741,890,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:31:00+08:00,arrive_point,LD010,R0741,795,"[""历史""]",yue-Hant,synthetic
+V0074,2026-10-12T14:34:00+08:00,arrive_point,LD002,R0741,740,"[""历史""]",yue-Hant,synthetic
+V0073,2026-10-12T16:33:00+08:00,view_parking,,,,"[""自然"", ""历史""]",zh-Hans,synthetic
+V0073,2026-10-12T16:57:00+08:00,view_route,,R0730,56,"[""自然"", ""历史""]",zh-Hans,synthetic
+V0073,2026-10-12T16:58:00+08:00,adopt_route,,R0730,,"[""自然"", ""历史""]",zh-Hans,synthetic
+V0052,2026-10-12T17:39:00+08:00,book_guide,LD001,,,,zh-Hans,synthetic
+V0070,2026-10-12T21:34:00+08:00,book_guide,LD012,,,"[""侨乡""]",yue-Hant,synthetic
+V0087,2026-10-13T09:43:00+08:00,view_route,,R0870,5,"[""建筑"", ""历史""]",en,synthetic
+V0087,2026-10-13T09:44:00+08:00,adopt_route,,R0870,,"[""建筑"", ""历史""]",en,synthetic
+V0087,2026-10-13T09:48:00+08:00,view_route,,R0871,81,"[""建筑"", ""历史""]",en,synthetic
+V0104,2026-10-13T09:48:00+08:00,view_route,,R1040,30,"[""摄影""]",zh-Hans,synthetic
+V0113,2026-10-13T09:48:00+08:00,view_route,,R1130,82,"[""非遗"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0087,2026-10-13T09:49:00+08:00,adopt_route,,R0871,,"[""建筑"", ""历史""]",en,synthetic
+V0113,2026-10-13T09:49:00+08:00,adopt_route,,R1130,,"[""非遗"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0104,2026-10-13T10:16:00+08:00,finish_route,,R1040,2601,"[""摄影""]",zh-Hans,synthetic
+V0104,2026-10-13T10:19:00+08:00,arrive_point,LD012,R1040,294,"[""摄影""]",zh-Hans,synthetic
+V0104,2026-10-13T10:21:00+08:00,arrive_point,LD005,R1040,309,,zh-Hans,synthetic
+V0113,2026-10-13T10:21:00+08:00,view_parking,,,,"[""非遗"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0104,2026-10-13T10:25:00+08:00,arrive_point,LD011,R1040,408,"[""摄影""]",zh-Hans,synthetic
+V0113,2026-10-13T10:30:00+08:00,adopt_parking,,,,"[""非遗"", ""美食"", ""历史""]",yue-Hant,synthetic
+V0087,2026-10-13T10:44:00+08:00,view_parking,,,,"[""建筑"", ""历史""]",en,synthetic
+V0104,2026-10-13T10:56:00+08:00,view_parking,,,,"[""摄影""]",zh-Hans,synthetic
+V0104,2026-10-13T11:09:00+08:00,book_guide,LD002,,,"[""摄影""]",zh-Hans,synthetic
+V0077,2026-10-13T13:31:00+08:00,view_route,,R0770,79,,zh-Hans,synthetic
+V0077,2026-10-13T13:37:00+08:00,view_parking,,,,"[""非遗""]",zh-Hans,synthetic
+V0028,2026-10-13T14:35:00+08:00,view_route,,R0280,38,"[""摄影"", ""建筑""]",zh-Hans,synthetic
+V0033,2026-10-13T15:40:00+08:00,book_guide,LD003,,,,zh-Hans,synthetic
+V0033,2026-10-13T15:54:00+08:00,view_parking,,,,"[""建筑""]",zh-Hans,synthetic
+V0003,2026-10-13T16:33:00+08:00,view_route,,R0030,11,"[""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T16:34:00+08:00,adopt_route,,R0030,,"[""侨乡""]",zh-Hans,synthetic
+V0050,2026-10-13T16:41:00+08:00,view_route,,R0500,46,"[""自然"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0050,2026-10-13T16:54:00+08:00,view_parking,,,,"[""自然"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0083,2026-10-13T17:00:00+08:00,view_route,,R0830,39,"[""历史"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0083,2026-10-13T17:01:00+08:00,adopt_route,,R0830,,"[""历史"", ""自然"", ""摄影""]",zh-Hans,synthetic
+V0114,2026-10-13T17:01:00+08:00,view_route,,R1140,80,"[""侨乡"", ""美食"", ""摄影""]",yue-Hant,synthetic
+V0004,2026-10-13T17:08:00+08:00,view_route,,R0040,50,"[""历史""]",yue-Hant,synthetic
+V0050,2026-10-13T17:18:00+08:00,book_guide,LD004,,,"[""自然"", ""亲子"", ""建筑""]",zh-Hans,synthetic
+V0114,2026-10-13T17:25:00+08:00,view_parking,,,,"[""侨乡"", ""美食"", ""摄影""]",yue-Hant,synthetic
+V0019,2026-10-13T17:51:00+08:00,feedback,LD011,,53,"[""自然"", ""建筑""]",yue-Hant,synthetic
+V0004,2026-10-13T17:52:00+08:00,book_guide,LD006,,,"[""历史""]",yue-Hant,synthetic
+V0055,2026-10-13T18:03:00+08:00,view_route,,R0550,106,"[""历史"", ""侨乡""]",zh-Hans,synthetic
+V0055,2026-10-13T18:04:00+08:00,adopt_route,,R0550,,"[""历史"", ""侨乡""]",zh-Hans,synthetic
+V0028,2026-10-13T18:10:00+08:00,finish_route,,R0280,4611,"[""摄影"", ""建筑""]",zh-Hans,synthetic
+V0004,2026-10-13T18:12:00+08:00,view_parking,,,,"[""历史""]",yue-Hant,synthetic
+V0028,2026-10-13T18:12:00+08:00,arrive_point,LD004,R0280,576,"[""摄影"", ""建筑""]",zh-Hans,synthetic
+V0028,2026-10-13T18:12:00+08:00,arrive_point,LD002,R0280,387,"[""摄影"", ""建筑""]",zh-Hans,synthetic
+V0028,2026-10-13T18:14:00+08:00,arrive_point,LD012,R0280,496,"[""摄影"", ""建筑""]",zh-Hans,synthetic
+V0055,2026-10-13T18:17:00+08:00,view_parking,,,,"[""历史"", ""侨乡""]",zh-Hans,synthetic
+V0100,2026-10-13T18:22:00+08:00,view_route,,R1001,72,"[""摄影"", ""自然""]",yue-Hant,synthetic
+V0100,2026-10-13T18:25:00+08:00,view_route,,R1002,67,"[""摄影"", ""自然""]",yue-Hant,synthetic
+V0100,2026-10-13T18:26:00+08:00,view_route,,R1000,69,"[""摄影"", ""自然""]",yue-Hant,synthetic
+V0100,2026-10-13T18:26:00+08:00,adopt_route,,R1002,,"[""摄影"", ""自然""]",yue-Hant,synthetic
+V0100,2026-10-13T18:27:00+08:00,adopt_route,,R1000,,"[""摄影"", ""自然""]",yue-Hant,synthetic
+V0055,2026-10-13T19:00:00+08:00,feedback,LD003,,30,"[""历史"", ""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T19:03:00+08:00,finish_route,,R0030,711,"[""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T19:05:00+08:00,listen_guide,LD003,R0030,34,"[""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T19:05:00+08:00,listen_guide,LD005,R0030,477,"[""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T19:06:00+08:00,arrive_point,LD005,R0030,757,"[""侨乡""]",zh-Hans,synthetic
+V0003,2026-10-13T19:07:00+08:00,arrive_point,LD003,R0030,641,,zh-Hans,synthetic
+V0006,2026-10-13T19:44:00+08:00,view_route,,R0060,7,"[""历史""]",zh-Hans,synthetic
+V0006,2026-10-13T19:45:00+08:00,adopt_route,,R0060,,"[""历史""]",zh-Hans,synthetic
+V0031,2026-10-13T20:01:00+08:00,view_route,,R0311,22,,en,synthetic
+V0031,2026-10-13T20:17:00+08:00,view_route,,R0310,75,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T20:18:00+08:00,adopt_route,,R0310,,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T20:37:00+08:00,view_parking,,,,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T20:38:00+08:00,adopt_parking,,,,"[""美食"", ""摄影""]",en,synthetic
+V0004,2026-10-13T20:42:00+08:00,finish_route,,R0040,1393,"[""历史""]",yue-Hant,synthetic
+V0004,2026-10-13T20:51:00+08:00,arrive_point,LD005,R0040,329,"[""历史""]",yue-Hant,synthetic
+V0004,2026-10-13T20:52:00+08:00,arrive_point,LD006,R0040,819,"[""历史""]",yue-Hant,synthetic
+V0004,2026-10-13T20:54:00+08:00,arrive_point,LD007,R0040,535,"[""历史""]",yue-Hant,synthetic
+V0031,2026-10-13T21:39:00+08:00,finish_route,,R0311,4403,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T21:41:00+08:00,listen_guide,LD012,R0311,751,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T21:41:00+08:00,listen_guide,LD006,R0311,617,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T21:42:00+08:00,arrive_point,LD011,R0311,36,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T21:45:00+08:00,arrive_point,LD006,R0311,561,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T21:49:00+08:00,arrive_point,LD012,R0311,335,"[""美食"", ""摄影""]",en,synthetic
+V0031,2026-10-13T22:42:00+08:00,feedback,LD009,,52,"[""美食"", ""摄影""]",en,synthetic
+V0095,2026-10-14T10:51:00+08:00,view_route,,R0951,100,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T10:52:00+08:00,adopt_route,,R0951,,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0059,2026-10-14T11:05:00+08:00,view_route,,R0590,116,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0059,2026-10-14T11:06:00+08:00,adopt_route,,R0590,,,yue-Hant,synthetic
+V0095,2026-10-14T11:15:00+08:00,view_route,,R0950,6,,zh-Hans,synthetic
+V0082,2026-10-14T11:17:00+08:00,view_route,,R0820,88,"[""历史""]",zh-Hans,synthetic
+V0095,2026-10-14T11:24:00+08:00,view_route,,R0952,57,,zh-Hans,synthetic
+V0108,2026-10-14T11:24:00+08:00,view_route,,R1080,32,"[""摄影""]",zh-Hans,synthetic
+V0108,2026-10-14T11:25:00+08:00,adopt_route,,R1080,,"[""摄影""]",zh-Hans,synthetic
+V0044,2026-10-14T11:46:00+08:00,view_route,,R0440,105,"[""历史""]",zh-Hans,synthetic
+V0044,2026-10-14T11:47:00+08:00,adopt_route,,R0440,,"[""历史""]",zh-Hans,synthetic
+V0044,2026-10-14T11:55:00+08:00,view_parking,,,,"[""历史""]",zh-Hans,synthetic
+V0085,2026-10-14T11:55:00+08:00,book_guide,LD007,,,"[""摄影"", ""美食"", ""建筑""]",zh-Hans,synthetic
+V0095,2026-10-14T11:55:00+08:00,finish_route,,R0952,3036,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0044,2026-10-14T11:57:00+08:00,adopt_parking,,,,"[""历史""]",zh-Hans,synthetic
+V0095,2026-10-14T11:57:00+08:00,listen_guide,LD001,R0952,659,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T11:57:00+08:00,listen_guide,LD005,R0952,879,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T11:57:00+08:00,listen_guide,LD011,R0952,312,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T11:58:00+08:00,ask_question,LD001,R0952,785,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T11:59:00+08:00,arrive_point,LD011,R0952,327,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T12:02:00+08:00,arrive_point,LD004,R0952,712,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T12:03:00+08:00,arrive_point,LD005,R0952,382,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0095,2026-10-14T12:05:00+08:00,arrive_point,LD001,R0952,735,"[""历史"", ""亲子"", ""侨乡""]",zh-Hans,synthetic
+V0059,2026-10-14T13:10:00+08:00,book_guide,LD007,,,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0108,2026-10-14T13:37:00+08:00,book_guide,LD003,,,"[""摄影""]",zh-Hans,synthetic
+V0082,2026-10-14T13:52:00+08:00,finish_route,,R0820,2386,"[""历史""]",zh-Hans,synthetic
+V0082,2026-10-14T13:54:00+08:00,arrive_point,LD001,R0820,457,"[""历史""]",zh-Hans,synthetic
+V0082,2026-10-14T13:55:00+08:00,arrive_point,LD005,R0820,745,"[""历史""]",zh-Hans,synthetic
+V0082,2026-10-14T13:58:00+08:00,arrive_point,LD009,R0820,134,"[""历史""]",zh-Hans,synthetic
+V0082,2026-10-14T13:59:00+08:00,arrive_point,LD004,R0820,459,"[""历史""]",zh-Hans,synthetic
+V0059,2026-10-14T14:30:00+08:00,finish_route,,R0590,2504,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0059,2026-10-14T14:32:00+08:00,listen_guide,LD010,R0590,256,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0059,2026-10-14T14:32:00+08:00,listen_guide,LD005,R0590,456,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0059,2026-10-14T14:40:00+08:00,arrive_point,LD005,R0590,744,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0059,2026-10-14T14:41:00+08:00,arrive_point,LD010,R0590,415,"[""美食"", ""非遗"", ""亲子""]",yue-Hant,synthetic
+V0038,2026-10-14T15:33:00+08:00,view_route,,R0380,98,"[""历史"", ""自然""]",en,synthetic
+V0042,2026-10-14T15:58:00+08:00,view_route,,R0420,7,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T15:59:00+08:00,adopt_route,,R0420,,"[""侨乡""]",zh-Hans,synthetic
+V0034,2026-10-14T16:04:00+08:00,view_route,,R0340,94,"[""亲子"", ""非遗"", ""历史""]",zh-Hans,synthetic
+V0042,2026-10-14T16:07:00+08:00,view_route,,R0422,81,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T16:08:00+08:00,adopt_route,,R0422,,,zh-Hans,synthetic
+V0034,2026-10-14T16:19:00+08:00,view_parking,,,,"[""亲子"", ""非遗"", ""历史""]",zh-Hans,synthetic
+V0042,2026-10-14T16:20:00+08:00,view_route,,R0421,38,"[""侨乡""]",zh-Hans,synthetic
+V0034,2026-10-14T16:26:00+08:00,adopt_parking,,,,"[""亲子"", ""非遗"", ""历史""]",zh-Hans,synthetic
+V0017,2026-10-14T16:40:00+08:00,view_route,,R0170,24,"[""自然"", ""摄影""]",yue-Hant,synthetic
+V0027,2026-10-14T16:54:00+08:00,view_route,,R0270,112,"[""自然""]",en,synthetic
+V0042,2026-10-14T17:06:00+08:00,view_parking,,,,"[""侨乡""]",zh-Hans,synthetic
+V0017,2026-10-14T17:07:00+08:00,view_route,,R0171,66,"[""自然"", ""摄影""]",yue-Hant,synthetic
+V0015,2026-10-14T17:12:00+08:00,view_parking,,,,"[""美食"", ""自然""]",yue-Hant,synthetic
+V0042,2026-10-14T17:12:00+08:00,adopt_parking,,,,,zh-Hans,synthetic
+V0017,2026-10-14T17:15:00+08:00,view_parking,,,,"[""自然"", ""摄影""]",yue-Hant,synthetic
+V0036,2026-10-14T17:16:00+08:00,view_route,,R0360,81,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T17:17:00+08:00,adopt_route,,R0360,,"[""侨乡""]",yue-Hant,synthetic
+V0034,2026-10-14T17:20:00+08:00,book_guide,LD012,,,"[""亲子"", ""非遗"", ""历史""]",zh-Hans,synthetic
+V0099,2026-10-14T17:20:00+08:00,view_route,,R0990,48,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0099,2026-10-14T17:21:00+08:00,adopt_route,,R0990,,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0017,2026-10-14T17:23:00+08:00,adopt_parking,,,,,yue-Hant,synthetic
+V0027,2026-10-14T17:28:00+08:00,view_parking,,,,"[""自然""]",en,synthetic
+V0042,2026-10-14T17:29:00+08:00,finish_route,,R0422,4554,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T17:31:00+08:00,listen_guide,LD009,R0422,487,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T17:31:00+08:00,listen_guide,LD007,R0422,676,"[""侨乡""]",zh-Hans,synthetic
+V0086,2026-10-14T17:31:00+08:00,view_route,,R0860,82,"[""亲子"", ""摄影""]",en,synthetic
+V0042,2026-10-14T17:33:00+08:00,arrive_point,LD006,R0422,548,"[""侨乡""]",zh-Hans,synthetic
+V0034,2026-10-14T17:35:00+08:00,feedback,LD001,,44,"[""亲子"", ""非遗"", ""历史""]",zh-Hans,synthetic
+V0042,2026-10-14T17:35:00+08:00,arrive_point,LD009,R0422,680,"[""侨乡""]",zh-Hans,synthetic
+V0027,2026-10-14T17:36:00+08:00,adopt_parking,,,,"[""自然""]",en,synthetic
+V0042,2026-10-14T17:36:00+08:00,arrive_point,LD007,R0422,782,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T17:41:00+08:00,arrive_point,LD003,R0422,301,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T17:52:00+08:00,book_guide,LD010,,,"[""侨乡""]",zh-Hans,synthetic
+V0099,2026-10-14T18:38:00+08:00,finish_route,,R0990,3266,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0099,2026-10-14T18:40:00+08:00,arrive_point,LD003,R0990,794,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0099,2026-10-14T18:40:00+08:00,listen_guide,LD005,R0990,336,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0099,2026-10-14T18:41:00+08:00,ask_question,LD003,R0990,365,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0086,2026-10-14T18:44:00+08:00,view_parking,,,,"[""亲子"", ""摄影""]",en,synthetic
+V0086,2026-10-14T18:47:00+08:00,adopt_parking,,,,"[""亲子"", ""摄影""]",en,synthetic
+V0099,2026-10-14T18:47:00+08:00,arrive_point,LD011,R0990,887,"[""侨乡"", ""摄影""]",zh-Hans,synthetic
+V0099,2026-10-14T18:48:00+08:00,arrive_point,LD005,R0990,600,,zh-Hans,synthetic
+V0047,2026-10-14T19:00:00+08:00,view_route,,R0470,63,"[""摄影"", ""侨乡""]",en,synthetic
+V0047,2026-10-14T19:01:00+08:00,adopt_route,,R0470,,"[""摄影"", ""侨乡""]",en,synthetic
+V0015,2026-10-14T19:32:00+08:00,feedback,LD012,,49,"[""美食"", ""自然""]",yue-Hant,synthetic
+V0036,2026-10-14T19:39:00+08:00,feedback,LD009,,17,"[""侨乡""]",yue-Hant,synthetic
+V0071,2026-10-14T19:52:00+08:00,view_parking,,,,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T20:00:00+08:00,view_route,,R0710,20,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T20:01:00+08:00,adopt_route,,R0710,,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0042,2026-10-14T20:07:00+08:00,finish_route,,R0421,1746,"[""侨乡""]",zh-Hans,synthetic
+V0086,2026-10-14T20:09:00+08:00,book_guide,LD008,,,"[""亲子"", ""摄影""]",en,synthetic
+V0042,2026-10-14T20:10:00+08:00,arrive_point,LD001,R0421,76,"[""侨乡""]",zh-Hans,synthetic
+V0042,2026-10-14T20:10:00+08:00,ask_question,LD006,R0421,514,"[""侨乡""]",zh-Hans,synthetic
+V0027,2026-10-14T20:14:00+08:00,finish_route,,R0270,1906,"[""自然""]",en,synthetic
+V0027,2026-10-14T20:16:00+08:00,listen_guide,LD004,R0270,214,"[""自然""]",en,synthetic
+V0027,2026-10-14T20:16:00+08:00,listen_guide,LD001,R0270,441,"[""自然""]",en,synthetic
+V0042,2026-10-14T20:16:00+08:00,arrive_point,LD006,R0421,97,"[""侨乡""]",zh-Hans,synthetic
+V0027,2026-10-14T20:17:00+08:00,ask_question,LD011,R0270,306,"[""自然""]",en,synthetic
+V0047,2026-10-14T20:17:00+08:00,book_guide,LD008,,,"[""摄影"", ""侨乡""]",en,synthetic
+V0027,2026-10-14T20:19:00+08:00,arrive_point,LD011,R0270,362,"[""自然""]",en,synthetic
+V0027,2026-10-14T20:23:00+08:00,arrive_point,LD004,R0270,864,,en,synthetic
+V0027,2026-10-14T20:25:00+08:00,arrive_point,LD002,R0270,849,"[""自然""]",en,synthetic
+V0027,2026-10-14T20:25:00+08:00,arrive_point,LD001,R0270,873,"[""自然""]",en,synthetic
+V0086,2026-10-14T20:43:00+08:00,finish_route,,R0860,5036,"[""亲子"", ""摄影""]",en,synthetic
+V0086,2026-10-14T20:45:00+08:00,listen_guide,LD009,R0860,368,"[""亲子"", ""摄影""]",en,synthetic
+V0086,2026-10-14T20:46:00+08:00,ask_question,LD001,R0860,203,"[""亲子"", ""摄影""]",en,synthetic
+V0086,2026-10-14T20:47:00+08:00,arrive_point,LD001,R0860,166,"[""亲子"", ""摄影""]",en,synthetic
+V0086,2026-10-14T20:47:00+08:00,arrive_point,LD010,R0860,378,"[""亲子"", ""摄影""]",en,synthetic
+V0036,2026-10-14T20:48:00+08:00,finish_route,,R0360,875,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T20:50:00+08:00,listen_guide,LD011,R0360,293,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T20:50:00+08:00,listen_guide,LD006,R0360,78,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T20:51:00+08:00,arrive_point,LD011,R0360,388,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T20:51:00+08:00,ask_question,LD006,R0360,417,,yue-Hant,synthetic
+V0086,2026-10-14T20:51:00+08:00,arrive_point,LD003,R0860,222,"[""亲子"", ""摄影""]",en,synthetic
+V0036,2026-10-14T20:55:00+08:00,arrive_point,LD001,R0360,629,"[""侨乡""]",yue-Hant,synthetic
+V0086,2026-10-14T20:55:00+08:00,arrive_point,LD009,R0860,122,"[""亲子"", ""摄影""]",en,synthetic
+V0036,2026-10-14T20:59:00+08:00,arrive_point,LD006,R0360,368,"[""侨乡""]",yue-Hant,synthetic
+V0036,2026-10-14T21:00:00+08:00,arrive_point,LD007,R0360,687,"[""侨乡""]",yue-Hant,synthetic
+V0071,2026-10-14T21:09:00+08:00,finish_route,,R0710,2870,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:11:00+08:00,listen_guide,LD002,R0710,346,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:11:00+08:00,listen_guide,LD009,R0710,398,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:11:00+08:00,listen_guide,LD003,R0710,48,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:12:00+08:00,arrive_point,LD005,R0710,508,,en,synthetic
+V0071,2026-10-14T21:12:00+08:00,arrive_point,LD009,R0710,449,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:14:00+08:00,arrive_point,LD002,R0710,698,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0071,2026-10-14T21:20:00+08:00,arrive_point,LD003,R0710,287,"[""美食"", ""历史"", ""建筑""]",en,synthetic
+V0047,2026-10-14T21:25:00+08:00,finish_route,,R0470,1503,"[""摄影"", ""侨乡""]",en,synthetic
+V0047,2026-10-14T21:27:00+08:00,listen_guide,LD004,R0470,713,"[""摄影"", ""侨乡""]",en,synthetic
+V0047,2026-10-14T21:29:00+08:00,arrive_point,LD010,R0470,717,"[""摄影"", ""侨乡""]",en,synthetic
+V0047,2026-10-14T21:31:00+08:00,arrive_point,LD004,R0470,670,"[""摄影"", ""侨乡""]",en,synthetic
+V0071,2026-10-14T21:46:00+08:00,book_guide,LD008,,,"[""美食"", ""历史"", ""建筑""]",en,synthetic
