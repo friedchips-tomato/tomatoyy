@@ -139,11 +139,17 @@ def parking_mae_metrics() -> Dict[str, Any]:
     rmse = compute.compute_rmse(y_true, y_pred)
 
     coverage = sample["coverage"]
+    # 证据等级（消费视图 algo_parking_history 第 13 列）：合成评测集一律 demo，
+    # 所以本次数值只证明链路可跑；真实精度验收必须筛 evidence='operational'。
+    evidence_values = sorted({r.get("evidence", "") for r in sample["window"]})
+    evidence = "/".join(v for v in evidence_values if v) or "未知"
     note = (
         "评估窗口=评测集 eval 段（2026-10-05~10-14，30 分钟粒度）；"
-        "主口径仅用 quality=ok 桶（missing 桶 %.2f%%、stale 桶 %.2f%% 单列覆盖率，不进分子分母）；"
-        "data_source=synthetic"
-        % (coverage["missing_ratio"] * 100, coverage["stale_ratio"] * 100)
+        "主口径仅用 quality=ok 且实际余位与预测余位都存在的桶"
+        "（missing 桶 %.2f%%、stale 桶 %.2f%% 单列覆盖率，不进分子分母）；"
+        "data_source=synthetic；evidence=%s"
+        "（真实精度验收必须筛 evidence='operational'，demo 样本不构成真实达成结论）"
+        % (coverage["missing_ratio"] * 100, coverage["stale_ratio"] * 100, evidence)
     )
     return {
         "mae_spaces": main["mae_spaces"],

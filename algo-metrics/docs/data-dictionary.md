@@ -20,7 +20,7 @@
 
 | 视图名 | 归属 | 本阶段状态 | 权威定义出处 | 用到它的指标 |
 | --- | --- | --- | --- | --- |
-| `algo_parking_history` | 停车时序 | **已定义**（分支未合主线） | `friedchips-tomato/parking-db`：`changdi-intake/server/migrations/015-guide-parking.sql` | `parking_mae_ratio_1h` / `parking_mae_spaces_1h` / `parking_mae_pp_1h` |
+| `algo_parking_history` | 停车时序 | **已对齐**（13 列，分支未合主线） | `friedchips-tomato/parking-db`：`changdi-intake/server/migrations/015-guide-parking.sql`（就地改，`SCHEMA_VERSION=15`） | `parking_mae_ratio_1h` / `parking_mae_spaces_1h` / `parking_mae_pp_1h` |
 | `algo_parking_lots` | 车场静态 | **已定义**（分支未合主线） | 同上 | `parking_mae_*`（`total_spaces` 回落来源） |
 | `ml_parking_lots` | 车场静态（ML 兼容） | **已定义**（分支未合主线） | 同上 + `parking-forecast/schemas/lot.schema.json` | parking-forecast 包 |
 | `ml_parking_observations` | 余位观测（ML 兼容） | **已定义**（分支未合主线） | 同上 + `parking-forecast/schemas/observation.schema.json` | parking-forecast 包 |
@@ -40,6 +40,8 @@
 
 **用途**：停车 MAE 的唯一取数来源（口径书 §2.8.5）。
 
+**13 列**（顺序与消费视图一致）：
+
 | 字段 | 类型 | 口径 | 说明 |
 | --- | --- | --- | --- |
 | `parking_id` | TEXT | 车场标识 | `PK` + 3 位数字；基表主键，视图原样输出 |
@@ -52,22 +54,29 @@
 | `weather` | TEXT | 天气 | 来自 `parking_signals` 的 `weather` 类信号；无信号为 NULL |
 | `event_flag` | 0/1\|NULL | 活动标记 | 已知活动只在半开窗口 `[signal_at, signal_at+2h)` 内计 1；未知为 NULL |
 | `data_source` | TEXT | 来源渠道 | `synthetic` / `sensor` / `manual` / `api` |
+| `quality` | TEXT | 桶质量 | 基表原样：`ok` / `stale` / `suspect` / `missing` |
+| `age_seconds` | INTEGER\|NULL | 数据年龄 | 基表原样；**NULL 保持 NULL，不补 0**（过期判定的依据） |
+| `evidence` | TEXT | 证据等级 | 基表原样：`demo`（演示/合成）/ `operational`（真实运营） |
 
-### 2.1 与口径书 §2.8.5/§2.8.6 的差异（**必须闭环**）
+> **消费侧按列名解析，不要按列数硬校验。**
+> DB 侧只保证**前 10 列按位不变**，`quality` / `age_seconds` / `evidence` 是追加在末尾的新列，
+> 后续仍可能继续追加。取数代码必须按列名取值（缺列按缺失处理），
+> 不得用「列数 == 13」或下标定位来判定数据可用。
 
-口径书 §2.8.5 要求本视图带 `quality`（`ok/stale/suspect/missing`）、`age_seconds`、
-`source`、`evidence`；§2.8.6 的剔除规则（「**MAE 只在 `quality='ok'` 的桶上计算**」）
-直接依赖 `quality`。但当前 DDL 里 `algo_parking_history` **没有输出 `quality` / `age_seconds`**
-（这两列在基表 `parking_observations` 上，视图未透出），`source` 视图里叫 `data_source`，
-`evidence` 未输出。
+### 2.1 与口径书 §2.8.5/§2.8.6 的对齐状态：**已对齐**
 
-**结论**：口径书的**剔除规则不变**（仍以 `quality='ok'` 为准），缺的是视图层透出该字段。
-→ **TODO: 与 DDL 对齐（负责人：数据库设计指挥）**
-（在 `algo_parking_history` 视图补 `quality`、`age_seconds`、`evidence`；
-`data_source` 与 `source` 的命名统一以契约为准。）
+**已对齐**：停车消费视图 **13 列**（含 `quality` / `age_seconds` / `evidence`），
+来源：分支 `friedchips-tomato/parking-db` 迁移 `015-guide-parking.sql`（**就地改**，`SCHEMA_VERSION=15`）。
 
-> 在对齐落地前，合成评测集用**文件里的 `quality` 列**跑同一套剔除规则（见 §4），
-> 真实数据接入时只换数据文件、不改口径。
+- 口径书 §2.8.6 的剔除规则（**只在 `quality='ok'` 且实际余位与预测余位都存在的桶上计算**）
+  现在可以**直接从消费视图执行**；
+- `age_seconds` 为 NULL 时保持 NULL，不补 0；
+- `evidence='operational'` 的样本才可用于**真实精度验收**，
+  `evidence='demo'` 的合成样本**不得当成真实达成结论**。
+
+> 说明：本文件初版曾把「`quality` / `age_seconds` 未透出」记为
+> `TODO: 与 DDL 对齐（负责人：数据库设计指挥）`；DB 侧已就地补齐该 TODO，**此条 TODO 已闭环**。
+> 口径书 §2.8.6 的口径**本身没有变**，变的只是视图把这几个字段透了出来。
 
 ## 3. `algo_parking_lots`（车场静态）
 
@@ -186,11 +195,14 @@
 
 | 评测集文件 | 对应视图 | 视图字段 | 评测扩展列（不在契约内） |
 | --- | --- | --- | --- |
-| `parking_observations_sample.csv` | `algo_parking_history` + `algo_parking_lots` | `parking_id`、`ts`、`occupied_spaces`、`free_spaces`、`total_spaces`、`weekday`、`is_holiday`、`weather`、`event_flag`、`data_source` | `quality`、`age_seconds`、`predicted_free_spaces`、`horizon_min`、`split` |
+| `parking_observations_sample.csv` | `algo_parking_history` + `algo_parking_lots` | `parking_id`、`ts`、`occupied_spaces`、`free_spaces`、`total_spaces`、`weekday`、`is_holiday`、`weather`、`event_flag`、`data_source`、`quality`、`age_seconds`、`evidence`（13 列） | `predicted_free_spaces`、`horizon_min`、`split` |
 | `visitor_events_sample.csv` | `algo_visitor_events` | `visitor_id`、`ts`、`event_type`、`point_id`、`route_id`、`dwell_seconds`、`interest_tags`、`device_lang`、`data_source` | —（无扩展列；`data_source` 是口径书 §0.3 要求的数据来源标注位） |
 | `route_impressions_sample.csv` | 曝光明细（**线上需新增**，口径书 §2.2 离线代理口径） | `impression_id`、`visitor_id`、`ts`、`algo_version`、`side_focus`、`shown_point_ids`、`adopted`、`dwell_seconds`、`data_source` | 曝光明细表本身尚未进入视图契约 → **TODO: 契约增补** |
 
-- `quality` / `age_seconds` 与基表 `parking_observations` 同名同义（见 §2.1 的 TODO）；
+- 停车评测集**已按 13 列对齐**消费视图：`quality` / `age_seconds` / `evidence` 三列到齐，
+  `evidence` 一律 `demo`（合成样本）——于是口径书 §2.8.6 的「只在 ok 桶上算」
+  与「真实精度验收必须筛 `evidence='operational'`」这两条规则**在样本上真的可执行**；
+- `quality` / `age_seconds` / `evidence` 与消费视图同名同义（见 §2）；
 - `predicted_free_spaces` 来自 parking-forecast 包的回测输出（对应 CONTRACT §4.8
   `parking_forecast.json` 的 `forecast[].predicted_free_spaces`），**不是数据库字段**；
 - `split`（`warmup` / `eval`）是评测集的分段标记，只服务于口径书 §2.8.6 的评估窗口；

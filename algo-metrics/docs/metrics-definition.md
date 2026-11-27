@@ -471,9 +471,15 @@ MAE_pp = MAE_ratio × 100                        # 仅当每样本容量相同�
 
 #### 2.8.5 ④ 数据来源表与字段
 
-- 视图 `algo_parking_history`（基表 `parking_observations`）：
-  `parking_id`、`ts`（+08:00）、`free_spaces`、`occupied_spaces`、`total_spaces`、
-  `quality`（`ok/stale/suspect/missing`）、`age_seconds`、`source`、`evidence`。
+- 视图 `algo_parking_history`（基表 `parking_observations`），**13 列**，顺序如下：
+  `parking_id`、`ts`（+08:00）、`occupied_spaces`、`free_spaces`、`total_spaces`、
+  `weekday`、`is_holiday`、`weather`、`event_flag`、`data_source`、
+  `quality`（`ok/stale/suspect/missing`）、`age_seconds`（过期年龄，NULL 保持 NULL **不补 0**）、
+  `evidence`（`demo/operational`，证据等级）。
+  - 来源：分支 `friedchips-tomato/parking-db` 迁移 `015-guide-parking.sql`（就地改，`SCHEMA_VERSION=15`）。
+  - **消费侧按列名解析，不要按列数硬校验**：DB 侧只保证**前 10 列按位不变**，
+    `quality` / `age_seconds` / `evidence` 是追加在末尾的新列，后续仍可能继续追加。
+    取数代码必须按列名取值（缺列按缺失处理），不得用「列数 == 13」或下标定位来判定数据可用。
 - 预测值：parking-forecast 包回测输出的 `predicted_free_spaces`（对应 CONTRACT §4.8
   `parking_forecast.json` 的 `forecast[].predicted_free_spaces`）。
 - **空值红线**：`free_spaces` 为 NULL 时 `occupied_spaces` 同样为 NULL，**缺桶按缺口标记、不补零**。
@@ -488,9 +494,21 @@ MAE_pp = MAE_ratio × 100                        # 仅当每样本容量相同�
 | `quality='suspect'` | **不进** | 同上，单列 |
 | `total_spaces` 为 NULL | **不进** | 分母缺失，无法归一化 |
 
+> **可执行规则（原文照此实现）**：
+> **MAE / WAPE 只在 `quality='ok'` 且实际余位与预测余位都存在的桶上计算；
+> `stale` / `suspect` / `missing` 只进覆盖率与陈旧率统计；
+> 真实精度验收必须筛 `evidence='operational'`，
+> `evidence='demo'` 的合成样本不得当成真实达成结论。**
+>
 > 即：**MAE 只在 `quality='ok'` 的桶上计算，missing/stale 桶单独统计覆盖率。**
 > 同时必须报告"评估桶总数 / 进入计算的桶数 / 被剔除的桶数与原因分布"，
 > 避免"只算好桶"变成挑样本。
+>
+> **证据等级是硬门槛**：`evidence` 取自消费视图 `algo_parking_history` 第 13 列
+> （`demo` / `operational`）。本阶段的合成评测集**全部是 `evidence='demo'`**，
+> 因此它算出来的 MAE 数字**只用于验证链路可跑**，**不构成任何真实精度结论**；
+> 上线阶段做真实精度验收时，必须在取数处筛 `evidence='operational'`，
+> 并在报告里同时写明"本次验收使用的数据证据等级"。
 
 #### 2.8.7 ⑥ 边界情况
 
@@ -717,7 +735,7 @@ availability = 成功请求数 ÷ 核心功能请求总数
 | `guide_point_match_accuracy` | 抽检标注表 | `point_id_at_play, guide_content_id, label` | 标注聚合（包内实现） | 抽检条数（剔除 `undetermined`） | 桩 |
 | `booking_usage_rate` | `algo_visitor_events`（`visitor_events`） | `view_booking`（**待契约增补**） / `book_guide` | `compute_adoption_rate()` | 进入预约入口的人数 | 桩 |
 | `booking_confirmation_duration_min` | `bookings` / `booking_events` | `requested_at, decided_at, status` | `compute_duration_minutes()` | 有效预约单数 | 桩 |
-| `parking_mae_ratio_1h` | `algo_parking_history`（`parking_observations`） | `free_spaces, total_spaces, quality='ok'` + `predicted_free_spaces` | `compute_mae(..., total_spaces)` | **车位总数**（容量加权） | ✅ 合成评测集 |
+| `parking_mae_ratio_1h` | `algo_parking_history`（`parking_observations`，13 列） | `free_spaces, total_spaces, quality='ok', evidence='operational'` + `predicted_free_spaces` | `compute_mae(..., total_spaces)` | **车位总数**（容量加权） | ✅ 合成评测集（`evidence='demo'`） |
 | `parking_mae_spaces_1h` | 同上 | 同上 | `compute_mae()` | 样本数（车位） | ✅ |
 | `parking_mae_pp_1h` | 同上 | 同上 | `compute_mae()` | 样本数（逐样本容量归一化） | ✅ |
 | `parking_offpeak_adoption_rate` | `algo_visitor_events`（`visitor_events`） | `view_parking` / `adopt_parking` | `compute_adoption_rate(dedup_key=None)` | 含错峰建议的展示次数 | ✅ 合成事件流 |

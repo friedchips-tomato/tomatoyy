@@ -33,6 +33,15 @@ IMPRESSION_COLUMNS = [
     "adopted", "dwell_seconds",
 ]
 
+# 消费视图 algo_parking_history 的 13 列（DB 侧只保证前 10 列按位不变，新列追加在末尾）
+PARKING_VIEW_COLUMNS = [
+    "parking_id", "ts", "occupied_spaces", "free_spaces", "total_spaces", "weekday",
+    "is_holiday", "weather", "event_flag", "data_source", "quality", "age_seconds",
+    "evidence",
+]
+# 评测扩展列：不在视图契约内，排在视图列之后
+PARKING_EVAL_EXTRA_COLUMNS = ["predicted_free_spaces", "horizon_min", "split"]
+
 
 def _rows(name):
     with (DATASETS / name).open("r", encoding="utf-8", newline="") as handle:
@@ -99,6 +108,33 @@ def test_parking_evaluable_rows_have_prediction_and_true_value():
         assert 0 <= int(row["free_spaces"]) <= int(row["total_spaces"])
         assert 0 <= int(row["predicted_free_spaces"]) <= int(row["total_spaces"])
         assert row["horizon_min"] == "60"
+
+
+def test_parking_sample_carries_view_columns_in_order():
+    """评测集前 13 列与消费视图 ``algo_parking_history`` 按位对应。
+
+    DB 侧只保证**前 10 列按位不变**，``quality`` / ``age_seconds`` / ``evidence``
+    是追加在末尾的新列；评测扩展列排在视图列之后。
+    """
+    with (DATASETS / "parking_observations_sample.csv").open(
+        "r", encoding="utf-8", newline=""
+    ) as handle:
+        header = next(csv.reader(handle))
+    assert header[: len(PARKING_VIEW_COLUMNS)] == PARKING_VIEW_COLUMNS
+    assert header[len(PARKING_VIEW_COLUMNS):] == PARKING_EVAL_EXTRA_COLUMNS
+
+
+def test_parking_sample_evidence_is_demo():
+    """合成样本一律 ``evidence='demo'``。
+
+    口径书 §2.8.6：真实精度验收必须筛 ``evidence='operational'``，
+    ``evidence='demo'`` 的合成样本不得当成真实达成结论——
+    样本里必须能一眼看出这一点。
+    """
+    rows = _rows("parking_observations_sample.csv")
+    assert rows
+    assert {r["evidence"] for r in rows} == {"demo"}
+    assert MANIFEST["parameters"]["evidence"] == "demo"
 
 
 def test_visitor_events_cover_all_contract_event_types():

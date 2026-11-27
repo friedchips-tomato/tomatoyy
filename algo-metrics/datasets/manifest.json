@@ -15,7 +15,7 @@
   "files": {
     "parking_observations_sample.csv": {
       "rows": 2016,
-      "sha256": "102a674f964f95525066a02b3f2ecfe2cb8d327f00c361dba15de679620c54c2",
+      "sha256": "c4d08810448411e03fc07f32964ca5c7db09d42eda0269b31be1271b1ff3d6db",
       "quality_counts": {
         "ok": 1909,
         "stale": 61,
@@ -61,6 +61,7 @@
     "horizon_minutes": 60,
     "missing_rate": 0.02,
     "stale_rate": 0.03,
+    "evidence": "demo",
     "outage_windows": [
       "PK002 2026-10-08 02:00~05:00",
       "PK003 2026-10-12 13:00~13:30"

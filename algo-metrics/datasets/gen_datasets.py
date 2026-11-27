@@ -179,6 +179,9 @@ def build_parking_rows(rng: random.Random) -> List[Dict[str, object]]:
                     "data_source": "synthetic",
                     "quality": quality,
                     "age_seconds": "" if age_seconds is None else age_seconds,
+                    # 证据等级（消费视图 algo_parking_history 第 13 列）：合成样本一律 demo。
+                    # 真实精度验收只认 evidence='operational'，demo 样本不得当成真实达成结论。
+                    "evidence": "demo",
                     "predicted_free_spaces": "" if predicted is None else predicted,
                     "horizon_min": HORIZON_MINUTES,
                     "split": "warmup" if (ts - START).days < WARMUP_DAYS else "eval",
@@ -383,8 +386,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     impressions = build_route_impressions(rng)
 
     parking_fields = [
+        # 前 13 列与消费视图 `algo_parking_history` 一一对应
+        # （DB 侧只保证前 10 列按位不变，quality / age_seconds / evidence 追加在末尾）；
+        # 后 3 列是**评测扩展列**，不在视图契约内。
         "parking_id", "ts", "occupied_spaces", "free_spaces", "total_spaces", "weekday",
         "is_holiday", "weather", "event_flag", "data_source", "quality", "age_seconds",
+        "evidence",
         "predicted_free_spaces", "horizon_min", "split",
     ]
     event_fields = [
@@ -442,6 +449,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "horizon_minutes": HORIZON_MINUTES,
             "missing_rate": 0.02,
             "stale_rate": 0.03,
+            # 证据等级：合成样本一律 demo（真实精度验收只认 evidence='operational'）
+            "evidence": "demo",
             "outage_windows": ["PK002 2026-10-08 02:00~05:00", "PK003 2026-10-12 13:00~13:30"],
             "holiday_dates": sorted(HOLIDAY_DATES),
             "event_dates": sorted(EVENT_DATES),

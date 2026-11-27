@@ -131,6 +131,24 @@ def test_data_dictionary_covers_contract_views():
     assert "CREATE TABLE" not in dictionary
 
 
+def test_caliber_book_states_evidence_rule_and_column_policy():
+    """口径书必须写明两件与 DB 侧对齐后才成立的事。
+
+    1. **证据等级是硬门槛**：真实精度验收必须筛 ``evidence='operational'``，
+       ``evidence='demo'`` 的合成样本不得当成真实达成结论；
+    2. **消费侧按列名解析，不要按列数硬校验**：DB 侧只保证前 10 列按位不变，
+       新列（``quality`` / ``age_seconds`` / ``evidence``）追加在末尾。
+    """
+    text = DOC.read_text(encoding="utf-8")
+    assert "evidence='operational'" in text
+    assert "evidence='demo'" in text
+    assert "按列名解析" in text
+    assert "不要按列数硬校验" in text
+    # 停车消费视图的 13 列清单
+    for column in ["quality", "age_seconds", "evidence"]:
+        assert column in text, column
+
+
 def test_filter_metrics_by_pack_and_name():
     parking = registry.filter_metrics(pack=["parking-forecast"])
     assert parking
