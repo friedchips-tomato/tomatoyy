@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kg-recommend/schemas/kg.schema.json",
+  "title": "知识图谱推荐与故事线输入输出 Schema",
+  "description": "kg-recommend 包的输入图谱契约（algo_kg_entities / algo_kg_relations 视图，CONTRACT §4.9）与三类输出结果的结构定义。",
+  "definitions": {
+    "id_kg": {"type": "string", "pattern": "^KG[0-9]{3,}$"},
+    "id_relation": {"type": "string", "pattern": "^R[0-9]{3,}$"},
+    "id_history": {"type": "string", "pattern": "^HIS[0-9]{3,}$"},
+    "id_point": {"type": "string", "pattern": "^LD[0-9]{3,}$"},
+    "entity_type": {
+      "enum": ["building", "person", "event", "artifact", "craft",
+               "merchant", "place", "institution", "period"]
+    },
+    "relation_type": {
+      "enum": ["built_by", "located_in", "participated_in", "heritage_of",
+               "owned_by", "named_after", "related_to", "succeeded"]
+    },
+    "kg_input": {
+      "type": "object",
+      "required": ["version", "source", "entities", "relations"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "history_ids": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/id_history"},
+          "description": "可选：登记在册的史料编号全集；缺省时从 records 的 sources 汇集。"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["entity_id", "entity_type", "name", "point_id", "tags",
+                         "summary", "attributes", "sources", "verified"],
+            "additionalProperties": false,
+            "properties": {
+              "entity_id": {"$ref": "#/definitions/id_kg"},
+              "entity_type": {"$ref": "#/definitions/entity_type"},
+              "name": {"type": "string", "minLength": 1},
+              "point_id": {"oneOf": [{"$ref": "#/definitions/id_point"}, {"type": "null"}]},
+              "tags": {"type": "array", "items": {"type": "string"}},
+              "summary": {"type": ["string", "null"]},
+              "attributes": {"type": "object"},
+              "sources": {"type": "array", "items": {"$ref": "#/definitions/id_history"}},
+              "verified": {"type": "integer", "enum": [0, 1],
+                           "description": "契约用 0/1；加载器同时接受 false/true 并归一化为 0/1。"}
+            }
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["relation_id", "src_id", "dst_id", "relation_type",
+                         "weight", "sources", "verified"],
+            "additionalProperties": false,
+            "properties": {
+              "relation_id": {"$ref": "#/definitions/id_relation"},
+              "src_id": {"$ref": "#/definitions/id_kg"},
+              "dst_id": {"$ref": "#/definitions/id_kg"},
+              "relation_type": {"$ref": "#/definitions/relation_type"},
+              "weight": {"type": "number", "minimum": 0, "maximum": 1},
+              "sources": {"type": "array", "minItems": 1,
+                          "items": {"$ref": "#/definitions/id_history"}},
+              "verified": {"type": "integer", "enum": [0, 1]}
+            }
+          }
+        }
+      }
+    },
+    "kg_recommend_result": {
+      "type": "object",
+      "required": ["source_entity_id", "items", "algo_version"],
+      "properties": {
+        "source_entity_id": {"$ref": "#/definitions/id_kg"},
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["entity_id", "entity_type", "score", "reasons", "path"],
+            "properties": {
+              "entity_id": {"$ref": "#/definitions/id_kg"},
+              "entity_type": {"$ref": "#/definitions/entity_type"},
+              "recommendation_group": {"enum": ["building", "person", "event",
+                                                "cultural_resource"]},
+              "display_name": {"type": "string"},
+              "score": {"type": "number", "minimum": 0, "maximum": 1},
+              "reasons": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "path": {
+                "type": "array",
+                "items": {"$ref": "#/definitions/relation_type"},
+                "description": "关系路径（如 [built_by, participated_in]），前端可直接画关系链。"
+              },
+              "path_edges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["from", "to", "relation_id", "relation_type", "reversed"],
+                  "properties": {
+                    "from": {"$ref": "#/definitions/id_kg"},
+                    "to": {"$ref": "#/definitions/id_kg"},
+                    "relation_id": {"$ref": "#/definitions/id_relation"},
+                    "relation_type": {"$ref": "#/definitions/relation_type"},
+                    "reversed": {"type": "boolean",
+                                 "description": "true 表示沿原三元组反向遍历。"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "algo_version": {"type": "string"}
+      }
+    },
+    "storyline": {
+      "type": "object",
+      "required": ["title", "theme", "nodes", "transitions", "source_citations",
+                   "algo_version"],
+      "properties": {
+        "title": {"type": "string"},
+        "theme": {"type": "string"},
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["entity_id", "role", "one_line"],
+            "properties": {
+              "entity_id": {"$ref": "#/definitions/id_kg"},
+              "entity_type": {"$ref": "#/definitions/entity_type"},
+              "role": {"enum": ["anchor", "related"]},
+              "display_name": {"type": "string"},
+              "one_line": {"type": "string"},
+              "reason": {"type": "string"}
+            }
+          }
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "relation_type", "connector_text"],
+            "properties": {
+              "from": {"$ref": "#/definitions/id_kg"},
+              "to": {"$ref": "#/definitions/id_kg"},
+              "relation_id": {"$ref": "#/definitions/id_relation"},
+              "relation_type": {"$ref": "#/definitions/relation_type"},
+              "reversed": {"type": "boolean"},
+              "connector_text": {"type": "string"}
+            }
+          }
+        },
+        "source_citations": {
+          "type": "array",
+          "items": {"oneOf": [{"$ref": "#/definitions/id_kg"},
+                              {"$ref": "#/definitions/id_history"}]}
+        },
+        "algo_version": {"type": "string"}
+      }
+    },
+    "consistency_report": {
+      "type": "object",
+      "required": ["algo_version", "passed", "issues", "rule_hits"],
+      "properties": {
+        "algo_version": {"type": "string"},
+        "passed": {"type": "boolean"},
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["level", "rule_id", "target", "evidence", "suggestion"],
+            "properties": {
+              "level": {"enum": ["error", "warn"]},
+              "rule_id": {"enum": ["KG_ENTITY", "KG_RELATION", "KG_TIME", "KG_TYPE",
+                                   "KG_CITATION", "KG_WORDING", "KG_CHAIN", "KG_LLM"]},
+              "target": {"type": "string"},
+              "evidence": {"type": "string"},
+              "suggestion": {"type": "string"}
+            }
+          }
+        },
+        "rule_hits": {
+          "type": "object",
+          "propertyNames": {"enum": ["KG_ENTITY", "KG_RELATION", "KG_TIME", "KG_TYPE",
+                                      "KG_CITATION", "KG_WORDING", "KG_CHAIN", "KG_LLM"]},
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        }
+      }
+    }
+  },
+  "$defs": {"$comment": "2020-12 用 $defs；上面 definitions 兼容 draft-07 引用解析器。"},
+  "type": "object",
+  "oneOf": [
+    {"$ref": "#/definitions/kg_input"},
+    {"$ref": "#/definitions/kg_recommend_result"},
+    {"$ref": "#/definitions/storyline"},
+    {"$ref": "#/definitions/consistency_report"}
+  ]
+}
