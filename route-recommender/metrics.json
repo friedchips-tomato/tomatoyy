@@ -1,0 +1,49 @@
+{
+  "algo_version": "route-recommender-0.1.0",
+  "generated_at": "2026-11-22T18:50:48+08:00",
+  "latency_ms": {
+    "runs": 50,
+    "p50_ms": 25.313,
+    "p95_ms": 33.476,
+    "mean_ms": 26.238,
+    "max_ms": 49.663,
+    "target_ms": 3000
+  },
+  "adoption_proxy": {
+    "n_visitors": 160,
+    "adoption_rate_ours": 0.9375,
+    "adoption_rate_baseline": 0.6438,
+    "baseline": "纯距离最近邻排序（同一可行性校验与时间窗约束）",
+    "criterion": "任意一条候选路线含 >= 2 个命中兴趣标签的点位即视为采纳",
+    "mean_best_matched_stops_ours": 4.55,
+    "mean_best_matched_stops_baseline": 2.45,
+    "note": "合成评测集、固定随机种子 42，仅 walk 出行；非真实埋点采纳率"
+  },
+  "route_length_distribution": {
+    "n_routes": 480,
+    "point_count": {
+      "mean": 4.602,
+      "median": 3.0,
+      "buckets": {
+        "1-2": 224,
+        "3-4": 70,
+        "5-6": 68,
+        "7-8": 30,
+        "9-12": 75,
+        "13-99": 13
+      }
+    },
+    "walk_distance_meters": {
+      "mean": 830.644,
+      "median": 677.972,
+      "max": 2470.885
+    }
+  },
+  "parking_advice_proxy": {
+    "n_car_requests_peak_time": 24,
+    "n_with_off_peak_advice": 24,
+    "off_peak_advice_coverage_proxy": 1.0,
+    "real_adoption_metric": "按建议时间到达的自驾请求数 / 收到错峰建议的自驾请求数，以埋点 adopt_parking 的 ts 与 suggested_start_time 偏差 <= 30 分钟计",
+    "note": "本包无真实预测余位与埋点，仅报建议覆盖率；真实采纳率口径见 README"
+  }
+}

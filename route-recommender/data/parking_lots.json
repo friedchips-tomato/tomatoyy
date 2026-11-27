@@ -1,0 +1,42 @@
+[
+  {
+    "parking_id": "PK001",
+    "name": "沿江停车场（示范）",
+    "longitude": 113.08409,
+    "latitude": 22.58302,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "total_spaces": 120,
+    "fee_rule": {
+      "text": "演示收费：首小时 5 元，之后每小时 2 元",
+      "first_hour": 5,
+      "after_hour": 2,
+      "daily_cap": 40
+    },
+    "open_hours": "00:00-24:00",
+    "point_id": "LD009",
+    "data_source": "synthetic",
+    "source_ref": "prototype-paper/data/points.js",
+    "verified": false
+  },
+  {
+    "parking_id": "PK002",
+    "name": "内街停车场（示范）",
+    "longitude": 113.0862,
+    "latitude": 22.58566,
+    "coord_system": "WGS84",
+    "coord_accuracy_m": null,
+    "total_spaces": 80,
+    "fee_rule": {
+      "text": "演示收费：首小时 4 元，之后每小时 2 元",
+      "first_hour": 4,
+      "after_hour": 2,
+      "daily_cap": 32
+    },
+    "open_hours": "00:00-24:00",
+    "point_id": null,
+    "data_source": "synthetic",
+    "source_ref": "prototype-paper/data/points.js",
+    "verified": false
+  }
+]
