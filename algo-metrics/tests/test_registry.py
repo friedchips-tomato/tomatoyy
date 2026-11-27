@@ -106,6 +106,31 @@ def test_doc_ref_points_to_existing_section():
         )
 
 
+def test_data_dictionary_covers_contract_views():
+    """数据字典要按**视图名**组织，并标出与 DDL 对齐的 TODO 与负责人。
+
+    口径书的「配套」指向 ``algo-metrics/docs/data-dictionary.md``；
+    数据字典本身不定义表结构，凡未落地的视图/字段一律标 TODO 并写明负责人。
+    """
+    dictionary = (PKG_DIR / "docs" / "data-dictionary.md").read_text(encoding="utf-8")
+    for view in [
+        "algo_points",
+        "algo_parking_lots",
+        "algo_parking_history",
+        "algo_guides",
+        "algo_visitor_events",
+        "algo_kg_entities",
+        "algo_kg_relations",
+        "ml_parking_lots",
+        "ml_parking_observations",
+    ]:
+        assert view in dictionary, "数据字典缺少视图 %s" % view
+    # 与 DDL 对齐的待办必须写明负责人
+    assert "TODO: 与 DDL 对齐（负责人：数据库设计指挥）" in dictionary
+    # 数据字典不得自行定义表结构（不得出现建表语句）
+    assert "CREATE TABLE" not in dictionary
+
+
 def test_filter_metrics_by_pack_and_name():
     parking = registry.filter_metrics(pack=["parking-forecast"])
     assert parking
