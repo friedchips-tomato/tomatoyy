@@ -18,7 +18,7 @@
   ⑤ 实体 `sources` 未登记进 `history_ids`（引用完整性校验会误报）；
   ⑥ `verified` 契约为 0/1，加载器现在同时接受 false/true 并归一化；
   ⑦ 故事线 beam 排序把「分数略高的 4 点」排在「完整 5 点」之前 → 改为长度优先。
-- 补齐：`tests/`（73 项，全绿）、`schemas/kg.schema.json`、本 README、`output/` 产出文件与 `metrics.json`。
+- 补齐：`tests/`（73 项，全绿）、`schemas/kg.schema.json`、本 README。`output/` 下的四个产物由 `main.py` 运行时生成（不随包提交，见 §1.1）。
 
 ## 1. 运行
 
@@ -35,6 +35,17 @@ python kg-recommend/main.py --building KG002 --length 5 --theme 贸易
 `metrics.json`、`visitor_events_semantic.csv`、`visitor_events_tag_popularity.csv`。
 
 依赖：Python 3.11 标准库 + `requests`（仅 `HttpLLMChecker` 用到）。numpy/pandas 等未使用。
+
+### 1.1 产物如何复现（测试失败修复说明）
+
+`test_schemas.py` 原先直接读取 `output/` 下四个由流水线产出的 JSON，但 `output/` 已加入 `.gitignore`，
+干净检出上没有这些文件，导致 4 项测试 `FileNotFoundError`。修复采用**方案 A**：让测试自己跑真实流水线生成产物，
+而不是把产物提交进仓库——原因是产物是确定性的流水线输出，提交固定文件会让它与 `main.py` 的当前逻辑脱节，
+且 `output/` 本就不该进版本库。
+
+实现：`tests/conftest.py` 增加 session 级 fixture `pipeline_output`，用 `tmp_path_factory` 建临时目录并调用
+`main.main(["--output-dir", tmp])` 生成四个文件；`test_schemas.py` 的四个结构断言改读该临时目录。
+`python kg-recommend/main.py` 依旧默认写入 `output/`（或 `--output-dir` 指定目录），重新生成这四个产物。
 
 ## 2. 图谱输入契约（消费方定义）
 
@@ -138,7 +149,7 @@ score = 0.35 × Jaccard(标签集) + 0.25 × s/(1+s) + 0.40 × path_strength
   无中生有实体报错（节点级 + 文案级）、关系不存在报错（类型/编号/方向三类）、时间矛盾报错（节点序 + 文案比较句）、
   类型不兼容报错、引用缺失报错、缺 key 时 LLM 优雅降级（完全没配置 / 只配一半 / 网络炸了三种场景）、
   路径可追溯（推荐 path、故事线转场、citations 三层）、schema 结构、CTR 代理可复现性。
-- `metrics.json` 含：CTR 代理（两臂 + 差值 + 样本量 + 公式）、故事线长度分布
+- 生成的 `metrics.json` 含：CTR 代理（两臂 + 差值 + 样本量 + 公式）、故事线长度分布
   （3 点档 15/15 达标；5 点档 12/15、8 点档 12/15——其余为 KG005 起点在时序约束下的真实死路，已穷举验证无 5 点链存在）、
   校验器各规则命中数。
 

@@ -18,6 +18,21 @@ def graph():
     return KnowledgeGraph.load(PACKAGE / "data" / "kg_sample.json")
 
 
+@pytest.fixture(scope="session")
+def pipeline_output(tmp_path_factory):
+    """Run the real `main.py` pipeline once into an isolated temp directory.
+
+    The schema tests assert on the exact artifacts `main.py` emits, so they
+    must be produced by the pipeline itself rather than committed to the repo.
+    This keeps a clean checkout green and lets `output/` stay gitignored.
+    """
+    import main as main_module
+
+    output_dir = tmp_path_factory.mktemp("kg-recommend-output")
+    main_module.main(["--output-dir", str(output_dir)])
+    return output_dir
+
+
 def load_raw_sample():
     """Load the sample graph as a plain dict, for mutation tests."""
     with (PACKAGE / "data" / "kg_sample.json").open(encoding="utf-8-sig") as stream:

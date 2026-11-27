@@ -47,13 +47,13 @@ def test_sample_graph_matches_schema_rules():
     assert len(data["entities"]) >= 20 and len(data["relations"]) >= 40
 
 
-def _load_output(name):
-    with (PACKAGE / "output" / name).open(encoding="utf-8") as stream:
+def _load_output(output_dir, name):
+    with (output_dir / name).open(encoding="utf-8") as stream:
         return json.load(stream)
 
 
-def test_recommend_result_matches_schema_rules():
-    result = _load_output("kg_recommend_result.json")
+def test_recommend_result_matches_schema_rules(pipeline_output):
+    result = _load_output(pipeline_output, "kg_recommend_result.json")
     assert ID_PATTERNS["KG"].match(result["source_entity_id"])
     assert isinstance(result["algo_version"], str)
     for item in result["items"]:
@@ -68,8 +68,8 @@ def test_recommend_result_matches_schema_rules():
             assert isinstance(edge["reversed"], bool)
 
 
-def test_storyline_output_matches_schema_rules():
-    story = _load_output("storyline.json")
+def test_storyline_output_matches_schema_rules(pipeline_output):
+    story = _load_output(pipeline_output, "storyline.json")
     assert story["nodes"] and story["transitions"]
     for node in story["nodes"]:
         _check_ids(node, {"entity_id": "KG"})
@@ -83,8 +83,8 @@ def test_storyline_output_matches_schema_rules():
         assert ID_PATTERNS["KG"].match(citation) or ID_PATTERNS["HIS"].match(citation)
 
 
-def test_consistency_report_matches_schema_rules():
-    report = _load_output("consistency_report.json")
+def test_consistency_report_matches_schema_rules(pipeline_output):
+    report = _load_output(pipeline_output, "consistency_report.json")
     assert isinstance(report["passed"], bool)
     assert set(report["rule_hits"]) == RULE_IDS
     for issue in report["issues"]:
@@ -93,8 +93,8 @@ def test_consistency_report_matches_schema_rules():
         assert issue["target"] and issue["evidence"] and issue["suggestion"]
 
 
-def test_metrics_contains_required_sections():
-    metrics = _load_output("metrics.json")
+def test_metrics_contains_required_sections(pipeline_output):
+    metrics = _load_output(pipeline_output, "metrics.json")
     assert metrics["graph_source"] == "sample"
     assert metrics["recommendation_ctr_proxy"]["data_source"] == "synthetic"
     for arm in ("semantic", "tag_popularity"):
