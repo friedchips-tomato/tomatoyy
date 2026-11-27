@@ -96,6 +96,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--json", action="store_true", help="输出机器可读 JSON")
     args = parser.parse_args(argv)
 
+    # 与 runner 同一套控制台兜底：Windows 默认 GBK 控制台遇到非 ASCII 字符会抛
+    # UnicodeEncodeError（详见 runner.make_console_safe）。
+    runner.make_console_safe()
+
     summary = runner.run(only=args.only, pack=args.pack)
     if args.json:
         print(json.dumps(summary, ensure_ascii=False, indent=2))

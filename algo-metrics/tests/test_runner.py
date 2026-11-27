@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import io
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -12,6 +14,26 @@ import runner
 import stubs
 
 PKG_DIR = Path(__file__).resolve().parents[1]
+
+
+class _AsciiOnlyConsole(io.TextIOWrapper):
+    """模拟「只能编码 ASCII」的控制台。
+
+    * 编码是 ASCII，非 ASCII 字符写出去就抛 ``UnicodeEncodeError``；
+    * ``reconfigure`` 不受支持（像某些被包装过的输出流），
+      用来验证兜底逻辑在**无法重新配置**时也不会崩。
+    """
+
+    def __init__(self, buffer, order=None):
+        super().__init__(buffer, encoding="ascii", errors="strict", newline="")
+        self.order = order if order is not None else []
+
+    def reconfigure(self, **kwargs):
+        raise io.UnsupportedOperation("reconfigure")
+
+    def write(self, text):
+        self.order.append("print")
+        return super().write(text)
 
 
 def test_stub_returns_null_and_not_implemented():
@@ -160,3 +182,53 @@ def test_bootstrap_does_not_override_registered_impl():
     assert result["status"] == "computed"
     assert result["value"] == pytest.approx(0.123)
     assert result["note"] == "自定义实现"
+
+
+def test_main_runs_on_ascii_only_console(tmp_path, monkeypatch):
+    """控制台只能编码 ASCII 时：不抛异常，且**报告文件照常写出来**。
+
+    复现的是 Windows 默认 GBK 控制台下的真实故障：``print(render_markdown(...))``
+    遇到 ``⏳`` 抛 ``UnicodeEncodeError``，而打印发生在落盘之前，
+    于是 ``reports/eval-summary.json`` / ``.md`` 根本没机会生成。
+    """
+    order = []
+    console = _AsciiOnlyConsole(io.BytesIO(), order)
+
+    real_write_reports = runner.write_reports
+
+    def spy_write_reports(summary, out_dir=runner.DEFAULT_OUT):
+        order.append("write")
+        return real_write_reports(summary, out_dir)
+
+    monkeypatch.setattr(runner, "write_reports", spy_write_reports)
+    monkeypatch.setattr(sys, "stdout", console)
+    try:
+        code = runner.main(["--out", str(tmp_path)])
+    finally:
+        console.flush()
+
+    # 不抛异常，退出码正常
+    assert code == 0
+    # 两个报告文件都真的写出来了
+    assert (tmp_path / "eval-summary.json").exists()
+    assert (tmp_path / "eval-summary.md").exists()
+    payload = json.loads((tmp_path / "eval-summary.json").read_text(encoding="utf-8"))
+    assert payload["totals"]["metrics"] == len(payload["metrics"])
+    # 落盘早于打印：控制台出问题也不能让报告丢失
+    assert order.index("write") < order.index("print")
+    # 报告文件里保留原始符号（文件不受控制台编码影响）
+    markdown = (tmp_path / "eval-summary.md").read_text(encoding="utf-8")
+    assert "⏳" in markdown
+
+
+def test_console_text_degrades_exotic_symbols():
+    """控制台降级：生僻符号换成 ASCII 标记，中文原样保留。"""
+    text = runner.console_text("✅ 达标 / ⚠️ 未达标 / ➖ 并列 / ⏳ 未实现 / ❌ 异常 / a − b")
+    for symbol in ["✅", "⚠", "➖", "⏳", "❌", "−"]:
+        assert symbol not in text, symbol
+    assert "[OK]" in text and "[!]" in text and "[-]" in text
+    assert "[..]" in text and "[X]" in text
+    assert "a - b" in text
+    # 中文不受影响
+    assert "未实现" in text
+

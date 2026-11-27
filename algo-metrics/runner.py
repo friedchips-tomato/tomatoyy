@@ -38,6 +38,18 @@ STATUS_COMPUTED = "computed"
 STATUS_STUB = "not_implemented"
 STATUS_ERROR = "error"
 
+# 控制台降级用：这些符号在 Windows 默认的 GBK（cp936）控制台、以及 cp437 等
+# 传统代码页下**写不出去**（UnicodeEncodeError）。报告文件里保留原样，
+# 打到终端上时换成 ASCII 标记。
+CONSOLE_SYMBOL_FALLBACKS = {
+    "✅": "[OK]",
+    "⚠️": "[!]",
+    "➖": "[-]",
+    "⏳": "[..]",
+    "❌": "[X]",
+    "−": "-",  # U+2212 数学减号；正文公式里在用
+}
+
 
 def _now_iso() -> str:
     tz = timezone(timedelta(hours=8))
@@ -237,6 +249,69 @@ def write_reports(summary: Dict[str, Any], out_dir: Path = DEFAULT_OUT) -> Dict[
     return {"json": json_path, "markdown": md_path}
 
 
+def console_text(text: str) -> str:
+    """把报告里的生僻符号换成 ASCII 标记（**只用于控制台**，文件里保留原样）。
+
+    Windows 默认控制台是 GBK，写不出 ``⏳``/``✅`` 这类字符；
+    这里先降级一遍，控制台上看的是 ``[..] 未实现`` 这种等价的 ASCII 标记。
+    """
+    for symbol, replacement in CONSOLE_SYMBOL_FALLBACKS.items():
+        text = text.replace(symbol, replacement)
+    return text
+
+
+def make_console_safe() -> None:
+    """把控制台输出流调成「写不出就替换」，任何编码环境下都不抛异常。
+
+    Windows 默认控制台是 GBK（cp936），遇到 :func:`console_text` 没覆盖到的
+    非 ASCII 字符会抛 ``UnicodeEncodeError``，整轮评测就此中断。
+
+    做法：**保留控制台自己的编码**（GBK 控制台上中文才显示得对，
+    与同机器上其它 Python 程序的行为一致），只把「写不出」改成「替换」；
+    只有当当前编码连**实际要打印的内容**（含降级后的文本）都写不出时
+    （例如纯 ASCII 控制台）才切到 UTF-8。每一步都用 try/except 包住，失败不崩。
+    """
+    # 探针用**降级后**的文本：生僻符号在打印前已经被换成 ASCII，
+    # 用原始符号探针会把 GBK 误判成「写不出」，白白切到 UTF-8 导致中文乱码。
+    probe = console_text("中文 ⏳ ✅ ⚠️ ➖ ❌ −")
+    for stream in (sys.stdout, sys.stderr):
+        encoding = getattr(stream, "encoding", None)
+        need_utf8 = False
+        if encoding:
+            try:
+                probe.encode(encoding)
+            except (UnicodeEncodeError, LookupError):
+                need_utf8 = True
+        try:
+            if need_utf8:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            else:
+                stream.reconfigure(errors="replace")
+        except Exception:
+            pass
+
+
+def safe_print(text: str, stream: Any = None) -> None:
+    """打印到控制台；编码不兼容时退成可编码的版本，**绝不抛异常**。
+
+    控制台出问题不应该影响评测结果，更不该让已经算好的报告丢在内存里。
+    """
+    if stream is None:
+        stream = sys.stdout
+    try:
+        print(text, file=stream)
+        return
+    except UnicodeEncodeError:
+        pass  # 编码问题 → 下面退成可编码版本
+    except Exception:
+        return  # 控制台彻底不可用 → 静默跳过，不影响评测结果
+    encoding = getattr(stream, "encoding", None) or "ascii"
+    try:
+        print(text.encode(encoding, errors="replace").decode(encoding), file=stream)
+    except Exception:
+        pass
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="乐游蓬江 · 验收指标评测执行器")
     parser.add_argument("--only", action="append", default=None,
@@ -251,14 +326,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--json", action="store_true", help="把汇总 JSON 打到标准输出")
     args = parser.parse_args(argv)
 
+    make_console_safe()
     summary = run(only=args.only, pack=args.pack)
+
+    # **先落盘再打印**：控制台编码问题、管道提前关闭、Ctrl+C 都不该让报告丢失。
+    paths: Optional[Dict[str, Path]] = None
+    if not args.no_write and not args.json:
+        paths = write_reports(summary, Path(args.out))
+
     if args.json:
-        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        safe_print(json.dumps(summary, ensure_ascii=False, indent=2))
     else:
-        print(render_markdown(summary))
-        if not args.no_write:
-            paths = write_reports(summary, Path(args.out))
-            print("报告已写出：%s / %s" % (paths["json"], paths["markdown"]))
+        safe_print(console_text(render_markdown(summary)))
+        if paths is not None:
+            safe_print("报告已写出：%s / %s" % (paths["json"], paths["markdown"]))
 
     totals = summary["totals"]
     reasons: List[str] = []
@@ -269,7 +350,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if totals["failed"]:
         reasons.append("%d 项指标未达目标" % totals["failed"])
     if args.strict and reasons:
-        print("[strict] 退出码 1：" + "；".join(reasons), file=sys.stderr)
+        safe_print("[strict] 退出码 1：" + "；".join(reasons), stream=sys.stderr)
         return 1
     return 0
 
