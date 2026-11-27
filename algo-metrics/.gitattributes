@@ -1,0 +1,7 @@
+# 评测集与清单统一以 LF 落盘（检出与入库都保持 LF）。
+# 原因：datasets/manifest.json 里记录的 sha256 是「仓库内的规范形态」的哈希；
+# 若检出时被本机换行策略（如 Windows 的 core.autocrlf=true）改写成 CRLF，
+# 对文件取哈希就会与清单不符，可复现性校验也会误报「数据不一致」——
+# 那是检出策略问题，不是数据变了。这里把规范形态钉死为 LF。
+datasets/*.csv text eol=lf
+datasets/*.json text eol=lf

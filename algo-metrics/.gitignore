@@ -1,0 +1,7 @@
+# Python 字节码缓存（不入库）
+__pycache__/
+*.pyc
+*.py[cod]
+
+# runner 每次运行都会重写的报告（本地生成，不入库）
+reports/
