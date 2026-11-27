@@ -62,6 +62,7 @@ class MetricSpec:
         impl_key: Optional[str] = None,
         status_hint: str = "pack",
         evidence: str = "pack-provided",
+        verified: bool = False,
         notes: str = "",
     ) -> None:
         self.name = name
@@ -85,6 +86,8 @@ class MetricSpec:
         self.impl_key = impl_key or name
         self.status_hint = status_hint  # builtin | pack | future
         self.evidence = evidence  # synthetic-offline | pack-provided
+        # 数据是否已核验：合成数据一律 False；真实数据到位并核验后由归属包改写
+        self.verified = verified
         self.notes = notes
         self.impl: Optional[Callable[[], Dict[str, Any]]] = None
 
@@ -111,6 +114,7 @@ class MetricSpec:
             "impl_key": self.impl_key,
             "status_hint": self.status_hint,
             "evidence": self.evidence,
+            "verified": self.verified,
             "notes": self.notes,
         }
 
@@ -138,16 +142,28 @@ def register_pack_metrics(pack: str, implementations: Dict[str, Callable[[], Dic
         spec = METRICS.get(name)
         if spec is None:
             continue
-        spec.impl = impl
+        # 归属包注册的实现**覆盖**框架桩与离线适配器（这是交付后的替换路径）。
+        register_impl(name, impl, override=True)
         spec.status_hint = "pack"
         spec.evidence = "pack-provided"
 
 
-def register_impl(name: str, impl: Callable[[], Dict[str, Any]]) -> None:
-    """给已声明的指标挂上实现函数。"""
+def register_impl(
+    name: str, impl: Callable[[], Dict[str, Any]], *, override: bool = True
+) -> None:
+    """给已声明的指标挂上实现函数。
+
+    :param name: 指标名。
+    :param impl: 计算函数，返回统一结构 ``{"value", "unit", "n", "note", ...}``。
+    :param override: ``True``（默认）直接覆盖已有实现；``False`` 时若该指标已经注册过实现
+        则**保留原实现**。框架自带的离线适配器用 ``override=False``：
+        它们只是兜底实现，不能把归属包（或测试）已经注册的实现顶掉。
+    """
     spec = METRICS.get(name)
     if spec is None:
         raise KeyError("未声明的指标：%s" % name)
+    if spec.impl is not None and not override:
+        return
     spec.impl = impl
 
 
@@ -204,6 +220,7 @@ def evaluate_metric(spec: MetricSpec) -> Dict[str, Any]:
             "doc_ref": spec.doc_ref,
             "data_source": spec.data_source,
             "evidence": spec.evidence,
+            "verified": spec.verified,
         }
     result = copy.deepcopy(spec.impl())
     result.setdefault("value", None)
@@ -223,6 +240,7 @@ def evaluate_metric(spec: MetricSpec) -> Dict[str, Any]:
             "doc_ref": spec.doc_ref,
             "data_source": spec.data_source,
             "evidence": spec.evidence,
+            "verified": spec.verified,
             "role": spec.role,
         }
     )

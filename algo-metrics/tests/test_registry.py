@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -11,11 +12,20 @@ import registry
 PKG_DIR = Path(__file__).resolve().parents[1]
 DOC = PKG_DIR / "docs" / "metrics-definition.md"
 
+# 口径书里每个小节前面的显式锚点：<a id="2-8-未来-1-小时车位预测-mae"></a>
+ANCHOR_PATTERN = re.compile(r'<a id="([^"]+)"></a>')
+
 REQUIRED_FIELDS = [
     "name", "title", "pack", "definition", "formula", "numerator", "denominator",
     "data_source", "sample_requirement", "boundary", "example", "unit",
     "target_display", "doc_ref",
 ]
+
+
+def _doc_sections():
+    """把口径书按显式锚点切成 ``{锚点: 小节正文}``。"""
+    parts = ANCHOR_PATTERN.split(DOC.read_text(encoding="utf-8"))
+    return {parts[i]: parts[i + 1] for i in range(1, len(parts), 2)}
 
 
 def test_registry_not_empty():
@@ -72,14 +82,28 @@ def test_targets_match_requirement_book():
 
 
 def test_doc_ref_points_to_existing_section():
-    """每个指标的 doc_ref 都要能在口径书里找到对应小节标题。"""
-    text = DOC.read_text(encoding="utf-8")
+    """每个指标的 doc_ref 都要指向口径书里真实存在的小节。
+
+    校验两件事（比原来更严）：
+
+    1. ``doc_ref`` 的锚点能在口径书里解析到（口径书每个小节前都有 ``<a id="...">`` 显式锚点）；
+    2. 该小节正文里**登记了这条指标名**（口径书的「框架对应」段落会列出注册表条目名）。
+
+    为什么不用「指标标题前 6 个字是否出现在全文里」这种写法：那是拿**展示标题**
+    去猜**小节标题**，措辞不一致就会假失败——例如两个性能指标的标题是
+    「首屏加载时间（p95）」「关键页面响应时间（p95）」，而 §2.10 的小节标题叫
+    「首屏加载 / 关键页面响应」，doc_ref 锚点本身却是完全正确的。
+    """
+    sections = _doc_sections()
+    assert sections, "口径书里没有任何显式锚点 <a id=...>，doc_ref 无从解析"
     for spec in registry.list_metrics():
+        assert spec.doc_ref.startswith("docs/metrics-definition.md#"), spec.name
         anchor = spec.doc_ref.split("#")[-1]
         assert anchor, spec.name
-        # 口径书小节标题形如 "## 2.8 未来 1 小时车位预测 MAE"
-        title = spec.title.split("（")[0].strip()
-        assert title.split("（")[0][:6] in text, "%s 的口径小节标题未出现在口径书" % spec.name
+        assert anchor in sections, "%s 的 doc_ref 锚点 %s 在口径书里不存在" % (spec.name, anchor)
+        assert spec.name in sections[anchor], (
+            "%s 的口径小节 %s 里没有登记该指标名" % (spec.name, anchor)
+        )
 
 
 def test_filter_metrics_by_pack_and_name():

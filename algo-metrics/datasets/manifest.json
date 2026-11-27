@@ -102,5 +102,6 @@
     "impression_adoption_rate": 0.45,
     "visitor_count": 120
   },
-  "disclaimer": "本目录全部为合成数据（data_source=synthetic，verified=false），只用于验证评测链路与口径计算，不代表任何真实业务水平；真实数据到位后只替换数据文件，不改算法与口径。"
+  "disclaimer": "本目录全部为合成/示意数据（data_source=synthetic，verified=false），只用于验证评测链路与口径计算，不代表真实达成，也不代表任何真实业务水平；真实数据到位后只替换数据文件，不改算法与口径。",
+  "synthetic_note": "合成/示意数据，不代表真实达成：本清单里的 seed / sha256 只保证「同一份生成器 + 同一个种子 → 同一份数据」的可复现性，由它算出的指标数值不构成任何达标结论；需求方书面确认放在上线阶段。"
 }

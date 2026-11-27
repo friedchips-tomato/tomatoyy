@@ -256,13 +256,31 @@ def parking_offpeak_adoption_metric() -> Dict[str, Any]:
 
 
 def register_adapters() -> Dict[str, Any]:
-    """把离线评测实现挂到注册表上（覆盖同名桩）。"""
-    registry.register_impl("parking_mae_ratio_1h", lambda: _parking_metric("mae_ratio"))
-    registry.register_impl("parking_mae_spaces_1h", lambda: _parking_metric("mae_spaces"))
-    registry.register_impl("parking_mae_pp_1h", lambda: _parking_metric("mae_pp"))
-    registry.register_impl("route_adoption_rate", route_adoption_rate_metric)
-    registry.register_impl("route_adoption_rate_offline", route_adoption_offline_metric)
-    registry.register_impl("parking_offpeak_adoption_rate", parking_offpeak_adoption_metric)
+    """把离线评测实现挂到注册表上（**不覆盖**已经注册好的实现）。
+
+    框架自带的离线实现是**兜底**：归属包交付后用 ``registry.register_pack_metrics``
+    注册自己的实现，而 runner 每轮都会重新 bootstrap 一遍；若这里直接覆盖，
+    归属包（以及单测里替换实现来验证异常处理）的实现会被悄悄顶掉，
+    指标就会算出「看起来正常」的值，异常路径根本走不到。
+    """
+    registry.register_impl(
+        "parking_mae_ratio_1h", lambda: _parking_metric("mae_ratio"), override=False
+    )
+    registry.register_impl(
+        "parking_mae_spaces_1h", lambda: _parking_metric("mae_spaces"), override=False
+    )
+    registry.register_impl(
+        "parking_mae_pp_1h", lambda: _parking_metric("mae_pp"), override=False
+    )
+    registry.register_impl(
+        "route_adoption_rate", route_adoption_rate_metric, override=False
+    )
+    registry.register_impl(
+        "route_adoption_rate_offline", route_adoption_offline_metric, override=False
+    )
+    registry.register_impl(
+        "parking_offpeak_adoption_rate", parking_offpeak_adoption_metric, override=False
+    )
     return {"registered": True}
 
 

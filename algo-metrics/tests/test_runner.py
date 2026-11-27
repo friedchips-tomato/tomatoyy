@@ -41,6 +41,9 @@ def test_run_all_metrics_reports_status():
         if result["status"] == "not_implemented":
             assert result["value"] is None  # 桩不编造数字
         assert result["note"]
+        # 口径书 §4 要求的展示位：data_source / verified 缺一不得进报告
+        assert result["data_source"]
+        assert result["verified"] is False  # 合成数据一律未核验
 
 
 def test_run_with_only_filter():
@@ -77,6 +80,9 @@ def test_write_reports_creates_json_and_markdown(tmp_path):
     assert "parking_mae_ratio_1h" in markdown
     assert "口径引用" in markdown
     assert "synthetic" in markdown
+    assert "verified" in markdown
+    # 报告不得把合成数据上的比较写成「真实达标」
+    assert "不代表真实业务达标" in markdown
 
 
 def test_markdown_contains_unimplemented_section():
@@ -110,3 +116,47 @@ def test_error_in_one_metric_does_not_break_the_run(monkeypatch):
         assert statuses["route_adoption_rate"] == "computed"
     finally:
         registry.get_metric("parking_mae_ratio_1h").impl = original
+
+
+def test_error_result_keeps_reason_and_continues():
+    """出错指标要记下原因与样本量为 0，其余指标照常计算。"""
+    def boom():
+        raise RuntimeError("故意炸的")
+
+    original = registry.get_metric("parking_mae_ratio_1h").impl
+    registry.get_metric("parking_mae_ratio_1h").impl = boom
+    try:
+        summary = runner.run(only=["parking_mae_ratio_1h", "route_adoption_rate"])
+    finally:
+        registry.get_metric("parking_mae_ratio_1h").impl = original
+    failed = [r for r in summary["metrics"] if r["name"] == "parking_mae_ratio_1h"][0]
+    assert failed["status"] == "error"
+    assert failed["value"] is None       # 出错不得有数值
+    assert failed["n"] == 0
+    assert "故意炸的" in failed["note"]
+    assert summary["totals"]["error"] == 1
+    assert summary["totals"]["computed"] >= 1
+
+
+def test_bootstrap_does_not_override_registered_impl():
+    """框架自带的离线适配器**不得**顶掉已注册的实现。
+
+    runner 每轮都会 bootstrap 一遍；若适配器直接覆盖，
+    归属包交付后注册的实现（以及单测里替换的实现来验证异常路径）
+    会被悄悄顶掉，指标就会算出「看起来正常」的值。
+    """
+    spec = registry.get_metric("route_adoption_rate")
+    original = spec.impl
+
+    def custom():
+        return {"value": 0.123, "unit": "ratio", "n": 7, "note": "自定义实现"}
+
+    spec.impl = custom
+    try:
+        summary = runner.run(only=["route_adoption_rate"])
+    finally:
+        spec.impl = original
+    result = summary["metrics"][0]
+    assert result["status"] == "computed"
+    assert result["value"] == pytest.approx(0.123)
+    assert result["note"] == "自定义实现"

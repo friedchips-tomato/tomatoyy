@@ -45,7 +45,11 @@ def _now_iso() -> str:
 
 
 def bootstrap() -> None:
-    """注册离线评测实现与未交付包的桩。"""
+    """注册离线评测实现与未交付包的桩。
+
+    可重复调用：只**补齐缺失**的实现，不覆盖已经注册好的实现
+    （归属包交付后注册的实现、单测里替换的实现都优先，见 ``adapters.register_adapters``）。
+    """
     stubs.register_stubs()
     adapters.register_adapters()
 
@@ -84,6 +88,7 @@ def run(
                 "doc_ref": spec.doc_ref,
                 "data_source": spec.data_source,
                 "evidence": spec.evidence,
+                "verified": spec.verified,
             }
         results.append(result)
 
@@ -167,6 +172,7 @@ def render_markdown(summary: Dict[str, Any]) -> str:
     add("")
     add("- 生成时间：%s" % summary["generated_at"])
     add("- 数据来源：`%s`" % summary["data_source"])
+    add("- 数据核验：`verified=false`（合成数据一律未核验；真实数据到位并核验后由归属包改写）")
     add("- %s" % summary["data_source_note"])
     add("- 契约：%s" % summary["framework"]["contract"])
     add("")
@@ -202,6 +208,8 @@ def render_markdown(summary: Dict[str, Any]) -> str:
     add("- 预测步长：未来 1 小时（30 分钟粒度下为 2 步，horizon=60min）。")
     add("- 缺失桶（`quality=missing`）不进入 MAE 分子分母，其覆盖率单列统计。")
     add("- 采纳率分母：路线=获得推荐的人数；错峰=展示含错峰建议的次数；点击率=曝光数。")
+    add("- 状态列的「达标」只表示**本次合成数据上算出的数值与目标值的关系**，"
+        "**不代表真实业务达标**；需求方书面确认放在上线阶段。")
     add("- 需求方书面确认放在上线阶段；本阶段按本口径执行，不自称已达标。")
     add("")
     add("## 未实现指标")
